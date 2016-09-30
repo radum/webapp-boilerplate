@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "webapp-boilerplate-webpack",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Scaffold out a front-end web app using Webpack",
   "license": "MIT @ Radu Micu",
   "author": "Radu Micu",
