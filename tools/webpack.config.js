@@ -1,9 +1,3 @@
-const includes = require('array-includes')
-
-// TODO Remove this polyfill and bump dep to Node 6
-includes.shim();
-includes.getPolyfill();
-
 const path = require('path');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');

@@ -1,5 +1,12 @@
 node_modules
 npm-debug.log
 
-app/dist
-app/index.html
+dist
+.tmp
+.sass-cache
+
+bower_components
+test/bower_components
+
+coverage
+.nyc_output
