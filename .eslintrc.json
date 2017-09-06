@@ -1,7 +1,13 @@
 {
   "extends": "airbnb-base",
   "root": true,
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "plugins": ["compat"],
   "rules": {
+	"compat/compat": "warn",
     "comma-dangle": "off",
     "prefer-template": "off",
 	"no-tabs": "off",

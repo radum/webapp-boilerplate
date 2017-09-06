@@ -11,7 +11,7 @@ const config = {
 		buildPath: 'build',
 
 		styles: 'src/styles/**/*.scss',
-		stylesEntryPoint: 'src/styles/*.scss',
+		stylesEntryPoint: 'src/styles/main.scss',
 		stylesOutputDest: 'build/styles',
 
 		scripts: 'src/client/**/*.js',

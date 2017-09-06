@@ -1,3 +1,4 @@
+/* eslint-env node */
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 // This is used to transform this file and all the subsequent requires / imports
@@ -10,6 +11,7 @@ const gulpPlugins = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
 
 const config = require('./tools/config');
+const webpackConfig = require('./tools/webpack.config');
 const clean = require('./tools/clean');
 const copy = require('./tools/copy');
 const serve = require('./tools/serve');
@@ -18,7 +20,8 @@ const serve = require('./tools/serve');
 const tasks = dir('./tools/gulp-tasks', { recurse: true });
 
 const blueprint = Object.assign({}, config, {
-	browserSync
+	browserSync,
+	webpackConfig
 });
 
 /**
@@ -45,11 +48,12 @@ gulp.task('serve', () => serve(blueprint));
 const prepareTasks = gulp.series(
 	clean,
 	copy,
-	gulp.parallel('styles', 'images')
+	gulp.parallel('styles'),
+	'browserSync'
 );
 
 // Start local dev task
-gulp.task('start', gulp.series(prepareTasks, 'serve', 'watch'));
+gulp.task('start', gulp.series(prepareTasks));
 
 // Gulp default task runs `start`
 gulp.task('default', gulp.series('start'));

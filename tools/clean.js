@@ -1,16 +1,19 @@
-import { cleanDir } from './lib/fs';
+const config = require('./config');
+const fs = require('./lib/fs');
 
 /**
-* Cleans up the output (build) directory.
-*/
+ * Cleans up the output (build) directory.
+ *
+ * @returns Promise
+ */
 function clean() {
 	return Promise.all([
-		cleanDir('build/*', {
+		fs.cleanDir(config.paths.buildPath + '/*', {
 			nosort: true,
 			dot: true,
-			ignore: ['build/.git'],
+			ignore: [config.paths.buildPath + '/.git'],
 		}),
 	]);
 }
 
-export default clean;
+module.exports = clean;

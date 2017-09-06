@@ -25,12 +25,15 @@
   "scripts": {},
   "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^2.18.8",
+    "babel-preset-env": "^1.6.0",
+    "browser-sync": "^2.18.13",
     "chokidar": "^1.6.1",
+    "eslint-plugin-compat": "^1.0.4",
     "glob": "^7.1.2",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^4.0.0",
     "gulp-if": "^2.0.2",
+    "gulp-imagemin": "^3.3.0",
     "gulp-load-plugins": "^1.5.0",
     "gulp-plumber": "^1.1.0",
     "gulp-postcss": "^7.0.0",
@@ -43,6 +46,12 @@
     "postcss-reporter": "^5.0.0",
     "postcss-scss": "^1.0.2",
     "require-dir": "^0.3.1",
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "sass-mq": "^3.3.2",
+    "stylelint-no-unsupported-browser-features": "^1.0.0",
+    "stylelint-scss": "^2.1.0",
+    "webpack": "^3.5.5",
+    "webpack-dev-middleware": "^1.12.0",
+    "webpack-hot-middleware": "^2.19.0"
   }
 }

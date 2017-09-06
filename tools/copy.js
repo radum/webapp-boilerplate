@@ -1,18 +1,20 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
-import path from 'path';
-import chokidar from 'chokidar';
-import { writeFile, copyFile, makeDir, copyDir, cleanDir } from './lib/fs';
-import pkg from '../package.json';
+const chokidar = require('chokidar');
+const config = require('./config');
+const fs = require('./lib/fs');
+const pkg = require('../package.json');
 
 /**
-* Copies static files such as robots.txt, favicon.ico to the
-* output (build) folder.
-*/
+ * Copies static files such as robots.txt, favicon.ico to the
+ * output (build) folder.
+ *
+ * @returns Promise
+ */
 async function copy() {
-	await makeDir('build');
+	await fs.makeDir(config.paths.buildPath);
 	await Promise.all([
-		writeFile('build/package.json', JSON.stringify({
+		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
 			private: true,
 			engines: pkg.engines,
 			dependencies: pkg.dependencies,
@@ -20,9 +22,8 @@ async function copy() {
 				start: 'node server.js',
 			},
 		}, null, 2)),
-		// // copyFile('LICENSE.txt', 'build/LICENSE.txt'),
-		copyDir('static', 'build/static'),
+		fs.copyDir(config.paths.staticAssets, 'build/static')
 	]);
 }
 
-export default copy;
+module.exports = copy;

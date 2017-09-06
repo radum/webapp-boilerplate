@@ -1,9 +1,11 @@
 node_modules
 npm-debug.log
 
+build
 dist
 .tmp
 .sass-cache
+.esm-cache
 
 bower_components
 test/bower_components

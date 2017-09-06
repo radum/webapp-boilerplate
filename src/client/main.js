@@ -1,17 +1,19 @@
 /* global document */
 
 // Global imports
-import 'babel-polyfill';
-import 'whatwg-fetch';
-import fastClick from 'fastclick';
+// import 'babel-polyfill';
+// import 'whatwg-fetch';
+// import fastClick from 'fastclick';
 import App from './app';
 
 // Eliminates the 300ms delay between a physical tap
 // and the firing of a click event on mobile browsers
 // https://github.com/ftlabs/fastclick
-fastClick(document.body);
+// fastClick(document.body);
 
 const app = new App();
+
+console.log(navigator.serviceWorker);
 
 app.sayHi('RaduM');
 app.loadPortfolioItems();
