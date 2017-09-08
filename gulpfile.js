@@ -5,23 +5,28 @@
 // Used in particular for transforming async / await
 // require('babel-register');
 
+// Node module requirements
 const dir = require('require-dir');
 const gulp = require('gulp');
 const gulpPlugins = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
 
+// ENV main config object
 const config = require('./tools/config');
-const webpackConfig = require('./tools/webpack.config');
+
+// Independent task functions that will be used as Gulp taks
 const clean = require('./tools/clean');
 const copy = require('./tools/copy');
-const serve = require('./tools/serve');
+const browserSyncTask = require('./tools/browserSync');
+const scripts = require('./tools/scripts');
 
+// Gulp specific tasks via gulp plugins.
 // Require all tasks in `tools/gulp-tasks`, including subfolders
 const tasks = dir('./tools/gulp-tasks', { recurse: true });
 
+// Gulp tasks main config
 const blueprint = Object.assign({}, config, {
-	browserSync,
-	webpackConfig
+	browserSync
 });
 
 /**
@@ -35,11 +40,13 @@ Object.keys(tasks).forEach((taskName) => {
 // TODO: Check if this is really needed, we can run without converting them to a gulp task
 // Create a Gulp task out of each file used
 // Gulp task: Deletes non esential resources like the build folder
-gulp.task('clean', clean);
+gulp.task('clean', done => clean(done));
 // Gulp task: Copies static files such as robots.txt, favicon.ico to the build folder
-gulp.task('copy', copy);
+gulp.task('copy', done => copy(done));
 // Gulp task: Starts the local dev environemnt
-gulp.task('serve', () => serve(blueprint));
+gulp.task('browserSync', done => browserSyncTask(browserSync, done));
+// Gulp task: Bundles the JS code
+gulp.task('scripts', done => scripts(done));
 
 /**
  * Prepare local structure for first run. Clear build folder, copy files, etc.

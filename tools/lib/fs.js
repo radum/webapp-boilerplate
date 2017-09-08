@@ -6,6 +6,12 @@ const glob = require('glob');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
+/**
+ * Read the content of a file and return a Promise
+ *
+ * @param {string} file - File name / path to read
+ * @returns Promise
+ */
 const readFile = file => new Promise((resolve, reject) => {
 	fs.readFile(
 		file,
@@ -14,6 +20,13 @@ const readFile = file => new Promise((resolve, reject) => {
 	);
 });
 
+/**
+ * Write content to a file
+ *
+ * @param {string} file - File name / path to read
+ * @param {string} contents - File content
+ * @returns Promise
+ */
 const writeFile = (file, contents) => new Promise((resolve, reject) => {
 	fs.writeFile(file, contents, 'utf8', err => (err ? reject(err) : resolve()));
 });

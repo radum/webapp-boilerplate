@@ -9,6 +9,7 @@
           "browsers": [
             "> 1%",
             "Last 2 versions",
+            "Firefox ESR",
             "not IE < 11"
           ]
         }

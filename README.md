@@ -53,6 +53,10 @@ You can also test your app in release (production) mode by running node run star
 	- lint
 	- test
 - Update these docs with more info
+- Explore other webpack plugins:
+	- https://github.com/lukeed/webpack-messages
+	- https://github.com/geowarin/friendly-errors-webpack-plugin
+	- https://github.com/FormidableLabs/webpack-dashboard
 
 ## Contribute
 

@@ -1,23 +1,26 @@
 const isProd = process.env.NODE_ENV === 'production';
 const isDebug = !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose');
+const isAnalyze = process.argv.includes('--analyze') || process.argv.includes('--analyse');
 
 const config = {
 	isProd,
 	isDebug,
 	isVerbose,
+	isAnalyze,
 
 	paths: {
 		buildPath: 'build',
 
 		styles: 'src/styles/**/*.scss',
 		stylesEntryPoint: 'src/styles/main.scss',
-		stylesOutputDest: 'build/styles',
+		stylesOutputDest: 'build/static/styles',
 
-		scripts: 'src/client/**/*.js',
-		scriptsEntryPoint: 'src/client-entry.js',
-		scriptsOutputDest: 'build/client/scripts',
-		scriptsPublicPath: '/client/scripts/', // Taken from `scriptsOutputDest` and removed build path
+		scriptsPath: 'src/client',
+		scriptsFiles: 'src/client/**/*.js',
+		scriptsEntryPoint: 'src/client/main.js',
+		scriptsOutputDest: 'build/static/scripts',
+		scriptsPublicPath: '/static/scripts/', // Taken from `scriptsOutputDest` and removed build part
 
 		staticAssets: 'src/static',
 
