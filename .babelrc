@@ -16,5 +16,5 @@
       }
     ]
   ],
-  "plugins": ["transform-runtime"]
+  "plugins": []
 }

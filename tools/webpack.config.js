@@ -11,7 +11,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 const config = require('./config');
 
-
 // Webpack configuration (main.js => main.build.js)
 // http://webpack.github.io/docs/configuration.html
 const webpackConfig = {
@@ -21,7 +20,8 @@ const webpackConfig = {
 	// Point of entry for webpack to do its magic
 	entry: [
 		// Usual entry location: './src/client/main.js'
-		config.paths.scriptsEntryPoint
+		// TODO: This `./` is stupid fix it
+		'./' + config.paths.scriptsEntryPoint
 	],
 
 	// Output will be saved in `build/static/scripts` folder as per the `path` prop here
@@ -37,7 +37,7 @@ const webpackConfig = {
 		pathinfo: config.isVerbose,
 		// The name of each output bundle. The bundle is written to the directory specified by the output.path option
 
-		filename: config.isDebug ? 'main.build.js' : '[name].build.[hash].js',
+		filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
 		// TODO: Understand what this does
 		// chunkFilename: '[id].[chunkhash].build.js',
 		// Change the prefix for each line in the output bundles.

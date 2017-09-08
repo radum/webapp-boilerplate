@@ -5,7 +5,6 @@ const postcssConfig = require('./../postcss.config'); // SCSS parser for PostCSS
 
 module.exports = (gulp, plugins, blueprint) => {
 	return gulp.src(blueprint.paths.stylesEntryPoint)
-		.pipe(plugins.plumber())
 		.pipe(plugins.if(blueprint.isDebug, plugins.sourcemaps.init({ loadMaps: true }))) // Extract the inline sourcemaps
 		.pipe(plugins.sass.sync({
 			outputStyle: 'expanded',

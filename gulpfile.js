@@ -8,6 +8,7 @@
 // Node module requirements
 const dir = require('require-dir');
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const gulpPlugins = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
 
@@ -58,6 +59,11 @@ const prepareTasks = gulp.series(
 	gulp.parallel('styles'),
 	'browserSync'
 );
+
+// Log environment status information
+gutil.log('ENV status', gutil.colors.cyan('isDebug'), gutil.colors.magenta(config.isDebug));
+gutil.log('ENV status', gutil.colors.cyan('isProd'), gutil.colors.magenta(config.isProd));
+gutil.log('ENV status', gutil.colors.cyan('isVerbose'), gutil.colors.magenta(config.isVerbose));
 
 // Start local dev task
 gulp.task('start', gulp.series(prepareTasks));

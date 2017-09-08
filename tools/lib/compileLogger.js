@@ -3,6 +3,12 @@
 const gutil = require('gulp-util');
 const prettifyTime = require('./prettifyTime');
 
+// TODO: Remove `gulp-util` dependency
+// https://github.com/gulpjs/gulp/blob/4.0/docs/API.md#gulptaskname-fn
+// https://github.com/gulpjs/undertaker#usage
+// We can use a promise in the main `scripts.js` task to handle the error.
+// Gulp function tasks will work if the function returns a promise.
+// And we can reject if there are any errors, simulating `gutil.PluginError`.
 function compileLogger(err, stats) {
 	if (err) {
 		throw new gutil.PluginError('webpack', err);
