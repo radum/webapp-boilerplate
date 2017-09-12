@@ -38,7 +38,7 @@
 		<link rel="canonical" href="http://www.example.com/">
 		-->
 
-		<link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="/static/styles/main.css">
 	</head>
 	<body>
 		<header>
@@ -64,7 +64,12 @@
 		</section>
 
 		<script src="https://cdn.jsdelivr.net/modernizr/3.3.1/modernizr.min.js" integrity="sha256-65rhSmwPSQGe83K1p6cudTQxfiMNutuHCIB0n8CqvF4=" crossorigin="anonymous"></script>
-		<script src="scripts/main.build.js"></script>
+		<script>
+		window.webpackChunkManifest = ${data.assets.webpackChunkManifestContent};
+		</script>
+		<for(file in data.assets.scripts)>
+		<script src="${file}"></script>
+		</for>
 
 		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 		<script>

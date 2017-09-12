@@ -5,6 +5,9 @@ const path = require('path');
 const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
+const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -29,19 +32,23 @@ const webpackConfig = {
 	output: {
 		// The output directory as an absolute path
 		path: path.resolve(__dirname, '..', config.paths.scriptsOutputDest),
+
 		// This option specifies the public URL of the output directory when referenced in a browser
-
 		publicPath: config.paths.scriptsPublicPath,
+
 		// Include comments in bundles with information about the contained modules
-
 		pathinfo: config.isVerbose,
+
 		// The name of each output bundle. The bundle is written to the directory specified by the output.path option
-
-		filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
+		// Name of the bundled file/s.
+		// [hash] - applies hash of a webpack build, so every file will have same hash
+		// [chunkhash] - applies hash to every file separately
+		// filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
+		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash].js',
 		// TODO: Understand what this does
-		// chunkFilename: '[id].[chunkhash].build.js',
-		// Change the prefix for each line in the output bundles.
+		chunkFilename: '[name].build.[chunkhash].js',
 
+		// Change the prefix for each line in the output bundles.
 		// Using some kind of indentation makes bundles look more pretty, but will cause issues with multi-line strings.
 		sourcePrefix: '\t'
 	},
@@ -137,6 +144,35 @@ const webpackConfig = {
 			prettyPrint: true
 		}),
 
+		// TODO: Explore which one is better. ManifestPlugin or AssetsPlugin.
+		// new ManifestPlugin({
+		// 	fileName: 'assets-2.json',
+		// 	publicPath: '/test',
+		// 	writeToFileEmit: true
+		// }),
+
+		// Allows exporting a manifest that maps entry chunk names to their output files,
+		// instead of keeping the mapping inside the webpack bootstrap.
+		// The resulted content should then be inlined in a script tag like this:
+		//
+		// ```
+		// <script>
+		// window.webpackChunkManifest = {content of manifest.json};
+		// </script>
+		// ```
+		//
+		// Basicaly in the runtime.js generated file the following line:
+		// script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
+		// becomes this:
+		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
+		// Webpack can then read this mapping, assuming it is provided somehow on the client,
+		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
+		new ChunkManifestPlugin({
+			filename: 'manifest.json',
+			manifestVariable: 'webpackChunkManifest',
+			inlineManifest: true
+		}),
+
 		// Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk)
 		// https://webpack.js.org/plugins/commons-chunk-plugin/
 		new webpack.optimize.CommonsChunkPlugin({
@@ -144,9 +180,25 @@ const webpackConfig = {
 			minChunks: module => /node_modules/.test(module.resource)
 		}),
 
+		// TODO: Documemt this
+		new webpack.optimize.CommonsChunkPlugin({
+			name: ['commons', 'runtime'],
+			minChunks: Infinity
+		}),
+
+		// new HtmlWebpackPlugin({
+		// 	filename: path.resolve(__dirname, '..', config.paths.staticAssetsOutput) + '/index.html',
+		// 	template: path.resolve(__dirname, '..', config.paths.htmlPath, config.paths.htmlIndexFileName),
+		// 	inject: false,
+		// 	minify: config.isDebug ? {
+		// 		removeComments: true
+		// 	} : false
+		// }),
+
 		...(config.isDebug ? [
 			new webpack.HotModuleReplacementPlugin(),
 			new webpack.NoEmitOnErrorsPlugin(),
+			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.NamedModulesPlugin()
 		] : [
 			// Decrease script evaluation time

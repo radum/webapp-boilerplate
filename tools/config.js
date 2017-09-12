@@ -23,6 +23,7 @@ const config = {
 		scriptsPublicPath: '/static/scripts/', // Taken from `scriptsOutputDest` and removed build part
 
 		staticAssets: 'src/static',
+		staticAssetsOutput: 'build/static',
 
 		images: 'src/static/images/**/*',
 		imagesOutputDest: 'build/static/images'

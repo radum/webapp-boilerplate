@@ -57,6 +57,9 @@ You can also test your app in release (production) mode by running node run star
 	- https://github.com/lukeed/webpack-messages
 	- https://github.com/geowarin/friendly-errors-webpack-plugin
 	- https://github.com/FormidableLabs/webpack-dashboard
+	- https://github.com/webpack-contrib/babel-minify-webpack-plugin
+	- https://www.npmjs.com/package/gulp-sizereport
+	- https://github.com/asfktz/autodll-webpack-plugin
 
 ## Contribute
 

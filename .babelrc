@@ -1,10 +1,12 @@
-// When this is implemented we can use the main `.browserslistrc` file
-// https://github.com/babel/babel-preset-env/issues/149
-
 {
   "presets": [
     [
+      // Env preset
+      // Babel preset that automatically determines the Babel plugins you need based on your supported environments. Uses compat-table
+      // http://babeljs.io/docs/plugins/preset-env/
       "env", {
+        // When this is implemented we can use the main `.browserslistrc` file
+        // https://github.com/babel/babel-preset-env/issues/149
         "targets": {
           "browsers": [
             "> 1%",
@@ -12,7 +14,12 @@
             "Firefox ESR",
             "not IE < 11"
           ]
-        }
+        },
+        // TODO: Check that it actually works.
+        // Enable transformation of ES6 module syntax to another module type.
+        // Setting this tofalse will not transform modules.
+        // This means webpack will be able to do Tree Shaking and remove unused exports from your bundle to bring down the file size.
+        "modules": false
       }
     ]
   ],

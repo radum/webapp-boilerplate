@@ -4,6 +4,7 @@
 // import 'babel-polyfill';
 // import 'whatwg-fetch';
 // import fastClick from 'fastclick';
+import now from 'lodash/now';
 import App from './app';
 import A from './a';
 import B from './b';
@@ -12,6 +13,8 @@ import B from './b';
 // and the firing of a click event on mobile browsers
 // https://github.com/ftlabs/fastclick
 // fastClick(document.body);
+
+console.log(now());
 
 const app = new App();
 
