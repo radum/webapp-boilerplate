@@ -24,7 +24,7 @@
   ],
   "scripts": {},
   "dependencies": {
-    "body-parser": "^1.18.0",
+    "body-parser": "^1.18.1",
     "chalk": "^2.1.0",
     "compression": "^1.7.0",
     "cookie-parser": "^1.4.3",
@@ -68,7 +68,7 @@
     "postcss-scss": "^1.0.2",
     "raw-loader": "^0.5.1",
     "require-dir": "^0.3.1",
-    "rimraf": "^2.6.1",
+    "rimraf": "^2.6.2",
     "sass-mq": "^3.3.2",
     "stylelint-no-unsupported-browser-features": "^1.0.0",
     "stylelint-scss": "^2.1.0",

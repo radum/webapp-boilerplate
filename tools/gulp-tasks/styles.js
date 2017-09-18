@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
+const browserSync = require('browser-sync');
 const postcssScss = require('postcss-scss'); // SCSS parser for PostCSS
 const postcssConfig = require('./../postcss.config'); // SCSS parser for PostCSS
 
@@ -18,5 +19,5 @@ module.exports = (gulp, plugins, blueprint) => {
 		.pipe(plugins.autoprefixer())
 		.pipe(plugins.if(blueprint.isDebug, plugins.sourcemaps.write('.')))
 		.pipe(gulp.dest(blueprint.paths.stylesOutputDest))
-		.pipe(blueprint.browserSync.stream());
+		.pipe(browserSync.stream());
 };

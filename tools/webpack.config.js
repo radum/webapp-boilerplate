@@ -24,7 +24,13 @@ const webpackConfig = {
 	entry: [
 		// Usual entry location: './src/client/main.js'
 		// TODO: This `./` is stupid fix it
-		'./' + config.paths.scriptsEntryPoint
+		'./' + config.paths.scriptsEntryPoint,
+
+		// This is use to auto reload the browser when the code changes. We don't have a watch and webpack complile repeat task.
+		// The hot middleware handles the browser reload for us.
+		// Only used in dev mode and reload automaticaly if webpack is stuck
+		// https://github.com/glenjamin/webpack-hot-middleware
+		...(config.isDebug ? ['webpack-hot-middleware/client?name=client&reload=true&noInfo=false'] : [])
 	],
 
 	// Output will be saved in `build/static/scripts` folder as per the `path` prop here
@@ -125,6 +131,7 @@ const webpackConfig = {
 		new webpack.DefinePlugin({
 			'process.env.NODE_ENV': config.isDebug ? '"development"' : '"production"',
 			'process.env.BROWSER': true,
+			__BROWSER__: true,
 			__DEV__: config.isDebug
 		}),
 
