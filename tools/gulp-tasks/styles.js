@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
-const browserSync = require('browser-sync');
+const browserSync = require('browser-sync').get('browserSyncInstance');
 const postcssScss = require('postcss-scss'); // SCSS parser for PostCSS
 const postcssConfig = require('./../postcss.config'); // SCSS parser for PostCSS
 

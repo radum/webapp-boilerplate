@@ -1,7 +1,7 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const webpack = require('webpack');
-const browserSync = require('browser-sync').create();
+const browserSync = require('browser-sync').create('browserSyncInstance');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('./webpack.config');
