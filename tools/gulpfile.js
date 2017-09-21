@@ -55,8 +55,7 @@ gulp.task('browser-sync-task', bs.init);
 const start = gulp.series(
 	'clean-task',
 	'copy-task',
-	gulp.parallel('styles'),
-	'compiler-task',
+	gulp.parallel('styles', 'imagemin', 'compiler-task'),
 	'run-server-task',
 	'browser-sync-task',
 	'watch'
