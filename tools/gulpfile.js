@@ -12,18 +12,18 @@ const gutil = require('gulp-util');
 const gulpPlugins = require('gulp-load-plugins')();
 
 // ENV main config object
-const config = require('./tools/config');
+const config = require('./config');
 
 // Independent task functions that will be used as Gulp taks
-const clean = require('./tools/clean');
-const copy = require('./tools/copy');
-const compiler = require('./tools/compiler');
-const bs = require('./tools/browserSync');
-const runServer = require('./tools/runServer');
+const clean = require('./clean');
+const copy = require('./copy');
+const compiler = require('./compiler');
+const bs = require('./browserSync');
+const runServer = require('./runServer');
 
 // Gulp specific tasks via gulp plugins.
 // Require all tasks in `tools/gulp-tasks`, including subfolders
-const tasks = dir('./tools/gulp-tasks', { recurse: true });
+const tasks = dir('./gulp-tasks', { recurse: true });
 
 // Gulp tasks main config
 const blueprint = Object.assign({}, config);
@@ -63,9 +63,9 @@ const start = gulp.series(
 );
 
 // Log environment status information
-gutil.log('ENV status', gutil.colors.cyan('isDebug'), gutil.colors.magenta(config.isDebug));
-gutil.log('ENV status', gutil.colors.cyan('isProd'), gutil.colors.magenta(config.isProd));
-gutil.log('ENV status', gutil.colors.cyan('isVerbose'), gutil.colors.magenta(config.isVerbose));
+gutil.log('Gulp ENV status', gutil.colors.cyan('isDebug'), gutil.colors.magenta(config.isDebug));
+gutil.log('Gulp ENV status', gutil.colors.cyan('isProd'), gutil.colors.magenta(config.isProd));
+gutil.log('Gulp ENV status', gutil.colors.cyan('isVerbose'), gutil.colors.magenta(config.isVerbose));
 
 // Start local dev task
 gulp.task('start', gulp.series(start));

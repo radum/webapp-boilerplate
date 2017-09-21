@@ -22,7 +22,12 @@
     "webpack",
     "gulp"
   ],
-  "scripts": {},
+  "scripts": {
+    "dev": "gulp --cwd . --gulpfile tools/gulpfile.js",
+    "dev:verbose": "npm run dev --verbose",
+    "dev:analyze": "npm run dev --analyze",
+    "build": "gulp --cwd . --gulpfile tools/gulpfile.js build"
+  },
   "dependencies": {
     "body-parser": "^1.18.1",
     "chalk": "^2.1.0",
