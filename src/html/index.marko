@@ -65,7 +65,7 @@
 
 		<script src="https://cdn.jsdelivr.net/modernizr/3.3.1/modernizr.min.js" integrity="sha256-65rhSmwPSQGe83K1p6cudTQxfiMNutuHCIB0n8CqvF4=" crossorigin="anonymous"></script>
 		<script>
-		window.webpackChunkManifest = ${data.assets.webpackChunkManifestContent};
+		window.webpackChunkManifest = ${data.webpackChunkManifestContent};
 		</script>
 		<for(file in data.assets.scripts)>
 		<script src="${file}"></script>
@@ -81,5 +81,8 @@
 			ga('send', 'pageview');
 		</script>
 		<!-- Built with love using RaduM's ES6 Web app boilerplate -->
+		<if(data.isProd === false)>
+		<include('./includes/browser-sync.marko') />
+		</if>
 	</body>
 </html>

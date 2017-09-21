@@ -1,40 +1,36 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
-const webpack = require('webpack');
-const browserSync = require('browser-sync').create('browserSyncInstance');
-const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const webpackConfig = require('./webpack.config');
+const browserSyncInstance = require('browser-sync').create('browserSyncInstance');
 
 /**
  * Init Browser Sync
  *
  * @param {object} options - options object
  * @param {object} options.port - BS port, default 3000
- * @param {object} options.proxy - BS proxy settings object
- * @param {object} options.proxy.target - BS proxy target (localhost:3000)
  */
 function bs(options) {
 	return new Promise((resolve) => {
-		const compiler = webpack(webpackConfig);
-
-		browserSync.init({
-			proxy: {
-				target: options.proxy.target,
-				middleware: [
-					webpackDevMiddleware(compiler, {
-						publicPath: webpackConfig.output.publicPath,
-						stats: webpackConfig.stats
-					}),
-					webpackHotMiddleware(compiler)
-				],
-				proxyOptions: {
-					xfwd: true
-				}
-			},
-			port: options.port || 3000
+		browserSyncInstance.init({
+			// No need for bs JS script to be logged to the consosle - https://browsersync.io/docs/options#option-logSnippet
+			logSnippet: false,
+			// Make BS faster a bit - https://browsersync.io/docs/options#option-online
+			online: false,
+			port: options.port || 3001
+			// https: true
 		}, resolve);
 	});
 }
 
-module.exports = bs;
+function bsReload(done) {
+	browserSyncInstance.reload();
+
+	if (done) {
+		done();
+	}
+}
+
+module.exports = {
+	browserSyncInstance,
+	init: bs,
+	bsReload
+};

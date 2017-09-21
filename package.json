@@ -37,7 +37,9 @@
     "lusca": "^1.5.1",
     "marko": "^4.4.28",
     "morgan": "^1.8.2",
-    "pretty-error": "^2.1.1"
+    "pretty-error": "^2.1.1",
+    "spdy": "^3.4.7",
+    "time-stamp": "^2.0.0"
   },
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",

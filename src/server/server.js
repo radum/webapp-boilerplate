@@ -1,5 +1,11 @@
-const path = require('path');
 const fs = require('fs');
+const path = require('path');
+
+// Using `spdy` module until this lands into Express 5.x
+// https://github.com/expressjs/express/pull/3390
+const http2 = require('spdy');
+
+const timestamp = require('time-stamp');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 const express = require('express');
@@ -17,6 +23,8 @@ dotenv.config({ path: '.env.dev' });
 
 const config = require('./config');
 
+const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
+
 // View engine via Marko
 // TODO: Explore using https://github.com/tj/consolidate.js
 // TODO: Explore using Dust instead of marko. Both of them are streaming engines.
@@ -31,7 +39,8 @@ const indexTpl = require(config.server.paths.htmlTemplates + '/index.marko');
 const app = express();
 
 // Express configuration.
-app.set('port', config.server.port || 3000);
+app.set('http-port', config.server.port || 3000);
+app.set('https-port', config.server.https_port || 3443);
 
 // Register Node.js middleware
 // app.use(express.static(config.server.paths.staticAssets));
@@ -57,7 +66,15 @@ app.use(session({
 }));
 
 // Extra
+// Morgan logger for express
+logger.token('timestamp', () => {
+	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '][' + chalk.magenta('server') + ']';
+});
 app.use(logger(config.server.morganLogLevel));
+
+// Simple, self-hosted module to report realtime server metrics for Express-based node servers.
+// Link: http://localhost:{PORT}/status/
+// https://www.npmjs.com/package/express-status-monitor
 app.use(expressStatusMonitor());
 
 // Application security
@@ -68,20 +85,20 @@ app.use(lusca.xssProtection(true));
 app.use(markoExpress()); // enable res.marko(template, data)
 
 // Routes
-const assetsData = {
+const tplData = {
+	isProd: config.isProd,
 	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
-	scripts: []
+	assets: {
+		scripts: []
+	}
 };
 
-const assets = require(config.server.paths.assetsWebpackJsonFile);
-assetsData.scripts.push(assets.runtime.js);
-assetsData.scripts.push(assets.commons.js);
-assetsData.scripts.push(assets.main.js);
+tplData.assets.scripts.push(webpackStaticAssetsObj.runtime.js);
+tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
+tplData.assets.scripts.push(webpackStaticAssetsObj.main.js);
 
 app.get('/', (req, res) => {
-	res.marko(indexTpl, {
-		assets: assetsData
-	});
+	res.marko(indexTpl, tplData);
 });
 
 //
@@ -95,9 +112,17 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(errorhandler());
 }
 
-app.listen(app.get('port'), () => {
-	console.log('%s App is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('port'), app.get('env'));
-	console.log('  Press CTRL-C to stop\n');
+app.listen(app.get('http-port'), () => {
+	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
+	console.log('%s Server is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('http-port'), app.get('env'));
+});
+
+http2.createServer({
+	cert: fs.readFileSync(path.resolve(__dirname, '../ssl/server.crt')),
+	key: fs.readFileSync(path.resolve(__dirname, '../ssl/server.key'))
+}, app).listen(app.get('https-port'), () => {
+	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
+	console.log('%s Server is running at https://localhost:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
 });
 
 module.exports = app;

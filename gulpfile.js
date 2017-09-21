@@ -19,6 +19,7 @@ const clean = require('./tools/clean');
 const copy = require('./tools/copy');
 const compiler = require('./tools/compiler');
 const bs = require('./tools/browserSync');
+const runServer = require('./tools/runServer');
 
 // Gulp specific tasks via gulp plugins.
 // Require all tasks in `tools/gulp-tasks`, including subfolders
@@ -35,31 +36,30 @@ Object.keys(tasks).forEach((taskName) => {
 	gulp.task(taskName, done => tasks[taskName](gulp, gulpPlugins, blueprint, done));
 });
 
-// TODO: Check if this is really needed, we can run without converting them to a gulp task
-// Create a Gulp task out of each file used
+// Create a Gulp task out of each file used (useful for running them via gulp run process)
 // Gulp task: Deletes non esential resources like the build folder
-gulp.task('clean', clean);
+gulp.task('clean-task', clean);
 // Gulp task: Copies static files such as robots.txt, favicon.ico to the build folder
-gulp.task('copy', copy);
+gulp.task('copy-task', copy);
 // Gulp task: Bundles the JS code
-// gulp.task('compiler', compiler);
+gulp.task('compiler-task', () => compiler(bs.bsReload));
+// Gulp task: Starts the local Express server
+gulp.task('run-server-task', runServer);
 // Gulp task: Starts the local dev environemnt
-gulp.task('browserSyncTask', () => bs({
-	proxy: {
-		target: 'localhost:3000'
-	},
-	port: 3001
-}));
+gulp.task('browser-sync-task', bs.init);
 
 /**
  * Prepare local structure for first run. Clear build folder, copy files, etc.
  * @type {gulp.series}
  */
 const start = gulp.series(
-	clean,
-	copy,
+	'clean-task',
+	'copy-task',
 	gulp.parallel('styles'),
-	'browserSyncTask'
+	'compiler-task',
+	'run-server-task',
+	'browser-sync-task',
+	'watch'
 );
 
 // Log environment status information

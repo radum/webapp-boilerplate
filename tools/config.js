@@ -22,6 +22,9 @@ const config = {
 		scriptsOutputDest: 'build/static/scripts',
 		scriptsPublicPath: '/static/scripts/', // Taken from `scriptsOutputDest` and removed build part
 
+		serverPath: 'src/server',
+		serverEntryPoint: 'src/server/server.js',
+
 		staticAssets: 'src/static',
 		staticAssetsOutput: 'build/static',
 

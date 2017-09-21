@@ -53,13 +53,15 @@ You can also test your app in release (production) mode by running node run star
 	- lint
 	- test
 - Update these docs with more info
-- Explore other webpack plugins:
+- Explore other webpack plugins or tools to use:
 	- https://github.com/lukeed/webpack-messages
 	- https://github.com/geowarin/friendly-errors-webpack-plugin
 	- https://github.com/FormidableLabs/webpack-dashboard
 	- https://github.com/webpack-contrib/babel-minify-webpack-plugin
 	- https://www.npmjs.com/package/gulp-sizereport
 	- https://github.com/asfktz/autodll-webpack-plugin
+	- https://github.com/researchgate/webpack-watchman-plugin
+	- https://github.com/schmich/connect-browser-sync
 
 ## Contribute
 

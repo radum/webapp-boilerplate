@@ -30,7 +30,7 @@ const webpackConfig = {
 		// The hot middleware handles the browser reload for us.
 		// Only used in dev mode and reload automaticaly if webpack is stuck
 		// https://github.com/glenjamin/webpack-hot-middleware
-		...(config.isDebug ? ['webpack-hot-middleware/client?name=client&reload=true&noInfo=false'] : [])
+		// ...(config.isDebug ? ['webpack-hot-middleware/client?name=client&reload=true&noInfo=false'] : [])
 	],
 
 	// Output will be saved in `build/static/scripts` folder as per the `path` prop here
@@ -57,6 +57,11 @@ const webpackConfig = {
 		// Change the prefix for each line in the output bundles.
 		// Using some kind of indentation makes bundles look more pretty, but will cause issues with multi-line strings.
 		sourcePrefix: '\t'
+	},
+
+	watch: config.isDebug,
+	watchOptions: {
+		ignored: /node_modules/
 	},
 
 	// Compile for usage in a browser-like environment (default)

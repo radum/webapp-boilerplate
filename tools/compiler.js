@@ -7,12 +7,18 @@ const webpackConfig = require('./webpack.config');
 /**
  * Bundle JS files using webpack.
  */
-function compiler() {
+function compiler(onDone) {
 	let instance;
 
 	return new Promise((resolve) => {
 		instance = webpack(webpackConfig, (err, stats) => {
 			logger(err, stats);
+
+			// TODO: Explore if using an EventEmitter will be better
+			// The export will have to be an object with an init and the emitter also.
+			if (onDone) {
+				onDone();
+			}
 
 			resolve(instance);
 		});

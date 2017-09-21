@@ -14,7 +14,7 @@ import B from './b';
 // https://github.com/ftlabs/fastclick
 // fastClick(document.body);
 
-console.log(now());
+console.log('Date: ' + now());
 
 const app = new App();
 
