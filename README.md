@@ -37,11 +37,15 @@ This will fire up a local web server, open http://localhost:3000 in your default
 
 ## TODO
 
-- Add missing tasks:
-	- [ ] lint
-	- [ ] test
-- Update these docs with more info
-- Explore other webpack plugins or tools to use:
+- [ ] Add missing tasks:
+	- [ ] lint task
+	- [ ] test using some framework
+	- [ ] eslint and stylelint auto fix tasks
+	- [ ] coverage
+	- [ ] clean separate task
+- [ ] Update these docs with more info
+- [ ] Fix all TODOs within all src files
+- [ ] Explore other webpack plugins or tools to use:
 	- https://github.com/lukeed/webpack-messages
 	- https://github.com/geowarin/friendly-errors-webpack-plugin
 	- https://github.com/FormidableLabs/webpack-dashboard
