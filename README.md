@@ -30,7 +30,7 @@ $ npm install                   # Install project dependencies listed in package
 **Step 3**. Compile and launch your app by running:
 
 ```
-$  node run dev                   # Same as `npm start` or `node run start`
+$ node run dev                   # Same as `npm start` or `node run start`
 ```
 
 This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/).
