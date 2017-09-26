@@ -20,13 +20,16 @@ const copy = require('./copy');
 const compiler = require('./compiler');
 const bs = require('./browserSync');
 const runServer = require('./runServer');
+const minifyCss = require('./minify-css');
 
 // Gulp specific tasks via gulp plugins.
 // Require all tasks in `tools/gulp-tasks`, including subfolders
 const tasks = dir('./gulp-tasks', { recurse: true });
 
 // Gulp tasks main config
-const blueprint = Object.assign({}, config);
+const blueprint = Object.assign({}, config, {
+	minifyCss
+});
 
 /**
  * Create a gulp task from each file in `/tools/gulp-tasks` folder
@@ -47,12 +50,14 @@ gulp.task('compiler-task', () => compiler(bs.bsReload));
 gulp.task('run-server-task', runServer);
 // Gulp task: Starts the local dev environemnt
 gulp.task('browser-sync-task', bs.init);
+// Gulp task: Reloads BS
+gulp.task('browser-sync-reload-task', (done) => { bs.bsReload(done); });
 
 /**
  * Prepare local structure for first run. Clear build folder, copy files, etc.
  * @type {gulp.series}
  */
-const start = gulp.series(
+const startTask = gulp.series(
 	'clean-task',
 	'copy-task',
 	gulp.parallel('styles', 'imagemin', 'compiler-task'),
@@ -61,13 +66,22 @@ const start = gulp.series(
 	'watch'
 );
 
+const buildTask = gulp.series(
+	'clean-task',
+	'copy-task',
+	gulp.parallel('styles', 'imagemin', 'compiler-task')
+);
+
 // Log environment status information
 gutil.log('Gulp ENV status', gutil.colors.cyan('isDebug'), gutil.colors.magenta(config.isDebug));
 gutil.log('Gulp ENV status', gutil.colors.cyan('isProd'), gutil.colors.magenta(config.isProd));
 gutil.log('Gulp ENV status', gutil.colors.cyan('isVerbose'), gutil.colors.magenta(config.isVerbose));
 
 // Start local dev task
-gulp.task('start', gulp.series(start));
+gulp.task('start', gulp.series(startTask));
+
+// Build the app
+gulp.task('build', gulp.series(buildTask));
 
 // Gulp default task runs `start`
 gulp.task('default', gulp.series('start'));

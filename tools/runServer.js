@@ -28,6 +28,8 @@ function runServer() {
 		}
 
 		if (server) {
+			// More info here:
+			// https://blog.risingstack.com/mastering-the-node-js-core-modules-the-process-module/
 			server.kill('SIGTERM');
 		}
 

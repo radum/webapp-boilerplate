@@ -30,7 +30,8 @@
     "dev": "gulp --cwd . --gulpfile tools/gulpfile.js",
     "dev:verbose": "npm run dev --verbose",
     "dev:analyze": "npm run dev --analyze",
-    "build": "gulp --cwd . --gulpfile tools/gulpfile.js build"
+    "build": "gulp --cwd . --gulpfile tools/gulpfile.js build --release",
+    "build:analyze": "npm run build --analyze"
   },
   "dependencies": {
     "body-parser": "^1.18.1",
@@ -59,6 +60,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "chokidar": "^1.6.1",
     "chunk-manifest-webpack-plugin": "^1.1.2",
+    "clean-css": "^4.1.9",
     "eslint-plugin-compat": "^1.0.4",
     "glob": "^7.1.2",
     "gulp": "github:gulpjs/gulp#4.0",
@@ -84,6 +86,7 @@
     "sass-mq": "^3.3.2",
     "stylelint-no-unsupported-browser-features": "^1.0.0",
     "stylelint-scss": "^2.1.0",
+    "vinyl-map": "^1.0.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-middleware": "^1.12.0",

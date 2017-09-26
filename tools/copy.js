@@ -21,6 +21,7 @@ async function copy() {
 				start: 'node server.js',
 			},
 		}, null, 2)),
+
 		fs.copyDir(config.paths.staticAssets, 'build/static')
 	]);
 }

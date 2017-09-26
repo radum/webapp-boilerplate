@@ -66,6 +66,7 @@ app.use(session({
 }));
 
 // Extra
+// -----------------------------------------------------------------------------
 // Morgan logger for express
 logger.token('timestamp', () => {
 	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '][' + chalk.magenta('server') + ']';
@@ -84,7 +85,9 @@ app.use(lusca.xssProtection(true));
 // View engine via Marko
 app.use(markoExpress()); // enable res.marko(template, data)
 
+//
 // Routes
+// -----------------------------------------------------------------------------
 const tplData = {
 	isProd: config.isProd,
 	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
