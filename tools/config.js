@@ -24,7 +24,10 @@ const config = {
 
 		serverPath: 'src/server',
 		serverEntryPoint: 'src/server/server.js',
+		serverHtmlPath: 'src/html',
 		serverFiles: '{src/server/**/*.js,src/html/**/*.marko}',
+		serverOutput: 'build/server',
+		serverHtmlOutput: 'build/html',
 
 		staticAssets: 'src/static',
 		staticAssetsOutput: 'build/static',

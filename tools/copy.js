@@ -10,20 +10,33 @@ const pkg = require('../package.json');
  *
  * @returns Promise
  */
-async function copy() {
+async function copyStatic() {
 	await fs.makeDir(config.paths.buildPath);
+	await fs.copyDir(config.paths.staticAssets, config.paths.staticAssetsOutput);
+}
+
+async function copyServer() {
+	await Promise.all([
+		fs.copyDir(config.paths.serverPath, config.paths.serverOutput),
+		fs.copyDir(config.paths.serverHtmlPath, config.paths.serverHtmlOutput)
+	]);
+}
+
+async function copyExtra() {
 	await Promise.all([
 		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
 			private: true,
 			engines: pkg.engines,
 			dependencies: pkg.dependencies,
 			scripts: {
-				start: 'node server.js',
+				start: 'node ./server/server.js',
 			},
-		}, null, 2)),
-
-		fs.copyDir(config.paths.staticAssets, 'build/static')
+		}, null, 2))
 	]);
 }
 
-module.exports = copy;
+module.exports = {
+	copyStatic,
+	copyServer,
+	copyExtra
+};

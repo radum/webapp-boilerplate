@@ -11,12 +11,12 @@ const config = {
 		https_port: process.env.HTTPS_PORT,
 		morganLogLevel: isProd ? 'combined' : morganDevLog,
 		paths: {
-			staticAssets: isProd ? path.resolve(__dirname, 'static') : path.resolve(__dirname, '../../build/static'),
-			htmlTemplates: isProd ? path.resolve(__dirname, 'html') : path.resolve(__dirname, '../html'),
+			staticAssets: isProd ? path.resolve(__dirname, '../static') : path.resolve(__dirname, '../../build/static'),
+			htmlTemplates: isProd ? path.resolve(__dirname, '../html') : path.resolve(__dirname, '../html'),
 			scriptsManifestFile: isProd ?
-				path.resolve(__dirname, 'static/scripts/manifest.json') : path.resolve(__dirname, '../../build/static/scripts/manifest.json'),
+				path.resolve(__dirname, '../static/scripts/manifest.json') : path.resolve(__dirname, '../../build/static/scripts/manifest.json'),
 			assetsWebpackJsonFile: isProd ?
-				path.resolve(__dirname, 'assets.json') : path.resolve(__dirname, '../../build/assets.json')
+				path.resolve(__dirname, '../assets.json') : path.resolve(__dirname, '../../build/assets.json')
 		}
 	}
 };

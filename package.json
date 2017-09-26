@@ -31,7 +31,8 @@
     "dev:verbose": "npm run dev --verbose",
     "dev:analyze": "npm run dev --analyze",
     "build": "gulp --cwd . --gulpfile tools/gulpfile.js build --release",
-    "build:analyze": "npm run build --analyze"
+    "build:analyze": "npm run build --analyze",
+    "deploy:heroku": "git subtree push --prefix build heroku master"
   },
   "dependencies": {
     "body-parser": "^1.18.1",

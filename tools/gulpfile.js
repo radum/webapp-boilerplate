@@ -43,7 +43,9 @@ Object.keys(tasks).forEach((taskName) => {
 // Gulp task: Deletes non esential resources like the build folder
 gulp.task('clean-task', clean);
 // Gulp task: Copies static files such as robots.txt, favicon.ico to the build folder
-gulp.task('copy-task', copy);
+gulp.task('copy-task-static', copy.copyStatic);
+gulp.task('copy-task-server', copy.copyServer);
+gulp.task('copy-task-extra', copy.copyExtra);
 // Gulp task: Bundles the JS code
 gulp.task('compiler-task', () => compiler(bs.bsReload));
 // Gulp task: Starts the local Express server
@@ -59,7 +61,7 @@ gulp.task('browser-sync-reload-task', (done) => { bs.bsReload(done); });
  */
 const startTask = gulp.series(
 	'clean-task',
-	'copy-task',
+	'copy-task-static',
 	gulp.parallel('styles', 'imagemin', 'compiler-task'),
 	'run-server-task',
 	'browser-sync-task',
@@ -68,8 +70,12 @@ const startTask = gulp.series(
 
 const buildTask = gulp.series(
 	'clean-task',
-	'copy-task',
-	gulp.parallel('styles', 'imagemin', 'compiler-task')
+	gulp.parallel(
+		'copy-task-static', 'copy-task-server', 'copy-task-extra',
+		'styles',
+		'imagemin',
+		'compiler-task'
+	)
 );
 
 // Log environment status information
