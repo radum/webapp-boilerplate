@@ -4,7 +4,16 @@
     "stylelint-no-unsupported-browser-features"
   ],
   "rules": {
-    "plugin/no-unsupported-browser-features": [true, { "severity": "warning" }],
+    "plugin/no-unsupported-browser-features": [true, {
+      "browsers": [
+        "last 2 Chrome versions",
+        "last 2 Safari versions",
+        "last 2 iOS versions",
+        "last 2 Firefox versions",
+        "last 2 Edge versions"
+      ],
+      "severity": "warning"
+    }],
     "scss/at-extend-no-missing-placeholder": true,
     "scss/dollar-variable-colon-space-before": "never",
     "scss/partial-no-import": true,

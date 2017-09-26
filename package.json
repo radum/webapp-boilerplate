@@ -35,6 +35,13 @@
     "build:analyze": "npm run build --analyze",
     "deploy:heroku": "git subtree push --prefix build heroku master"
   },
+  "browserslist": [
+    "last 2 Chrome versions",
+    "last 2 Safari versions",
+    "last 2 iOS versions",
+    "last 2 Firefox versions",
+    "last 2 Edge versions"
+  ],
   "dependencies": {
     "body-parser": "^1.18.2",
     "chalk": "^2.1.0",

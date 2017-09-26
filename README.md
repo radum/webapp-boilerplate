@@ -44,6 +44,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- [ ] coverage
 	- [ ] clean separate task
 - [ ] Update these docs with more info
+- [ ] Consolidate Browserlist array. It is all over the place, in a config file, package.json, stylelint config, babel. The main config file should be enough
 - [ ] Fix all TODOs within all src files
 - [ ] Explore other webpack plugins or tools to use:
 	- https://github.com/lukeed/webpack-messages
