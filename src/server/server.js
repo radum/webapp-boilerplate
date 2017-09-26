@@ -44,7 +44,7 @@ app.set('https-port', config.server.https_port || 3443);
 
 // Register Node.js middleware
 // app.use(express.static(config.server.paths.staticAssets));
-app.use('/static', express.static(config.server.paths.staticAssets));
+app.use('/', express.static(config.server.paths.staticAssets));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

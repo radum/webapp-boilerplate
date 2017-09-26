@@ -1,31 +1,22 @@
 [![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/#info=devDependencies)
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
-
-- [ES6 Web app boilerplate using Webpack](#es6-web-app-boilerplate-using-webpack)
-	- [Features](#features)
-	- [Getting Started](#getting-started)
-	- [TODO](#todo)
-	- [Contribute](#contribute)
-	- [License](#license)
-
-<!-- /TOC -->
-
-# ES6 Web app boilerplate using Webpack
-
-This is heavily inspired by the [React Static Boilerplate](https://github.com/kriasoft/react-static-boilerplate) so most credit will go to the RSB team.
+# ES6 Progressive Web App (PWA) boilerplate using Gulp and Webpack
 
 ## Features
 
 * Enable [ES2015 features](https://babeljs.io/docs/learn-es2015/) using [Babel](https://babeljs.io)
-* CSS Autoprefixing, PostCSS
-* Built-in preview server with BrowserSync
-* Hot Module Replacement (HMR)
+* Bundled JS code using [webpack](https://webpack.js.org/).
+* CSS [Autoprefixing](https://github.com/postcss/autoprefixer), [PostCSS](http://postcss.org/)
+* Built-in preview server with [BrowserSync](https://www.browsersync.io/)
 * Map compiled CSS/JS to source stylesheets/js with source maps
+* PWA features
+* Built in Node JS server (including http2 / https support)
+* [browserslist](http://browserl.ist/) support for babel and friends
+* Linting done with [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/)
 
 ## Getting Started
 
-**Step 1**. Make sure that you have Node.js v6 or newer installed on your machine.
+**Step 1**. Make sure that you have Node.js v8 or newer installed on your machine.
 
 **Step 2**. Clone this repo
 
@@ -39,17 +30,14 @@ $ npm install                   # Install project dependencies listed in package
 **Step 3**. Compile and launch your app by running:
 
 ```
-$  node run                     # Same as `npm start` or `node run start`
+$  node run dev                   # Same as `npm start` or `node run start`
 ```
 
-This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/) and HMR.
-
-You can also test your app in release (production) mode by running node run start --release or with HMR and React Hot Loader disabled by running node run start --no-hmr. The app should become available at http://localhost:3000/
+This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/).
 
 ## TODO
 
 - Add missing tasks:
-	- build release
 	- lint
 	- test
 - Update these docs with more info
@@ -62,6 +50,10 @@ You can also test your app in release (production) mode by running node run star
 	- https://github.com/asfktz/autodll-webpack-plugin
 	- https://github.com/researchgate/webpack-watchman-plugin
 	- https://github.com/schmich/connect-browser-sync
+	- https://github.com/philipwalton/analyticsjs-boilerplate
+	- https://github.com/googleanalytics/autotrack
+	- https://github.com/GoogleChrome/workbox
+	- https://github.com/philipwalton/blog/blob/master/tasks/javascript.js
 
 ## Contribute
 

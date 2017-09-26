@@ -24,7 +24,8 @@
     "boilerplate",
     "starter",
     "web starter",
-    "pwa"
+    "pwa",
+    "progressive"
   ],
   "scripts": {
     "dev": "gulp --cwd . --gulpfile tools/gulpfile.js",
@@ -35,13 +36,13 @@
     "deploy:heroku": "git subtree push --prefix build heroku master"
   },
   "dependencies": {
-    "body-parser": "^1.18.1",
+    "body-parser": "^1.18.2",
     "chalk": "^2.1.0",
     "compression": "^1.7.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "errorhandler": "^1.5.0",
-    "express": "^4.15.4",
+    "express": "^4.15.5",
     "express-session": "^1.15.5",
     "express-status-monitor": "^1.0.0",
     "lodash": "^4.17.4",

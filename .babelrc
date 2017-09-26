@@ -9,11 +9,11 @@
         // https://github.com/babel/babel-preset-env/issues/149
         "targets": {
           "browsers": [
-            "last 2 Chrome versions'",
-            "last 2 Safari versions'",
-            "last 2 iOS versions'",
-            "last 2 Firefox versions'",
-            "last 2 Edge versions'"
+            "last 2 Chrome versions",
+            "last 2 Safari versions",
+            "last 2 iOS versions",
+            "last 2 Firefox versions",
+            "last 2 Edge versions"
           ]
         },
         // TODO: Check that it actually works.

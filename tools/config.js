@@ -20,7 +20,7 @@ const config = {
 		scriptsFiles: 'src/client/**/*.js',
 		scriptsEntryPoint: 'src/client/main.js',
 		scriptsOutputDest: 'build/static/scripts',
-		scriptsPublicPath: '/static/scripts/', // Taken from `scriptsOutputDest` and removed build part
+		scriptsPublicPath: '/scripts/',
 
 		serverPath: 'src/server',
 		serverEntryPoint: 'src/server/server.js',
