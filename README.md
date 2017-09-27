@@ -64,6 +64,12 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://github.com/GoogleChrome/workbox
 	- https://github.com/philipwalton/blog/blob/master/tasks/javascript.js
 	- https://github.com/jonathantneal/postcss-normalize
+	- https://github.com/NekR/offline-plugin
+	- https://github.com/fervorous/fervor
+	- https://philipwalton.com/articles/the-google-analytics-setup-i-use-on-every-site-i-build/
+	- https://philipwalton.com/articles/deploying-es2015-code-in-production-today/
+	- https://github.com/philipwalton/webpack-esnext-boilerplate
+	- http://jmduke.com/posts/how-i-cut-my-webpack-bundle-size-in-half/
 
 ## Contribute
 
