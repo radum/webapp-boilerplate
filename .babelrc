@@ -18,9 +18,12 @@
         },
         // TODO: Check that it actually works.
         // Enable transformation of ES6 module syntax to another module type.
-        // Setting this tofalse will not transform modules.
+        // Setting this to false will not transform modules.
         // This means webpack will be able to do Tree Shaking and remove unused exports from your bundle to bring down the file size.
-        "modules": false
+        "modules": false,
+        // TODO: Understand this thing and what it does
+        // A way to apply babel-preset-env for polyfills (via babel-polyfill).
+        "useBuiltIns": true
       }
     ]
   ],
