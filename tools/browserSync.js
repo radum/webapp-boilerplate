@@ -7,17 +7,27 @@ const browserSyncInstance = require('browser-sync').create('browserSyncInstance'
  *
  * @param {object} options - options object
  * @param {object} options.port - BS port, default 3000
+ * @param {object} options.https - BS https enabled, default false
  */
 function bs(options) {
+	const settings = {
+		// No need for bs JS script to be logged to the consosle - https://browsersync.io/docs/options#option-logSnippet
+		logSnippet: false,
+		// Make BS faster a bit - https://browsersync.io/docs/options#option-online
+		online: false,
+		port: options.port || 3001,
+		https: false
+	};
+
+	if (options.https) {
+		settings.https = {
+			key: 'src/ssl/local.test.key',
+			cert: 'src/ssl/local.test.crt'
+		};
+	}
+
 	return new Promise((resolve) => {
-		browserSyncInstance.init({
-			// No need for bs JS script to be logged to the consosle - https://browsersync.io/docs/options#option-logSnippet
-			logSnippet: false,
-			// Make BS faster a bit - https://browsersync.io/docs/options#option-online
-			online: false,
-			port: options.port || 3001
-			// https: true
-		}, resolve);
+		browserSyncInstance.init(settings, resolve);
 	});
 }
 

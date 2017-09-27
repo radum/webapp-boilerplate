@@ -27,7 +27,7 @@
 		</section>
 
 		<footer>
-			<p>Made with ❤️  by RaduM</p>
+			<p>Made with ❤️ by RaduM</p>
 		</footer>
 
 		<!-- <script src="https://cdn.jsdelivr.net/modernizr/3.3.1/modernizr.min.js" integrity="sha256-65rhSmwPSQGe83K1p6cudTQxfiMNutuHCIB0n8CqvF4=" crossorigin="anonymous"></script> -->
@@ -47,9 +47,10 @@
 			ga('create', 'UA-XXXXX-X', 'auto');
 			ga('send', 'pageview');
 		</script>
+
 		<!-- Built with love using RaduM's ES6 Web app boilerplate -->
 		<if(data.isProd === false)>
-		<include('./includes/browser-sync.marko') />
+		<include('./includes/browser-sync.marko', data.browserSync) />
 		</if>
 	</body>
 </html>
