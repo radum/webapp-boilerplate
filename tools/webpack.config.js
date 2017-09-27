@@ -6,6 +6,7 @@ const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
@@ -195,7 +196,7 @@ const webpackConfig = {
 			minChunks: module => /node_modules/.test(module.resource)
 		}),
 
-		// TODO: Documemt this
+		// TODO: Document this
 		new webpack.optimize.CommonsChunkPlugin({
 			name: ['commons', 'runtime'],
 			minChunks: Infinity
@@ -223,22 +224,31 @@ const webpackConfig = {
 
 			// Minimize all JavaScript output of chunks
 			// https://github.com/mishoo/UglifyJS2#compress-options
-			new webpack.optimize.UglifyJsPlugin({
-				sourceMap: true,
-				compress: {
-					screw_ie8: true, // React doesn't support IE8
-					warnings: config.isVerbose,
-					unused: true,
-					dead_code: true,
-				},
-				mangle: {
-					screw_ie8: true,
-				},
-				output: {
-					comments: false,
-					screw_ie8: true,
-				}
-			})
+			// Note:
+			// This will fail if babel is set to allow ES6 based on browserlist config.
+			// https://github.com/webpack/webpack/issues/2972
+			// alternatives:
+			// https://github.com/webpack-contrib/uglifyjs-webpack-plugin
+			// https://github.com/webpack-contrib/babel-minify-webpack-plugin
+			// new webpack.optimize.UglifyJsPlugin({
+			// 	sourceMap: true,
+			// 	compress: {
+			// 		screw_ie8: true, // React doesn't support IE8
+			// 		warnings: config.isVerbose,
+			// 		unused: true,
+			// 		dead_code: true,
+			// 	},
+			// 	mangle: {
+			// 		screw_ie8: true,
+			// 	},
+			// 	output: {
+			// 		comments: false,
+			// 		screw_ie8: true,
+			// 	}
+			// }),
+
+			// Alternative for Uglify until it supports ES6
+			new BabelMinifyPlugin()
 		]),
 
 		// Webpack Bundle Analyzer
