@@ -4,6 +4,7 @@ const path = require('path');
 // Using `spdy` module until this lands into Express 5.x
 // https://github.com/expressjs/express/pull/3390
 const http2 = require('spdy');
+const http = require('http');
 
 const timestamp = require('time-stamp');
 const dotenv = require('dotenv');
@@ -93,6 +94,9 @@ const tplData = {
 	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
 	assets: {
 		scripts: []
+	},
+	browserSync: {
+		HOST: ''
 	}
 };
 
@@ -101,6 +105,10 @@ tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
 tplData.assets.scripts.push(webpackStaticAssetsObj.main.js);
 
 app.get('/', (req, res) => {
+	if (req.isSpdy) {
+		tplData.browserSync.HOST = req.headers.host;
+	}
+
 	res.marko(indexTpl, tplData);
 });
 
@@ -115,7 +123,7 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(errorhandler());
 }
 
-app.listen(app.get('http-port'), () => {
+http.createServer(app).listen(app.get('http-port'), () => {
 	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
 	console.log('%s Server is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('http-port'), app.get('env'));
 });
@@ -125,7 +133,7 @@ http2.createServer({
 	key: fs.readFileSync(path.resolve(__dirname, '../ssl/local.test.key'))
 }, app).listen(app.get('https-port'), () => {
 	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
-	console.log('%s Server is running at https://localhost:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
+	console.log('%s Server is running at https://local.test:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
 });
 
 module.exports = app;
