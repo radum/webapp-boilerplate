@@ -1,4 +1,4 @@
-[![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/#info=devDependencies)
+[![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/) [![David Dev Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/#info=devDependencies)
 
 # ES6 Progressive Web App (PWA) boilerplate using Gulp and Webpack
 
@@ -35,6 +35,8 @@ $ node run dev                   # Same as `npm start` or `node run start`
 
 This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/).
 
+**Follow the [getting started guide](docs/getting-started.md) to download and run the project (Node.js >= 8.0)**
+
 ## TODO
 
 - [ ] Add missing tasks:
@@ -45,6 +47,8 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- [ ] clean separate task
 - [ ] Update these docs with more info
 - [ ] Consolidate Browserlist array. It is all over the place, in a config file, package.json, stylelint config, babel. The main config file should be enough
+- [ ] Add Yeoman generator
+- [ ] Add Docker builds
 - [ ] Fix all TODOs within all src files
 - [ ] Explore other webpack plugins or tools to use:
 	- https://github.com/lukeed/webpack-messages

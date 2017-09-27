@@ -1,4 +1,3 @@
-console.log(process.argv);
 const isProd = process.env.NODE_ENV === 'production';
 const isDebug = !process.argv.includes('--release');
 const isVerbose = process.argv.includes('--verbose');
