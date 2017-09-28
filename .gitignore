@@ -7,8 +7,5 @@ dist
 .sass-cache
 .esm-cache
 
-bower_components
-test/bower_components
-
 coverage
 .nyc_output
