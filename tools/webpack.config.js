@@ -6,6 +6,7 @@ const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -212,10 +213,21 @@ const webpackConfig = {
 		// }),
 
 		...(config.isDebug ? [
+			// TODO: Document this
 			new webpack.HotModuleReplacementPlugin(),
+
+			// TODO: Document this
 			new webpack.NoEmitOnErrorsPlugin(),
+
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
-			new webpack.NamedModulesPlugin()
+			new webpack.NamedModulesPlugin(),
+
+			// TODO: Document this
+			new WorkboxPlugin({
+				globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+				globPatterns: ['**/*.{html,js,css}'],
+				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+			})
 		] : [
 			// Decrease script evaluation time
 			// https://github.com/webpack/webpack/blob/master/examples/scope-hoisting/README.md
