@@ -129,11 +129,11 @@ http.createServer(app).listen(app.get('http-port'), () => {
 });
 
 http2.createServer({
-	cert: fs.readFileSync(path.resolve(__dirname, '../ssl/local.test.crt')),
-	key: fs.readFileSync(path.resolve(__dirname, '../ssl/local.test.key'))
+	cert: fs.readFileSync(path.resolve(__dirname, '../ssl/localhost.crt')),
+	key: fs.readFileSync(path.resolve(__dirname, '../ssl/localhost.key'))
 }, app).listen(app.get('https-port'), () => {
 	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
-	console.log('%s Server is running at https://local.test:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
+	console.log('%s Server is running at https://localhost:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
 });
 
 module.exports = app;

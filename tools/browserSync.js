@@ -21,8 +21,8 @@ function bs(options) {
 
 	if (options.https) {
 		settings.https = {
-			key: 'src/ssl/local.test.key',
-			cert: 'src/ssl/local.test.crt'
+			key: 'src/ssl/localhost.key',
+			cert: 'src/ssl/localhost.crt'
 		};
 	}
 

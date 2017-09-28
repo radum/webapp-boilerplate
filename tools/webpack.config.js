@@ -77,6 +77,7 @@ const webpackConfig = {
 	// https://webpack.js.org/configuration/other-options/#bail
 	bail: !config.isDebug,
 
+	// TODO: Check if verbose works
 	// Cache the generated webpack modules and chunks to improve build speed.
 	// https://webpack.js.org/configuration/other-options/#cache
 	cache: config.isDebug,
