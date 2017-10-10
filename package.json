@@ -9,9 +9,6 @@
     "node": ">=8",
     "npm": ">=5"
   },
-  "files": [
-    "app"
-  ],
   "keywords": [
     "web",
     "app",
@@ -28,7 +25,7 @@
     "progressive"
   ],
   "scripts": {
-    "dev": "gulp --cwd . --gulpfile tools/gulpfile.js",
+    "dev": "cross-env NODE_ENV=development gulp --cwd . --gulpfile tools/gulpfile.js",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
     "build": "gulp --cwd . --gulpfile tools/gulpfile.js build --release",
@@ -64,7 +61,9 @@
     "chokidar": "^1.6.1",
     "chunk-manifest-webpack-plugin": "^1.1.2",
     "clean-css": "^4.1.9",
+    "cross-env": "^5.0.5",
     "eslint-plugin-compat": "^1.0.4",
+    "favicons": "^4.8.6",
     "glob": "^7.1.2",
     "gulp": "github:gulpjs/gulp#4.0",
     "gulp-autoprefixer": "^4.0.0",

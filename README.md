@@ -71,6 +71,20 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://github.com/philipwalton/webpack-esnext-boilerplate
 	- http://jmduke.com/posts/how-i-cut-my-webpack-bundle-size-in-half/
 	- https://mozilla.github.io/server-side-tls/ssl-config-generator/
+	- https://github.com/evilebottnawi/favicons
+	- https://www.npmjs.com/package/npm-run-all
+- [ ] Learn from others how its done:
+	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
+	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
+	- https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/config/webpack.config.dev.js
+	- https://github.com/gatsbyjs/gatsby/blob/master/packages/gatsby/src/utils/webpack.config.js
+	- view-source:https://mobile.twitter.com/home
+	- https://survivejs.com/webpack/building/bundle-splitting/
+	- https://medium.com/@okonetchnikov/long-term-caching-of-static-assets-with-webpack-1ecb139adb95
+	- https://medium.com/@paularmstrong/twitter-lite-and-high-performance-react-progressive-web-apps-at-scale-d28a00e780a3
+	- https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
+	- https://alistapart.com/article/yes-that-web-project-should-be-a-pwa
+	- https://www.viget.com/articles/managing-css-js-http-2
 
 ## Contribute
 

@@ -44,3 +44,5 @@ module.exports = {
 	init: bs,
 	bsReload
 };
+// TODO: Alternative to the above syntax
+// module.exports.bsReload = bsReload;
