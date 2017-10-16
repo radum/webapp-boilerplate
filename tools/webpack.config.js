@@ -8,6 +8,7 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const WebpackMonitor = require('webpack-monitor');
 
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
@@ -213,6 +214,13 @@ const webpackConfig = {
 		// 	} : false
 		// }),
 
+		// TODO: Document this
+		new WorkboxPlugin({
+			globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+			globPatterns: ['**/*.{html,js,css}'],
+			swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+		}),
+
 		...(config.isDebug ? [
 			// TODO: Document this
 			new webpack.HotModuleReplacementPlugin(),
@@ -223,11 +231,12 @@ const webpackConfig = {
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.NamedModulesPlugin(),
 
-			// TODO: Document this
-			new WorkboxPlugin({
-				globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-				globPatterns: ['**/*.{html,js,css}'],
-				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+			// TODO: Should run for PROD alo, but under a flag clik like --monitor
+			new WebpackMonitor({
+				capture: true, // -> default 'true'
+				target: '../monitor/myStatsStore.json', // default -> '../monitor/stats.json'
+				launch: true, // -> default 'false'
+				port: 3030, // default -> 8081
 			})
 		] : [
 			// Decrease script evaluation time
