@@ -73,6 +73,8 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://mozilla.github.io/server-side-tls/ssl-config-generator/
 	- https://github.com/evilebottnawi/favicons
 	- https://www.npmjs.com/package/npm-run-all
+	- https://github.com/jaredpalmer/backpack
+	- https://github.com/FormidableLabs/builder
 - [ ] Learn from others how its done:
 	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
 	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
