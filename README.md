@@ -87,6 +87,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://medium.com/webpack/predictable-long-term-caching-with-webpack-d3eee1d3fa31
 	- https://alistapart.com/article/yes-that-web-project-should-be-a-pwa
 	- https://www.viget.com/articles/managing-css-js-http-2
+	- https://youtu.be/5xj4kqSFs8Q?t=19055
 
 ## Contribute
 
