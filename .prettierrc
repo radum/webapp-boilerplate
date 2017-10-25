@@ -1,0 +1,7 @@
+// TODO: Explore using this with ESlint https://github.com/prettier/prettier#eslint-integrations
+{
+  "printWidth": 156,
+  "singleQuote": true,
+  "tabWidth": 4,
+  "useTabs": true
+}

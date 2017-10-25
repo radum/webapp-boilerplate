@@ -10,7 +10,7 @@
 	"compat/compat": "warn",
     "comma-dangle": "off",
     "prefer-template": "off",
-	"no-tabs": "off",
+	  "no-tabs": "off",
     "indent": [2, "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
     "arrow-body-style": [1, "as-needed"],
     "max-len": [2, 156, 2, {

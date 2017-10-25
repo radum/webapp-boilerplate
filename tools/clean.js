@@ -4,9 +4,14 @@ const fs = require('./lib/fs');
 /**
  * Cleans up the output (build) directory.
  *
+ * @param {Array} input - Array of paths to be cleared
+ * @param {Object} options - Options object
+ * @param {Function} options.log - Passed log function used by a custom reporter to report progress
  * @returns Promise
  */
-function clean() {
+function clean(options) {
+	options.log('Cleaning path -> ' + config.paths.buildPath);
+
 	return Promise.all([
 		fs.cleanDir(config.paths.buildPath + '/*', {
 			nosort: true,

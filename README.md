@@ -14,6 +14,10 @@
 * [browserslist](http://browserl.ist/) support for babel and friends
 * Linting done with [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/)
 
+<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/rb9xc9mQa8eMeofUym7iMrAq/radum/webapp-boilerplate-webpack'>
+  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/rb9xc9mQa8eMeofUym7iMrAq/radum/webapp-boilerplate-webpack.svg' />
+</a>
+
 ## Getting Started
 
 **Step 1**. Make sure that you have Node.js v8 or newer installed on your machine.
@@ -75,6 +79,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://www.npmjs.com/package/npm-run-all
 	- https://github.com/jaredpalmer/backpack
 	- https://github.com/FormidableLabs/builder
+	- http://schemastore.org/json/
 - [ ] Learn from others how its done:
 	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
 	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js

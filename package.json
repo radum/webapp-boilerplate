@@ -25,8 +25,6 @@
     "progressive"
   ],
   "scripts": {
-    "dev-taskr": "node tools/taskr.js",
-    "taskr": "taskr --cwd=./tools",
     "dev": "cross-env NODE_ENV=development gulp --cwd . --gulpfile tools/gulpfile.js",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
@@ -64,8 +62,11 @@
     "chunk-manifest-webpack-plugin": "^1.1.2",
     "clean-css": "^4.1.9",
     "cross-env": "^5.1.0",
+    "debug": "^3.1.0",
     "eslint": "^4.9.0",
+    "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-compat": "^2.0.1",
+    "eslint-plugin-import": "^2.8.0",
     "favicons": "^4.8.6",
     "glob": "^7.1.2",
     "gulp": "github:gulpjs/gulp#4.0",
@@ -91,6 +92,7 @@
     "sass-mq": "^3.3.2",
     "stylelint-no-unsupported-browser-features": "^1.0.1",
     "stylelint-scss": "^2.1.0",
+    "supports-color": "^5.0.0",
     "vinyl-map": "^1.0.2",
     "webpack": "^3.8.1",
     "webpack-bundle-analyzer": "^2.9.0",
