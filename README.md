@@ -80,6 +80,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://github.com/jaredpalmer/backpack
 	- https://github.com/FormidableLabs/builder
 	- http://schemastore.org/json/
+	- https://github.com/sebhildebrandt/http-graceful-shutdown
 - [ ] Learn from others how its done:
 	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
 	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
