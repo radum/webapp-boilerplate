@@ -1,8 +1,8 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
-const config = require('./config');
-const fs = require('./lib/fs');
-const pkg = require('../package.json');
+const config = require('../config');
+const fs = require('../lib/fs');
+const pkg = require('../../package.json');
 
 /**
  * Copies static files such as robots.txt, favicon.ico to the
@@ -10,8 +10,11 @@ const pkg = require('../package.json');
  *
  * @returns Promise
  */
-async function copyStatic() {
+async function copyStatic(options) {
+	options.log('make dir → ' + config.paths.buildPath);
 	await fs.makeDir(config.paths.buildPath);
+
+	options.log('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
 	await fs.copyDir(config.paths.staticAssets, config.paths.staticAssetsOutput);
 }
 

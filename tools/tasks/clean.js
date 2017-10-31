@@ -1,5 +1,5 @@
-const config = require('./config');
-const fs = require('./lib/fs');
+const config = require('../config');
+const fs = require('../lib/fs');
 
 /**
  * Cleans up the output (build) directory.
@@ -10,7 +10,7 @@ const fs = require('./lib/fs');
  * @returns Promise
  */
 function clean(options) {
-	options.log('Cleaning path -> ' + config.paths.buildPath);
+	options.log('cleaning path: ' + config.paths.buildPath);
 
 	return Promise.all([
 		fs.cleanDir(config.paths.buildPath + '/*', {

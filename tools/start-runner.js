@@ -38,7 +38,7 @@ const task = reporter => taskName => (...plugins) => {
 				.then((output) => {
 					reporter.emit('plugin-start', { name: plugin.name });
 
-					return plugin.fn({
+					return plugin.run({
 						input: output,
 						log: message => reporter.emit('plugin-log', { name: plugin.name, message })
 					});
@@ -57,9 +57,11 @@ const task = reporter => taskName => (...plugins) => {
 	};
 };
 
-const plugin = (name, fn) => ({
+const plugin = (name, run) => ({
+// const plugin = name => run => (...args) => ({
 	name,
-	fn
+	run
+	// run: run(...args)
 });
 
 module.exports = task;

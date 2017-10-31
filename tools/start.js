@@ -2,32 +2,43 @@
 
 // TODO:
 // - https://github.com/SamVerschueren/listr
+// - https://github.com/sindresorhus/ora
 
-const EventEmitter = require('events');
-const logger = require('debug')('worker:a');
+const yargs = require('yargs');
+
 const Task = require('./start-runner');
 const Plugin = require('./start-runner').plugin;
-const clean = require('./clean');
+const reporter = require('./start-reporter');
 
-const reporter = new EventEmitter();
-
-logger.enabled = true;
-logger('name');
-
-reporter.on('task-start', params => console.log('task-start', params));
-reporter.on('plugin-start', params => console.log('plugin-start', params));
-reporter.on('plugin-log', params => console.log('plugin-log', params));
-reporter.on('plugin-done', params => console.log('plugin-done', params));
-reporter.on('plugin-error', params => console.log('plugin-error', params));
+const clean = require('./tasks/clean');
+const copy = require('./tasks/copy');
 
 const task = Task(reporter);
 
-const build = () => task('build')(
-	Plugin('clean', opts => clean(opts))
+const start = task('start')(
+	Plugin('clean-task', opts => clean(opts)),
+	Plugin('copy-task:static', opts => copy.copyStatic(opts)),
 );
 
-const test = () => task('test')(build());
+yargs
+	.usage('Usage: $0 <command> [options]')
+	.command({
+		command: 'run <task>',
+		desc: 'Run tasks (dev, build, release)'
+	})
+	.example('$0 run dev --verbose', 'Run dev env using verbose output')
+	.alias('v', 'verbose')
+	.recommendCommands()
+	.demandCommand(1, 'You need at least one command before moving on')
+	.help('h')
+	.version()
+	.alias('h', 'help');
 
-test()()
-	.then(() => console.log('done!'))
-	.catch(error => console.log('oops', error));
+const { argv } = yargs;
+const command = argv._[0];
+
+if (command === 'run' && argv.task === 'dev') {
+	start()
+		.then(() => console.log('done!'))
+		.catch(error => console.log('oops', error));
+}
