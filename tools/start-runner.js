@@ -2,11 +2,13 @@
  * Simplistic Task runner
  *
  * Reporter API:
- * 	- task-start
- * 	- plugin-start
- * 	- plugin-log
- * 	- plugin-done
- * 	- plugin-error
+ * 	- task:start
+ * 	- plugin:start
+ * 	- plugin:log
+ * 	- plugin:done
+ * 	- plugin:error
+ * 	- task:error
+ *  - task:done
  *
  * Plugin API:
  *  - Create a plugin entry like this `Plugin('clean', opts => yourPromiseReturningFunction(opts))`
@@ -21,40 +23,44 @@
  * @param {String} taskname - The name of the task
  * @param {Args} All passed sub-tasks following the same format
  */
-const task = reporter => taskName => (...plugins) => {
-	return (input) => {
-		reporter.emit('task-start', {
-			name: taskName,
-			plugins: plugins.map(plugin => plugin.name)
-		});
+const task = reporter => taskName => (...plugins) => (input) => {
+	reporter.emit('task:start', {
+		taskName,
+		plugins: plugins.map((plugin) => plugin.name)
+	});
 
-		return plugins.reduce((current, plugin) => {
-			// Nested task
-			if (typeof plugin === 'function') {
-				return current.then(plugin);
-			}
+	return plugins.reduce((current, plugin) => {
+		// Nested task
+		if (typeof plugin === 'function') {
+			return current.then(plugin);
+		}
 
-			return current
-				.then((output) => {
-					reporter.emit('plugin-start', { name: plugin.name });
+		return current
+			.then((output) => {
+				reporter.emit('plugin:start', { taskName, pluginName: plugin.name });
 
-					return plugin.run({
-						input: output,
-						log: message => reporter.emit('plugin-log', { name: plugin.name, message })
-					});
-				})
-				.then((result) => {
-					reporter.emit('plugin-done', { name: plugin.name });
-
-					return result;
-				})
-				.catch((error) => {
-					reporter.emit('plugin-error', { name: plugin.name, error });
-
-					throw error;
+				return plugin.run({
+					input: output,
+					log: message => reporter.emit('plugin:log', { taskName, pluginName: plugin.name, message })
 				});
-		}, Promise.resolve(input));
-	};
+			})
+			.then((result) => {
+				reporter.emit('plugin:done', { taskName, pluginName: plugin.name });
+
+				return result;
+			})
+			.catch((error) => {
+				reporter.emit('plugin:error', { taskName, pluginName: plugin.name, error });
+				reporter.emit('task:error', { taskName });
+
+				throw error;
+			});
+	}, Promise.resolve(input))
+		.then((result) => {
+			reporter.emit('task:done', { taskName });
+
+			return result;
+		});
 };
 
 const plugin = (name, run) => ({
