@@ -12,12 +12,14 @@ const reporter = require('./start-reporter');
 
 const clean = require('./tasks/clean');
 const copy = require('./tasks/copy');
+const stylesSass = require('./tasks/styles-sass');
 
 const task = Task(reporter);
 
 const start = task('start')(
 	Plugin('clean-task', opts => clean(opts)),
 	Plugin('copy-task:static', opts => copy.copyStatic(opts)),
+	Plugin('compile-styles', opts => stylesSass(opts))
 );
 
 yargs

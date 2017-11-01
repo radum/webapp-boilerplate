@@ -82,6 +82,7 @@
     "gulp-util": "^3.0.8",
     "html-webpack-plugin": "^2.30.1",
     "mkdirp": "^0.5.1",
+    "node-sass": "^4.5.3",
     "pixrem": "^4.0.1",
     "postcss-custom-properties": "^6.2.0",
     "postcss-flexbugs-fixes": "^3.2.0",
