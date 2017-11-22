@@ -3,27 +3,16 @@
     [
       // Env preset
       // Babel preset that automatically determines the Babel plugins you need based on your supported environments. Uses compat-table
-      // http://babeljs.io/docs/plugins/preset-env/
-      "env", {
-        // When this is implemented we can use the main `.browserslistrc` file
-        // https://github.com/babel/babel-preset-env/issues/149
-        "targets": {
-          "browsers": [
-            "last 2 Chrome versions",
-            "last 2 Safari versions",
-            "last 2 iOS versions",
-            "last 2 Firefox versions",
-            "last 2 Edge versions"
-          ]
-        },
+      // https://github.com/babel/babel/tree/master/packages/babel-preset-env
+      "@babel/preset-env", {
         // TODO: Check that it actually works.
         // Enable transformation of ES6 module syntax to another module type.
         // Setting this to false will not transform modules.
         // This means webpack will be able to do Tree Shaking and remove unused exports from your bundle to bring down the file size.
         "modules": false,
         // TODO: Understand this thing and what it does
-        // A way to apply babel-preset-env for polyfills (via babel-polyfill).
-        "useBuiltIns": true
+        // A way to apply @babel/preset-env for polyfills (via @babel/polyfill).
+        "useBuiltIns": "usage"
       }
     ]
   ],

@@ -26,7 +26,7 @@
 const task = reporter => taskName => (...plugins) => (input) => {
 	reporter.emit('task:start', {
 		taskName,
-		plugins: plugins.map((plugin) => plugin.name)
+		plugins: plugins.map(plugin => plugin.name)
 	});
 
 	return plugins.reduce((current, plugin) => {
@@ -64,11 +64,14 @@ const task = reporter => taskName => (...plugins) => (input) => {
 };
 
 const plugin = (name, run) => ({
-// const plugin = name => run => (...args) => ({
 	name,
 	run
-	// run: run(...args)
 });
+
+// const plugin = name => run => (...args) => ({
+// 	name,
+// 	run: run(...args)
+// });
 
 module.exports = task;
 module.exports.plugin = plugin;

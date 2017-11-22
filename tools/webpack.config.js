@@ -121,8 +121,7 @@ const webpackConfig = {
 				exclude: /(node_modules)/,
 				// https://github.com/babel/babel-loader#options
 				options: {
-					cacheDirectory: config.isDebug,
-					babelrc: true
+					cacheDirectory: config.isDebug
 				}
 			},
 

@@ -1,3 +1,6 @@
+/* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
+
+const path = require('path');
 const sass = require('node-sass');
 const CleanCSS = require('clean-css');
 const fs = require('../lib/fs');
@@ -18,8 +21,8 @@ const compileSass = (input, options) => new Promise((resolve, reject) => {
 			reject(err);
 		} else {
 			try {
-				await fs.makeDir(config.paths.stylesOutputDest);
-				await fs.writeFile(config.paths.stylesOutputDest + '/main.css', result.css);
+				await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
+				await fs.writeFile(path.resolve(config.paths.stylesOutputDest + '/main.css'), result.css);
 			} catch (error) {
 				reject(error);
 			}
