@@ -63,15 +63,10 @@ const task = reporter => taskName => (...plugins) => (input) => {
 		});
 };
 
-const plugin = (name, run) => ({
+const plugin = name => run => (...args) => ({
 	name,
-	run
+	run: run(...args)
 });
-
-// const plugin = name => run => (...args) => ({
-// 	name,
-// 	run: run(...args)
-// });
 
 module.exports = task;
 module.exports.plugin = plugin;
