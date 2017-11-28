@@ -2,7 +2,6 @@
 
 const cli = require('./start-cli');
 const Task = require('./start-runner');
-const Plugin = require('./start-runner').plugin;
 const reporter = require('./start-reporter');
 
 const clean = require('./tasks/clean');
@@ -11,14 +10,20 @@ const stylesSass = require('./tasks/styles-sass');
 
 const task = Task(reporter);
 
-const start = task('start')(
-	Plugin('clean-task')(clean),
-	// Plugin('copy-task:static')(copy.copyStatic),
-	// Plugin('compile-styles')(stylesSass)
+const copyAssets = () => task('copy-assets')(
+	copy.copyStatic(),
+	copy.copyServer(),
+	copy.copyExtra()
+);
+
+const startDev = () => task('start-dev')(
+	clean(),
+	copyAssets(),
+	stylesSass()
 );
 
 if (cli.command === 'run' && cli.argv.task === 'dev') {
-	start()
+	startDev()()
 		.then(() => console.log('done!'))
 		.catch(error => console.log('oops', error));
 }

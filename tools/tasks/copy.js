@@ -3,6 +3,7 @@
 const config = require('../config');
 const fs = require('../lib/fs');
 const pkg = require('../../package.json');
+const { plugin } = require('../start-runner');
 
 /**
  * Copies static files such as robots.txt, favicon.ico to the
@@ -10,22 +11,28 @@ const pkg = require('../../package.json');
  *
  * @returns Promise
  */
-async function copyStatic(options) {
-	options.log('make dir → ' + config.paths.buildPath);
+// async function copyStatic(options) {
+const copyStatic = plugin('copy:static')(() => async ({ log }) => {
+	log('make dir → ' + config.paths.buildPath);
 	await fs.makeDir(config.paths.buildPath);
 
-	options.log('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
+	log('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
 	await fs.copyDir(config.paths.staticAssets, config.paths.staticAssetsOutput);
-}
+});
 
-async function copyServer() {
+const copyServer = plugin('copy:server')(() => async ({ log }) => {
+	log('copy server files ' + config.paths.serverPath);
+	log('copy server files ' + config.paths.serverHtmlPath);
+
 	await Promise.all([
 		fs.copyDir(config.paths.serverPath, config.paths.serverOutput),
 		fs.copyDir(config.paths.serverHtmlPath, config.paths.serverHtmlOutput)
 	]);
-}
+});
 
-async function copyExtra() {
+const copyExtra = plugin('copy:extra')(() => async ({ log }) => {
+	log('copy extra files');
+
 	await Promise.all([
 		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
 			private: true,
@@ -36,7 +43,7 @@ async function copyExtra() {
 			},
 		}, null, 2))
 	]);
-}
+});
 
 module.exports = {
 	copyStatic,
