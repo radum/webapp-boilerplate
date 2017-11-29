@@ -17,7 +17,10 @@ const compileSass = plugin('compile-styles')(options => async ({ log }) => {
 		sass.render({
 			file: config.paths.stylesEntryPoint,
 			outputStyle: 'expanded',
-			precision: 10
+			precision: 10,
+			includePaths: ['.'],
+			sourceMapContents: true,
+			sourceMapEmbed: options.sourceMapEmbed
 		}, async (err, result) => {
 			if (err) {
 				reject(err);

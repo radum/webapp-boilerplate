@@ -11,7 +11,6 @@ const { plugin } = require('../start-runner');
  *
  * @returns Promise
  */
-// async function copyStatic(options) {
 const copyStatic = plugin('copy:static')(() => async ({ log }) => {
 	log('make dir → ' + config.paths.buildPath);
 	await fs.makeDir(config.paths.buildPath);

@@ -39,22 +39,22 @@ reporter.on('plugin:start', (params) => {
 		totalTime: +new Date()
 	};
 
-	console.log(getTimestamp() + ' ' + indentString(figures.pointer + ' ' + chalk.magentaBright(params.pluginName) + ' ' + chalk.yellow(`${figures.arrowRight} Starting`), 0));
+	console.log(getTimestamp() + ' ' + indentString(chalk.magentaBright(params.pluginName) + ' ' + chalk.yellow(`${figures.arrowRight} Starting`), 0));
 });
 
 reporter.on('plugin:log', (params) => {
 	// loggers[params.taskName].logger(params.pluginName + ' ' + chalk.blue(`${figures.pointerSmall}` + params.message));
-	console.log(getTimestamp() + ' ' + indentString(figures.pointer + ' ' + chalk.magentaBright(params.pluginName) + ' ' + chalk.yellow(`${figures.pointerSmall} ${params.message}`), 0));
+	console.log(getTimestamp() + ' ' + indentString(chalk.magentaBright(params.pluginName) + ' ' + chalk.yellow(`${figures.pointerSmall} ${params.message}`), 0));
 });
 
 reporter.on('plugin:done', (params) => {
 	// loggers[params.taskName].logger(params.pluginName + ' ' + chalk.green(`${figures.tick} done`));
-	console.log(getTimestamp() + ' ' + indentString(figures.pointer + ' ' + chalk.magentaBright(params.pluginName) + ' ' + chalk.green(`${figures.tick} done`) + ' ' + chalk.gray(humanizeMs(new Date() - plugins[params.pluginName].totalTime)), 0));
+	console.log(getTimestamp() + ' ' + indentString(chalk.magentaBright(params.pluginName) + ' ' + chalk.green(`${figures.tick} done`) + ' ' + chalk.gray(humanizeMs(new Date() - plugins[params.pluginName].totalTime)), 0));
 });
 
 reporter.on('plugin:error', (params) => {
 	// loggers[params.taskName].logger(params.pluginName + ' ' + chalk.red(`${figures.cross} Plugin error`));
-	console.log(getTimestamp() + ' ' + indentString(figures.pointer + ' ' + chalk.magentaBright(params.pluginName) + ' ' + chalk.red(`${figures.cross} Plugin error`), 0));
+	console.log(getTimestamp() + ' ' + indentString(chalk.magentaBright(params.pluginName) + ' ' + chalk.red(`${figures.cross} Plugin error`), 0));
 });
 
 reporter.on('task:error', (params) => {

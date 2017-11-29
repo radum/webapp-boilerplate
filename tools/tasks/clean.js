@@ -9,7 +9,7 @@ const { plugin } = require('../start-runner');
  * @param {Object} options - Options object
  * @returns Promise
  */
-const clean = plugin('clean')(options => ({ log }) => {
+const clean = plugin('clean')(() => ({ log }) => {
 	log('cleaning path: ' + config.paths.buildPath);
 
 	return Promise.all([
