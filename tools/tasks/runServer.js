@@ -1,6 +1,8 @@
 // TODO: Explore using https://github.com/sindresorhus/execa
 const cp = require('child_process');
-const config = require('./config');
+const execa = require('execa');
+const config = require('../config');
+const { plugin } = require('../start-runner');
 
 let server;
 let pending = true;
@@ -10,7 +12,7 @@ let pending = true;
 // and the entire process will be stuck at this server run.
 const RUNNING_REGEXP = /Server is running at (http|https):\/\/(.*?)/;
 
-function runServer() {
+const runServer = plugin('run-server')(() => async ({ log }) => {
 	return new Promise((resolve) => {
 		function onStdOut(data) {
 			const time = new Date().toTimeString();
@@ -24,6 +26,9 @@ function runServer() {
 				server.stdout.removeListener('data', onStdOut);
 				server.stdout.on('data', x => process.stdout.write(x));
 				pending = false;
+
+				log('Local server running');
+
 				resolve(server);
 			}
 		}
@@ -39,6 +44,14 @@ function runServer() {
 			silent: false
 		});
 
+		// TODO: Can I use execa maybe?
+		// execa('node', [config.paths.serverEntryPoint], {
+		// 	env: Object.assign({ NODE_ENV: 'development', FORCE_COLOR: true }, process.env),
+		// 	silent: false
+		// }).then((result) => {
+		// 	console.log(result.stdout);
+		// }).catch(error => console.log(error));
+
 		if (pending) {
 			server.once('exit', (code, signal) => {
 				if (pending) {
@@ -52,7 +65,7 @@ function runServer() {
 
 		return server;
 	});
-}
+});
 
 process.on('exit', () => {
 	if (server) {

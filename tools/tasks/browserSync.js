@@ -1,6 +1,7 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const browserSyncInstance = require('browser-sync').create('browserSyncInstance');
+const { plugin } = require('../start-runner');
 
 /**
  * Init Browser Sync
@@ -9,7 +10,7 @@ const browserSyncInstance = require('browser-sync').create('browserSyncInstance'
  * @param {object} options.port - BS port, default 3000
  * @param {object} options.https - BS https enabled, default false
  */
-function bs(options) {
+const bs = plugin('bs-server')(options => ({ log }) => {
 	const settings = {
 		// No need for bs JS script to be logged to the consosle - https://browsersync.io/docs/options#option-logSnippet
 		logSnippet: false,
@@ -29,7 +30,7 @@ function bs(options) {
 	return new Promise((resolve) => {
 		browserSyncInstance.init(settings, resolve);
 	});
-}
+});
 
 function bsReload(done) {
 	browserSyncInstance.reload();

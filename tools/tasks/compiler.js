@@ -1,28 +1,33 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const webpack = require('webpack');
-const logger = require('./lib/compileLogger');
-const webpackConfig = require('./webpack.config');
+const compilerLogger = require('../lib/compilerLogger');
+const webpackConfig = require('../webpack.config');
+const { plugin } = require('../start-runner');
 
 /**
  * Bundle JS files using webpack.
  */
-function compiler(onDone) {
+const compiler = plugin('js-compiler')(options => ({ log }) => {
 	let instance;
 
 	return new Promise((resolve) => {
+		log('running webpack');
+
 		instance = webpack(webpackConfig, (err, stats) => {
-			logger(err, stats);
+			compilerLogger(err, stats, log);
 
 			// TODO: Explore if using an EventEmitter will be better
 			// The export will have to be an object with an init and the emitter also.
-			if (onDone) {
-				onDone();
+			if (options.bsReload) {
+				log('BS reloaded');
+
+				options.bsReload();
 			}
 
 			resolve(instance);
 		});
 	});
-}
+});
 
 module.exports = compiler;

@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
-const gutil = require('gulp-util');
+const chalk = require('chalk');
 const prettifyTime = require('./prettifyTime');
 
 // TODO: Remove `gulp-util` dependency
@@ -9,28 +9,27 @@ const prettifyTime = require('./prettifyTime');
 // We can use a promise in the main `scripts.js` task to handle the error.
 // Gulp function tasks will work if the function returns a promise.
 // And we can reject if there are any errors, simulating `gutil.PluginError`.
-function compileLogger(err, stats) {
+function compilerLogger(err, stats, pluginLogger) {
 	if (err) {
-		throw new gutil.PluginError('webpack', err);
+		throw new Error('webpack', err);
 	}
 
 	const jsonStats = stats.toJson();
-	let statColor = jsonStats.warnings.length < 1 ? 'green' : 'yellow';
+	const statColor = jsonStats.warnings.length < 1 ? chalk.green : chalk.yellow;
 
 	if (jsonStats.errors.length > 0) {
 		const error = new Error(jsonStats.errors[0]);
 		error.errors = jsonStats.errors;
 		error.warnings = jsonStats.warnings;
-		statColor = 'red';
 
-
-		gutil.log(gutil.colors[statColor](error));
-		gutil.log('Failed to build', gutil.colors.cyan('webpack'));
+		pluginLogger(chalk.red(error));
+		pluginLogger(chalk.red('Failed to build webpack'));
 	} else {
 		const compileTime = prettifyTime(stats.endTime - stats.startTime);
-		gutil.log(gutil.colors[statColor](stats));
-		gutil.log('Compiled with', gutil.colors.cyan('webpack'), 'in', gutil.colors.magenta(compileTime));
+
+		pluginLogger(statColor(stats));
+		pluginLogger(`Compiled with ${chalk.cyan('webpack')} in ` + chalk.magenta(compileTime));
 	}
 }
 
-module.exports = compileLogger;
+module.exports = compilerLogger;

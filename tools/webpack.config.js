@@ -230,11 +230,12 @@ const webpackConfig = {
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.NamedModulesPlugin(),
 
-			// TODO: Should run for PROD alo, but under a flag clik like --monitor
+			// TODO: Should run for PROD also, but under a flag clik like --monitor
+			// TODO: Maybe set `launch` to true unde a flag?
 			new WebpackMonitor({
 				capture: true, // -> default 'true'
 				target: '../monitor/myStatsStore.json', // default -> '../monitor/stats.json'
-				launch: true, // -> default 'false'
+				launch: false, // -> default 'false'
 				port: 3030, // default -> 8081
 			})
 		] : [

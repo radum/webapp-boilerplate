@@ -6,11 +6,14 @@ const reporter = require('./start-reporter');
 
 const clean = require('./tasks/clean');
 const copy = require('./tasks/copy');
+const compiler = require('./tasks/compiler');
+const bs = require('./tasks/browserSync');
 const stylesSass = require('./tasks/styles-sass');
+const runServer = require('./tasks/runServer');
 
 const task = Task(reporter);
 
-const copyAssets = () => task('copy-assets')(
+const copyAllAssets = () => task('copy-assets')(
 	copy.copyStatic(),
 	copy.copyServer(),
 	copy.copyExtra()
@@ -18,8 +21,11 @@ const copyAssets = () => task('copy-assets')(
 
 const startDev = () => task('start-dev')(
 	clean(),
-	copyAssets(),
-	stylesSass()
+	copy.copyStatic(),
+	stylesSass(),
+	compiler({ bsReload: bs.bsReload }),
+	runServer(),
+	bs.init({ https: true })
 );
 
 if (cli.command === 'run' && cli.argv.task === 'dev') {
