@@ -25,11 +25,11 @@
     "progressive"
   ],
   "scripts": {
-    "dev": "cross-env NODE_ENV=development gulp --cwd . --gulpfile tools/gulpfile.js",
-    "dev2": "cross-env NODE_ENV=development node tools/start.js run dev",
+    "dev": "cross-env NODE_ENV=development node tools/start.js run dev",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
-    "build": "gulp --cwd . --gulpfile tools/gulpfile.js build --release",
+    "build": "cross-env NODE_ENV=production node tools/start.js run build",
+    "build:release": "npm run build -- --release",
     "build:analyze": "npm run build -- --analyze",
     "deploy:heroku": "git subtree push --prefix build heroku master"
   },
@@ -64,8 +64,8 @@
     "clean-css": "^4.1.9",
     "cross-env": "^5.1.1",
     "debug": "^3.1.0",
-    "emittery": "^0.1.2",
-    "eslint": "^4.12.0",
+    "emittery": "^0.2.0",
+    "eslint": "^4.12.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-compat": "^2.1.0",
     "eslint-plugin-import": "^2.8.0",

@@ -29,6 +29,9 @@ const config = {
 		serverOutput: 'build/server',
 		serverHtmlOutput: 'build/html',
 
+		sslFilesPath: 'src/ssl',
+		sslFilesOutput: 'build/ssl',
+
 		staticAssets: 'src/static',
 		staticAssetsOutput: 'build/static',
 

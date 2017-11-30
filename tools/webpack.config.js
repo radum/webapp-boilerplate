@@ -62,7 +62,7 @@ const webpackConfig = {
 		sourcePrefix: '\t'
 	},
 
-	watch: config.isDebug,
+	watch: !config.isProd && config.isDebug,
 	watchOptions: {
 		ignored: /node_modules/
 	},

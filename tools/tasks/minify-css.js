@@ -7,19 +7,19 @@ const CleanCSS = require('clean-css');
  *
  * @returns Promise
  */
-function minifyCSS(source, options) {
+function minifyCSS(source, options, pluginLogger) {
 	return new Promise((resolve, reject) => {
 		const cleanTask = new CleanCSS({
 			level: 2,
 			returnPromise: true,
-			sourceMap: true
+			sourceMap: false
 		});
 
 		cleanTask
 			.minify(source)
 			.then((output) => {
 				if (options.verbose) {
-					console.log(`Minify CSS from ${output.stats.originalSize} to ${output.stats.minifiedSize} (${output.stats.efficiency} in ${output.stats.timeSpent})`);
+					pluginLogger(`Minify CSS from ${output.stats.originalSize} to ${output.stats.minifiedSize} (${output.stats.efficiency} in ${output.stats.timeSpent}ms)`);
 				}
 				resolve(output.styles);
 			})

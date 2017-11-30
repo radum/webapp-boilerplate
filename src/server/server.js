@@ -20,9 +20,11 @@ const errorhandler = require('errorhandler');
 const logger = require('morgan');
 const expressStatusMonitor = require('express-status-monitor');
 
-dotenv.config({ path: '.env.dev' });
-
 const config = require('./config');
+
+dotenv.config({
+	path: config.isProd ? '.env' : '.env.dev'
+});
 
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
 

@@ -29,8 +29,14 @@ const copyServer = plugin('copy:server')(() => async ({ log }) => {
 	]);
 });
 
+const copySSL = plugin('copy:ssl')(() => async ({ log }) => {
+	log('copy ssl files ' + config.paths.sslFilesPath);
+
+	await fs.copyDir(config.paths.sslFilesPath, config.paths.sslFilesOutput);
+});
+
 const copyExtra = plugin('copy:extra')(() => async ({ log }) => {
-	log('copy extra files');
+	log('copy extra files (package.json, .env)');
 
 	await Promise.all([
 		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
@@ -40,12 +46,14 @@ const copyExtra = plugin('copy:extra')(() => async ({ log }) => {
 			scripts: {
 				start: 'node ./server/server.js',
 			},
-		}, null, 2))
+		}, null, 2)),
+		fs.copyFile('.env.dev', config.paths.buildPath + '/.env')
 	]);
 });
 
 module.exports = {
 	copyStatic,
 	copyServer,
+	copySSL,
 	copyExtra
 };
