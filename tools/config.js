@@ -10,6 +10,7 @@ const config = {
 	isAnalyze,
 
 	paths: {
+		srcPath: 'src',
 		buildPath: 'build',
 
 		styles: 'src/styles/**/*.scss',
