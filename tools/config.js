@@ -36,6 +36,7 @@ const config = {
 		staticAssetsOutput: 'build/static',
 
 		images: 'src/static/images/**/*',
+		imagesPath: 'src/static/images',
 		imagesOutputDest: 'build/static/images'
 	}
 };

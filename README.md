@@ -49,6 +49,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 - [ ] Consolidate Browserlist array. It is all over the place, in a config file, package.json, stylelint config, babel. The main config file should be enough
 - [ ] Add Yeoman generator
 - [ ] Add Docker builds
+- [ ] Add webp images on build
 - [ ] Fix all TODOs within all src files
 - [ ] Explore other webpack plugins or tools to use:
 	- https://github.com/lukeed/webpack-messages

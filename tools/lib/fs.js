@@ -12,10 +12,12 @@ const rimraf = require('rimraf');
  * @param {string} file - File name / path to read
  * @returns Promise
  */
-const readFile = file => new Promise((resolve, reject) => {
+const readFile = (file, opts) => new Promise((resolve, reject) => {
 	fs.readFile(
 		file,
-		'utf8',
+		{
+			encoding: (opts.encoding === undefined) ? 'utf8' : opts.encoding
+		},
 		(err, data) => (err ? reject(err) : resolve(data))
 	);
 });
@@ -28,7 +30,7 @@ const readFile = file => new Promise((resolve, reject) => {
  * @returns Promise
  */
 const writeFile = (file, contents) => new Promise((resolve, reject) => {
-	fs.writeFile(file, contents, 'utf8', err => (err ? reject(err) : resolve()));
+	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, err => (err ? reject(err) : resolve()));
 });
 
 const copyFile = (source, target) => new Promise((resolve, reject) => {

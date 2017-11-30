@@ -10,6 +10,7 @@ const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
 const stylesSass = require('./tasks/styles-sass');
 const runServer = require('./tasks/runServer');
+const imagemin = require('./tasks/imagemin');
 
 const config = require('./config');
 
@@ -45,7 +46,8 @@ const startBuild = () => task('start-build')(
 	}),
 	compiler({
 		bsReload: bs.bsReload
-	})
+	}),
+	imagemin()
 );
 
 if (cli.command === 'run') {

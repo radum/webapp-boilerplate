@@ -1,6 +1,7 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
 const CleanCSS = require('clean-css');
+const prettyBytes = require('pretty-bytes');
 
 /**
  * Minify css files.
@@ -19,7 +20,7 @@ function minifyCSS(source, options, pluginLogger) {
 			.minify(source)
 			.then((output) => {
 				if (options.verbose) {
-					pluginLogger(`Minify CSS from ${output.stats.originalSize} to ${output.stats.minifiedSize} (${output.stats.efficiency} in ${output.stats.timeSpent}ms)`);
+					pluginLogger(`Minify CSS from ${prettyBytes(output.stats.originalSize)} to ${prettyBytes(output.stats.minifiedSize)} (${output.stats.efficiency.toFixed(1).replace(/\.0$/, '')}% in ${output.stats.timeSpent}ms)`);
 				}
 				resolve(output.styles);
 			})

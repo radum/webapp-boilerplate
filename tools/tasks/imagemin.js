@@ -1,9 +1,72 @@
-/**
- * Minify PNG, JPEG, GIF and SVG images with imagemin
- * TODO: The copy taks is doing the copy and then this does it again. This needs to happen only once.
- */
-module.exports = (gulp, plugins, blueprint) => {
-	return gulp.src(blueprint.paths.images)
-		.pipe(plugins.cache(plugins.imagemin()))
-		.pipe(gulp.dest(blueprint.paths.imagesOutputDest));
-};
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+
+const imagemin = require('imagemin');
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminOptipng = require('imagemin-optipng');
+const glob = require('glob');
+const os = require('os');
+const prettyBytes = require('pretty-bytes');
+const chalk = require('chalk');
+const pMap = require('p-map');
+
+const config = require('../config');
+const fs = require('../lib/fs');
+const { plugin } = require('../start-runner');
+
+const imageminTask = plugin('imagemin')(() => async ({ log }) => {
+	log('minify images seamlessly');
+
+	const files = glob.sync(config.paths.imagesPath + '/**/*.{jpg,jpeg,png}', {});
+
+	const plugins = [
+		imageminMozjpeg({
+			quality: 80,
+			progressive: true
+		}),
+		imageminOptipng()
+	];
+
+	let totalBytes = 0;
+	let totalSavedBytes = 0;
+	let totalFiles = 0;
+
+	const processFile = file => fs.readFile(file, { encoding: null })
+		.then(buf => Promise.all([imagemin.buffer(buf, { plugins }), buf]))
+		.then((res) => {
+			// TODO: Use destructuring when targeting Node.js 6
+			const optimizedBuf = res[0];
+			const originalBuf = res[1];
+			const originalSize = originalBuf.length;
+			const optimizedSize = optimizedBuf.length;
+			const saved = originalSize - optimizedSize;
+			const percent = originalSize > 0 ? (saved / originalSize) * 100 : 0;
+			const savedMsg = `saved ${prettyBytes(saved)} - ${percent.toFixed(1).replace(/\.0$/, '')}%`;
+			const msg = saved > 0 ? savedMsg : 'already optimized';
+
+			if (saved > 0) {
+				totalBytes += originalSize;
+				totalSavedBytes += saved;
+				totalFiles++;
+			}
+
+			fs.writeFile(file.replace(config.paths.imagesPath, config.paths.imagesOutputDest), optimizedBuf);
+			log(chalk.green('✔ ') + file + chalk.gray(` (${msg})`));
+		})
+		.catch((err) => {
+			log(`${err} in file ${file}`);
+		});
+
+
+	await pMap(files, processFile, { concurrency: os.cpus().length }).then(() => {
+		const percent = totalBytes > 0 ? (totalSavedBytes / totalBytes) * 100 : 0;
+		let msg = `minified ${totalFiles} images`;
+
+		if (totalFiles > 0) {
+			msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
+		}
+
+		log(msg);
+	});
+});
+
+module.exports = imageminTask;
