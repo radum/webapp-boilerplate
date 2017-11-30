@@ -3,7 +3,7 @@
 const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminOptipng = require('imagemin-optipng');
-const glob = require('glob');
+const globby = require('globby');
 const os = require('os');
 const prettyBytes = require('pretty-bytes');
 const chalk = require('chalk');
@@ -16,7 +16,7 @@ const { plugin } = require('../start-runner');
 const imageminTask = plugin('imagemin')(() => async ({ log }) => {
 	log('minify images seamlessly');
 
-	const files = glob.sync(config.paths.imagesPath + '/**/*.{jpg,jpeg,png}', {});
+	const files = globby.sync(config.paths.imagesPath + '/**/*.{jpg,jpeg,png}');
 
 	const plugins = [
 		imageminMozjpeg({

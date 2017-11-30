@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const glob = require('glob');
+const globby = require('globby');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
@@ -67,13 +67,7 @@ const makeDir = name => new Promise((resolve, reject) => {
 	mkdirp(name, err => (err ? reject(err) : resolve()));
 });
 
-const readDir = (pattern, options) => new Promise((resolve, reject) => {
-	glob(
-		pattern,
-		options,
-		(err, result) => (err ? reject(err) : resolve(result))
-	);
-});
+const readDir = (pattern, options) => globby(pattern, options);
 
 const moveDir = async (source, target) => {
 	const dirs = await readDir('**/*.*', {
