@@ -14,10 +14,6 @@
 * [browserslist](http://browserl.ist/) support for babel and friends
 * Linting done with [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/)
 
-<a target='_blank' rel='nofollow' href='https://app.codesponsor.io/link/rb9xc9mQa8eMeofUym7iMrAq/radum/webapp-boilerplate-webpack'>
-  <img alt='Sponsor' width='888' height='68' src='https://app.codesponsor.io/embed/rb9xc9mQa8eMeofUym7iMrAq/radum/webapp-boilerplate-webpack.svg' />
-</a>
-
 ## Getting Started
 
 **Step 1**. Make sure that you have Node.js v8 or newer installed on your machine.
@@ -34,21 +30,21 @@ $ npm install                   # Install project dependencies listed in package
 **Step 3**. Compile and launch your app by running:
 
 ```
-$ node run dev                   # Same as `npm start` or `node run start`
+$ node run dev
 ```
 
 This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/).
 
-**Follow the [getting started guide](docs/getting-started.md) to download and run the project (Node.js >= 8.0)**
+**Follow the [getting started guide](docs/getting-started.md) to download and run the project**
 
 ## TODO
 
 - [ ] Add missing tasks:
-	- [ ] lint task
-	- [ ] test using some framework
-	- [ ] eslint and stylelint auto fix tasks
-	- [ ] coverage
-	- [ ] clean separate task
+	- [ ] Lint task
+	- [ ] Test using some framework
+	- [ ] Eslint and stylelint auto fix tasks
+	- [ ] Coverage
+	- [ ] Clean separate task
 - [ ] Update these docs with more info
 - [ ] Consolidate Browserlist array. It is all over the place, in a config file, package.json, stylelint config, babel. The main config file should be enough
 - [ ] Add Yeoman generator

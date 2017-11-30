@@ -13,6 +13,7 @@ Before you start, take a moment to see how the project structure looks like:
 .
 ├── /build/                     # The folder for compiled output
 ├── /docs/                      # Documentation files for the project
+├── /extra/                     # Extra resources like nginx config file and so on
 ├── /node_modules/              # 3rd-party libraries and utilities
 ├── /src/                       # The source code of the application
 │   ├── /client/                # All JS files will be here
@@ -23,17 +24,18 @@ Before you start, take a moment to see how the project structure looks like:
 │   ├── /styles/                # Styles folder, using Sass
 ├── /test/                      # Unit and end-to-end tests
 ├── /tools/                     # Build automation scripts and utilities
-│   ├── /gulp-tasks/            # Gulp tasks, using gulp plugins
 │   ├── /lib/                   # Utilities used for various tasks like fs, logging etc.
-│   ├── /browserSync.js         # Browsersync task
-│   ├── /clean.js               # Cleans up the output (build) folder
-│   ├── /compiler.js            # Compiles js code using webpack
+│   ├── /tasks/                 # Task files to clean compile and build
+│   	├── /browserSync.js     # Browsersync task
+│   	├── /clean.js           # Cleans up the output (build) folder
+│   	├── /compiler.js        # Compiles js code using webpack
+│   	├── /copy.js            # Copies static files and various extra to output (build) folder
+│   	├── /gulpfile.js        # Main gulp entry file where all tasks are defined
+│   	├── /minify-css.js      # Task to minify the CSS output using CleanCSS
+│   	├── /postcss.config.js  # Configuration for transforming styles with PostCSS plugins
+│   	├── /runServer.js       # Launches (or restarts) Node.js server
 │   ├── /config.js              # Config file used by all tasks
-│   ├── /copy.js                # Copies static files and various extra to output (build) folder
-│   ├── /gulpfile.js            # Main gulp entry file where all tasks are defined
-│   ├── /minify-css.js          # Task to minify the CSS output using CleanCSS
-│   ├── /postcss.config.js      # Configuration for transforming styles with PostCSS plugins
-│   ├── /runServer.js           # Launches (or restarts) Node.js server
+│  	├── /postcss.config.js      # Configuration for transforming styles with PostCSS plugins
 │   └── /webpack.config.js      # Configurations for client-side bundles
 ├── Dockerfile                  # TODO: Commands for building a Docker image for production
 └── package.json                # The list of 3rd party libraries and utilities
