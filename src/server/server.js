@@ -14,6 +14,8 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+// TODO: I think Marko is alredy doing this
+// const minifyHTML = require('express-minify-html');
 const lusca = require('lusca');
 const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');

@@ -8,11 +8,10 @@ const AssetsPlugin = require('assets-webpack-plugin');
 const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
-
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const CaseSensitivePathPlugin = require('case-sensitive-paths-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const config = require('./config');
@@ -53,13 +52,24 @@ const webpackConfig = {
 		// [hash] - applies hash of a webpack build, so every file will have same hash
 		// [chunkhash] - applies hash to every file separately
 		// filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
-		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash].js',
+		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 		// TODO: Understand what this does
-		chunkFilename: '[name].build.[chunkhash].js',
+		chunkFilename: '[name].build.[chunkhash:8].js',
 
 		// Change the prefix for each line in the output bundles.
 		// Using some kind of indentation makes bundles look more pretty, but will cause issues with multi-line strings.
-		sourcePrefix: '\t'
+		sourcePrefix: '\t',
+
+		// Point sourcemap entries to original disk location (format as URL on Windows)
+		// In devtools sources tab, the original files will not appear under webpack.
+		// They will appear in the main url root next to styles.
+		devtoolModuleFilenameTemplate: (info) => {
+			if (config.isDebug) {
+				return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
+			}
+
+			return path.relative(config.paths.scriptsPath, info.absoluteResourcePath).replace(/\\/g, '/')
+		}
 	},
 
 	watch: !config.isProd && config.isDebug,
@@ -149,11 +159,6 @@ const webpackConfig = {
 			exitOnErrors: false
 		}),
 
-		// Watcher doesn't work well if you mistype casing in a path so we use
-		// a plugin that prints an error when you attempt to do this.
-		// See https://github.com/facebookincubator/create-react-app/issues/240
-		new CaseSensitivePathPlugin(),
-
 		// Emit a file with assets paths
 		// https://github.com/kossnocorp/assets-webpack-plugin#options
 		new AssetsPlugin({
@@ -224,10 +229,16 @@ const webpackConfig = {
 			// TODO: Document this
 			new webpack.HotModuleReplacementPlugin(),
 
+			// Watcher doesn't work well if you mistype casing in a path so we use
+			// a plugin that prints an error when you attempt to do this.
+			// See https://github.com/facebookincubator/create-react-app/issues/240
+			new CaseSensitivePathsPlugin(),
+
 			// TODO: Document this
 			new webpack.NoEmitOnErrorsPlugin(),
 
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
+			// Add module names to factory functions so they appear in browser profiler.
 			new webpack.NamedModulesPlugin(),
 
 			// TODO: Should run for PROD also, but under a flag clik like --monitor
@@ -278,7 +289,24 @@ const webpackConfig = {
 		...(!config.isAnalyze ? [] : [
 			new BundleAnalyzerPlugin()
 		])
-	]
+	],
+
+	// Some libraries import Node modules but don't use them in the browser.
+	// Tell Webpack to provide empty mocks for them so importing them works.
+	node: {
+		dgram: 'empty',
+		fs: 'empty',
+		net: 'empty',
+		tls: 'empty',
+		child_process: 'empty',
+	},
+
+	// Turn off performance hints during development because we don't do any
+	// splitting or minification in interest of speed. These warnings become
+	// cumbersome.
+	performance: {
+		hints: false
+	}
 };
 
 // Export the webpack config
