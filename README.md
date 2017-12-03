@@ -1,6 +1,6 @@
 [![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/) [![David Dev Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/#info=devDependencies)
 
-# ES6 Progressive Web App (PWA) boilerplate using Gulp and Webpack
+# ES6 Progressive Web App (PWA) boilerplate using Webpack, Expressjs and more
 
 ## Features
 
@@ -81,6 +81,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://github.com/sebhildebrandt/http-graceful-shutdown
 	- https://github.com/marionebl/commitlint
 	- https://github.com/facebook/dataloader
+	- https://www.npmjs.com/package/boom
 - [ ] Learn from others how its done:
 	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
 	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js

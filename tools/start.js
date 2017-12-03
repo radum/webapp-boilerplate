@@ -26,27 +26,17 @@ const copyAllAssets = () => task('copy-assets')(
 const startDev = () => task('start-dev')(
 	clean(),
 	copyStatic(),
-	stylesSass({
-		sourceMapEmbed: config.isDebug
-	}),
-	compiler({
-		bsReload: bs.bsReload
-	}),
+	stylesSass({ sourceMapEmbed: config.isDebug }),
+	compiler({ bsReload: bs.bsReload }),
 	runServer(),
-	bs.init({
-		https: true
-	})
+	bs.init({ https: true })
 );
 
 const startBuild = () => task('start-build')(
 	clean(),
 	copyAllAssets(),
-	stylesSass({
-		sourceMapEmbed: config.isDebug
-	}),
-	compiler({
-		bsReload: bs.bsReload
-	}),
+	stylesSass({ sourceMapEmbed: config.isDebug }),
+	compiler({ bsReload: bs.bsReload }),
 	imagemin()
 );
 
