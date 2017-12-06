@@ -24,4 +24,10 @@ html {
 body {
 	font-family: $font-family-base;
 	background-color: #eee;
+	/// Make our font sharper and utilize the text-rendering CSS property
+	/// to allow us to choose quality over speed
+	-webkit-text-size-adjust: 100%;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
 }
