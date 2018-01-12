@@ -82,6 +82,7 @@ This will fire up a local web server, open http://localhost:3000 in your default
 	- https://github.com/marionebl/commitlint
 	- https://github.com/facebook/dataloader
 	- https://www.npmjs.com/package/boom
+	- https://github.com/godaddy/terminus
 - [ ] Learn from others how its done:
 	- https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
 	- https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
