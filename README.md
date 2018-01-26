@@ -1,6 +1,11 @@
 [![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/) [![David Dev Dependency Badge](https://david-dm.org/radum/webapp-boilerplate-webpack/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate-webpack/#info=devDependencies)
 
+![Logo of the project](./images/logo.sample.png)
+
 # ES6 Progressive Web App (PWA) boilerplate using Webpack, Expressjs and more
+> Additional information or tag line
+
+A brief description of your project, what it is used for.
 
 ## Features
 
@@ -14,28 +19,96 @@
 * [browserslist](http://browserl.ist/) support for babel and friends
 * Linting done with [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/)
 
-## Getting Started
+## Installing / Getting started
 
-**Step 1**. Make sure that you have Node.js v8 or newer installed on your machine.
-
-**Step 2**. Clone this repo
+A quick introduction of the minimal setup you need to get a hello world up &
+running.
 
 ```shell
-$ git clone -o webapp-boilerplate-webpack -b master --single-branch \
-      https://github.com/radum/webapp-boilerplate-webpack.git MyApp
-$ cd MyApp
-$ npm install                   # Install project dependencies listed in package.json
+commands here
 ```
 
-**Step 3**. Compile and launch your app by running:
+Here you should say what actually happens when you execute the code above.
 
+## Developing
+
+### Built With
+List main libraries, frameworks used including versions (React, Angular etc...)
+
+### Prerequisites
+What is needed to set up the dev environment. For instance, global dependencies or any other tools. include download links.
+
+
+### Setting up Dev
+
+Here's a brief intro about what a developer must do in order to start developing
+the project further:
+
+```shell
+git clone https://github.com/your/your-project.git
+cd your-project/
+packagemanager install
 ```
-$ node run dev
+
+And state what happens step-by-step. If there is any virtual environment, local server or database feeder needed, explain here.
+
+### Building
+
+If your project needs some additional steps for the developer to build the
+project after some code changes, state them here. for example:
+
+```shell
+./configure
+make
+make install
 ```
 
-This will fire up a local web server, open http://localhost:3000 in your default browser and watch files for changes, reloading the browser automatically via [BrowserSync](https://www.browsersync.io/).
+Here again you should state what actually happens when the code above gets
+executed.
 
-**Follow the [getting started guide](docs/getting-started.md) to download and run the project**
+### Deploying / Publishing
+give instructions on how to build and release a new version
+In case there's some step you have to take that publishes this project to a
+server, this is the right time to state it.
+
+```shell
+packagemanager deploy your-project -s server.com -u username -p password
+```
+
+And again you'd need to tell what the previous code actually does.
+
+## Versioning
+
+We can maybe use [SemVer](http://semver.org/) for versioning. For the versions available, see the [link to tags on this repository](/tags).
+
+
+## Configuration
+
+Here you should write what are all of the configurations a user can enter when
+using the project.
+
+## Tests
+
+Describe and show how to run the tests with code examples.
+Explain what these tests test and why.
+
+```shell
+Give an example
+```
+
+## Style guide
+
+Explain your code style and show how to check it.
+
+## Api Reference
+
+If the api is external, link to api documentation. If not describe your api including authentication methods as well as explaining all the endpoints with their required parameters.
+
+
+## Database
+
+Explaining what database (and version) has been used. Provide download links.
+Documents your database design and schemas, relations etc... 
 
 ## TODO
 
@@ -100,6 +173,6 @@ This will fire up a local web server, open http://localhost:3000 in your default
 
 See the [contributing docs](CONTRIBUTING.md).
 
-## License
+## Licensing
 
 [MIT](https://opensource.org/licenses/MIT) © Radu Micu

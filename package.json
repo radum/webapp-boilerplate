@@ -26,6 +26,7 @@
   ],
   "scripts": {
     "dev": "cross-env NODE_ENV=development node tools/start.js run dev",
+    "dev2": "cross-env NODE_ENV=development node tools/run.js dev",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
     "build": "cross-env NODE_ENV=production node tools/start.js run build",
@@ -79,6 +80,7 @@
     "imagemin-mozjpeg": "^6.0.0",
     "imagemin-optipng": "^5.2.1",
     "indent-string": "^3.2.0",
+    "meow": "^4.0.0",
     "mkdirp": "^0.5.1",
     "ms": "^2.1.1",
     "node-sass": "^4.7.2",
@@ -104,7 +106,6 @@
     "webpack-hot-middleware": "^2.21.0",
     "webpack-monitor": "^1.0.14",
     "workbox-webpack-plugin": "^2.1.2",
-    "write-file-webpack-plugin": "^4.2.0",
-    "yargs": "^10.1.1"
+    "write-file-webpack-plugin": "^4.2.0"
   }
 }
