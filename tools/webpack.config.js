@@ -13,6 +13,7 @@ const WebpackMonitor = require('webpack-monitor');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const Jarvis = require('webpack-jarvis');
 
 const config = require('./config');
 
@@ -261,8 +262,9 @@ const webpackConfig = {
 			// This will fail if babel is set to allow ES6 based on browserlist config.
 			// https://github.com/webpack/webpack/issues/2972
 			// alternatives:
-			// https://github.com/webpack-contrib/uglifyjs-webpack-plugin
-			// https://github.com/webpack-contrib/babel-minify-webpack-plugin
+			//   * Wait for Webpack 4
+			//   * https://github.com/webpack-contrib/uglifyjs-webpack-plugin
+			//   * https://github.com/webpack-contrib/babel-minify-webpack-plugin
 			// new webpack.optimize.UglifyJsPlugin({
 			// 	sourceMap: true,
 			// 	compress: {
@@ -287,7 +289,10 @@ const webpackConfig = {
 		// Webpack Bundle Analyzer
 		// https://github.com/th0r/webpack-bundle-analyzer
 		...(!config.isAnalyze ? [] : [
-			new BundleAnalyzerPlugin()
+			new BundleAnalyzerPlugin(),
+			new Jarvis({
+				port: 1337
+			})
 		])
 	],
 
