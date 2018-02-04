@@ -3,6 +3,12 @@
 const meow = require('meow');
 
 const clean = require('./tasks/clean');
+const {
+	copyStatic,
+	copyServer,
+	copySSL,
+	copyExtra
+} = require('./tasks/copy');
 
 const cli = meow(`
 	Usage
@@ -15,19 +21,25 @@ const cli = meow(`
 	Examples
 	  $ foo dev --verbose
 `, {
-		flags: {
-			verbose: {
-				type: 'boolean'
-			}
+	flags: {
+		verbose: {
+			type: 'boolean'
 		}
-	});
+	}
+});
 
 async function startDev() {
 	await clean();
+	await copyStatic();
+	await copyServer();
+	await copySSL();
+	await copyExtra();
 }
 
 async function startBuild() {
 	await clean();
+	await copyStatic();
+	await copyServer();
 }
 
 switch (cli.input[0]) {

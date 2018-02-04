@@ -1,6 +1,6 @@
 const config = require('../config');
 const fs = require('../lib/fs');
-const { plugin } = require('../start-runner');
+const Logger = require('../lib/logger');
 
 /**
  * Cleans up the output (build) directory.
@@ -9,16 +9,30 @@ const { plugin } = require('../start-runner');
  * @param {Object} options - Options object
  * @returns Promise
  */
-const clean = plugin('clean')(() => ({ log }) => {
-	log('cleaning path: ' + config.paths.buildPath);
+function clean(options = { isVerbose: false }) {
+	const logger = new Logger({
+		name: 'clean',
+		isVerbose: options.isVerbose
+	});
 
-	return Promise.all([
+	logger.start('cleaning temp folders');
+	logger.log('cleaning path: ' + config.paths.buildPath);
+
+	const task = Promise.all([
 		fs.cleanDir(config.paths.buildPath + '/*', {
 			nosort: true,
 			dot: true,
 			ignore: [config.paths.buildPath + '/.git'],
 		}),
 	]);
-});
+
+	task.then(() => {
+		logger.done();
+	}).catch((err) => {
+		logger.error(err);
+	});
+
+	return task;
+}
 
 module.exports = clean;
