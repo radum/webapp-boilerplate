@@ -4,7 +4,7 @@ const execa = require('execa');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const config = require('../config');
-const { plugin } = require('../start-runner');
+const Logger = require('../lib/logger');
 
 let server;
 let pending = true;
@@ -16,7 +16,14 @@ let pending = true;
 // const RUNNING_REGEXP = /Server is running at (http|https):\/\/(.*?)/;
 const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
-const runServer = plugin('run-server')(() => async ({ log }) => {
+function runServer(options = { isVerbose: false }) {
+	const logger = new Logger({
+		name: 'express-server',
+		isVerbose: options.isVerbose
+	});
+
+	logger.start();
+
 	return new Promise((resolve) => {
 		function onStdOut(data) {
 			const time = new Date().toTimeString();
@@ -30,7 +37,8 @@ const runServer = plugin('run-server')(() => async ({ log }) => {
 				server.stdout.on('data', x => process.stdout.write(x));
 				pending = false;
 
-				log('Local server running');
+				logger.log('Local server running');
+				logger.done();
 
 				resolve(server);
 			}
@@ -68,7 +76,7 @@ const runServer = plugin('run-server')(() => async ({ log }) => {
 
 		return server;
 	});
-});
+}
 
 process.on('exit', () => {
 	if (server) {

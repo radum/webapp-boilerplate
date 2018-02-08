@@ -12,6 +12,7 @@ const {
 const compileSass = require('./tasks/styles-sass');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
+const runServer = require('./tasks/runServer');
 
 async function startDev(flags) {
 	await clean();
@@ -21,6 +22,8 @@ async function startDev(flags) {
 		sourceMapEmbed: !flags.release
 	});
 	await compiler({ bsReload: bs.bsReload });
+	await runServer();
+	await bs.init({ https: true });
 }
 
 async function startBuild(flags) {
