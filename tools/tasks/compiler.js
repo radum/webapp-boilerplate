@@ -1,33 +1,69 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const webpack = require('webpack');
-const compilerLogger = require('../lib/compilerLogger');
 const webpackConfig = require('../webpack.config');
-const { plugin } = require('../start-runner');
+const Logger = require('../lib/logger');
+
+const chalk = require('chalk');
+const prettifyTime = require('../lib/prettifyTime');
+
+let logger;
+
+function compilerLogger(err, stats) {
+	if (err) {
+		throw new Error('webpack', err);
+	}
+
+	const jsonStats = stats.toJson();
+	const statColor = jsonStats.warnings.length < 1 ? chalk.green : chalk.yellow;
+
+	if (jsonStats.errors.length > 0) {
+		const error = new Error(jsonStats.errors[0]);
+		error.errors = jsonStats.errors;
+		error.warnings = jsonStats.warnings;
+
+		logger.log(chalk.red(error));
+		logger.log(chalk.red('Failed to build webpack'));
+	} else {
+		const compileTime = prettifyTime(stats.endTime - stats.startTime);
+
+		logger.log(statColor(stats));
+		logger.log(`Compiled with ${chalk.cyan('webpack')} in ` + chalk.magenta(compileTime));
+	}
+}
 
 /**
  * Bundle JS files using webpack.
  */
-const compiler = plugin('js-compiler')(options => ({ log }) => {
+function compiler(options = { isVerbose: false }) {
 	let instance;
 
+	logger = new Logger({
+		name: 'js-compiler',
+		isVerbose: options.isVerbose
+	});
+
+	logger.start('bundle js with webpack');
+
 	return new Promise((resolve) => {
-		log('running webpack');
+		logger.log('running webpack');
 
 		instance = webpack(webpackConfig, (err, stats) => {
-			compilerLogger(err, stats, log);
+			compilerLogger(err, stats);
 
 			// TODO: Explore if using an EventEmitter will be better
 			// The export will have to be an object with an init and the emitter also.
 			if (options.bsReload) {
-				log('BS reloaded');
+				logger.log('BS reloaded');
 
 				options.bsReload();
 			}
 
+			logger.done();
+
 			resolve(instance);
 		});
 	});
-});
+}
 
 module.exports = compiler;

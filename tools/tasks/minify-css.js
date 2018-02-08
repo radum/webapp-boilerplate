@@ -1,4 +1,4 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
+/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}], prefer-destructuring: 0 */
 
 const CleanCSS = require('clean-css');
 const prettyBytes = require('pretty-bytes');
@@ -8,7 +8,7 @@ const prettyBytes = require('pretty-bytes');
  *
  * @returns Promise
  */
-function minifyCSS(source, options, pluginLogger) {
+function minifyCSS(source) {
 	return new Promise((resolve, reject) => {
 		const cleanTask = new CleanCSS({
 			level: 2,
@@ -19,10 +19,15 @@ function minifyCSS(source, options, pluginLogger) {
 		cleanTask
 			.minify(source)
 			.then((output) => {
-				if (options.verbose) {
-					pluginLogger(`Minify CSS from ${prettyBytes(output.stats.originalSize)} to ${prettyBytes(output.stats.minifiedSize)} (${output.stats.efficiency.toFixed(1).replace(/\.0$/, '')}% in ${output.stats.timeSpent}ms)`);
-				}
-				resolve(output.styles);
+				const originalSize = prettyBytes(output.stats.originalSize);
+				const minifiedSize = prettyBytes(output.stats.minifiedSize);
+				const efficiency = output.stats.efficiency.toFixed(1).replace(/\.0$/, '');
+				const timeSpent = output.stats.timeSpent;
+
+				resolve({
+					css: output.styles,
+					log: `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`
+				});
 			})
 			.catch((error) => {
 				reject(error);

@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
-const meow = require('meow');
+const cli = require('./cli');
 
 const clean = require('./tasks/clean');
 const {
@@ -9,47 +9,40 @@ const {
 	copySSL,
 	copyExtra
 } = require('./tasks/copy');
+const compileSass = require('./tasks/styles-sass');
+const compiler = require('./tasks/compiler');
+const bs = require('./tasks/browserSync');
 
-const cli = meow(`
-	Usage
-	  $ run dev
-	  $ run build
+async function startDev(flags) {
+	await clean();
+	await copyStatic();
+	await compileSass({
+		isDebug: !flags.release,
+		sourceMapEmbed: !flags.release
+	});
+	await compiler({ bsReload: bs.bsReload });
+}
 
-	Options
-	  --verbose, Verbose the logs
-
-	Examples
-	  $ foo dev --verbose
-`, {
-	flags: {
-		verbose: {
-			type: 'boolean'
-		}
-	}
-});
-
-async function startDev() {
+async function startBuild(flags) {
 	await clean();
 	await copyStatic();
 	await copyServer();
 	await copySSL();
 	await copyExtra();
-}
-
-async function startBuild() {
-	await clean();
-	await copyStatic();
-	await copyServer();
+	await compileSass({
+		isDebug: !flags.release,
+		sourceMapEmbed: !flags.release
+	});
 }
 
 switch (cli.input[0]) {
 	case 'dev':
-		startDev();
+		startDev(cli.flags);
 		break;
 	case 'build':
-		startBuild();
+		startBuild(cli.flags);
 		break;
 	default:
-		startBuild();
+		startBuild(cli.flags);
 		break;
 }

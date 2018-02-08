@@ -10,3 +10,5 @@ monitor
 
 coverage
 .nyc_output
+
+.vscode

@@ -9,7 +9,7 @@ const rimraf = require('rimraf');
 /**
  * Read the content of a file and return a Promise
  *
- * @param {string} file - File name / path to read
+ * @param {String} file - File name / path to read
  * @returns Promise
  */
 const readFile = (file, opts) => new Promise((resolve, reject) => {
@@ -25,14 +25,19 @@ const readFile = (file, opts) => new Promise((resolve, reject) => {
 /**
  * Write content to a file
  *
- * @param {string} file - File name / path to read
- * @param {string} contents - File content
+ * @param {String} file - File name / path to read
+ * @param {String} contents - File content
  * @returns Promise
  */
 const writeFile = (file, contents) => new Promise((resolve, reject) => {
 	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, err => (err ? reject(err) : resolve()));
 });
 
+/**
+ * Copy file from source to target location
+ * @param {String} source Source location of the file
+ * @param {String} target Target location of the copied file
+ */
 const copyFile = (source, target) => new Promise((resolve, reject) => {
 	let cbCalled = false;
 
@@ -59,10 +64,19 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
 	rd.pipe(wr);
 });
 
+/**
+ * Rename a file
+ * @param {String} source
+ * @param {String} target
+ */
 const renameFile = (source, target) => new Promise((resolve, reject) => {
 	fs.rename(source, target, err => (err ? reject(err) : resolve()));
 });
 
+/**
+ * Create a new folder
+ * @param {String} name Folder name
+ */
 const makeDir = name => new Promise((resolve, reject) => {
 	mkdirp(name, err => (err ? reject(err) : resolve()));
 });

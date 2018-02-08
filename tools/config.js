@@ -1,7 +1,9 @@
+const cli = require('./cli');
+
 const isProd = process.env.NODE_ENV === 'production';
-const isDebug = !process.argv.includes('--release');
-const isVerbose = process.argv.includes('--verbose');
-const isAnalyze = process.argv.includes('--analyze') || process.argv.includes('--analyse');
+const isDebug = !cli.flags.release;
+const isVerbose = cli.flags.verbose;
+const isAnalyze = cli.flags.analyze;
 
 const config = {
 	isProd,
