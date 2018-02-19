@@ -35,7 +35,7 @@ function compilerLogger(err, stats) {
 /**
  * Bundle JS files using webpack.
  */
-function compiler(options = { isVerbose: false }) {
+function compiler(options = { isVerbose: false, bsReload: undefined }) {
 	let instance;
 
 	logger = new Logger({

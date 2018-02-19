@@ -34,10 +34,13 @@ async function startBuild(flags) {
 	await copyServer();
 	await copySSL();
 	await copyExtra();
-	await compileSass({
-		isDebug: !flags.release,
-		sourceMapEmbed: !flags.release
-	});
+	await Promise.all([
+		compileSass({
+			isDebug: !flags.release,
+			sourceMapEmbed: !flags.release
+		}),
+		compiler()
+	]);
 }
 
 switch (cli.input[0]) {
