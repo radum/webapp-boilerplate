@@ -44,6 +44,8 @@ async function compileSass(options = { isVerbose: false, isDebug: true }) {
 
 					await fs.writeFile(path.resolve(config.paths.stylesOutputDest + '/main.css'), cssOutput);
 
+					resolve(cssOutput);
+
 					logger.done('styles compiled');
 				} catch (error) {
 					reject(error);

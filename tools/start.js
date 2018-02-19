@@ -25,9 +25,11 @@ const copyAllAssets = () => task('copy-assets')(
 
 const startDev = () => task('start-dev')(
 	clean(),
-	copyStatic(),
-	stylesSass({ sourceMapEmbed: config.isDebug }),
-	compiler({ bsReload: bs.bsReload }),
+	Promise.all([
+		copyStatic(),
+		stylesSass({ sourceMapEmbed: config.isDebug }),
+		compiler({ bsReload: bs.bsReload }),
+	]),
 	runServer(),
 	bs.init({ https: true })
 );

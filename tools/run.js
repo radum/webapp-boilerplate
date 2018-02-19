@@ -17,11 +17,13 @@ const runServer = require('./tasks/runServer');
 async function startDev(flags) {
 	await clean();
 	await copyStatic();
-	await compileSass({
-		isDebug: !flags.release,
-		sourceMapEmbed: !flags.release
-	});
-	await compiler({ bsReload: bs.bsReload });
+	await Promise.all([
+		compileSass({
+			isDebug: !flags.release,
+			sourceMapEmbed: !flags.release
+		}),
+		compiler({ bsReload: bs.bsReload })
+	]);
 	await runServer();
 	await bs.init({ https: true });
 }
