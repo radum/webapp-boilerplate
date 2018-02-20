@@ -1,4 +1,14 @@
-module.exports = (gulp, plugins, blueprint) => {
-	gulp.watch(blueprint.paths.styles, gulp.series('styles'));
-	gulp.watch(blueprint.paths.serverFiles, gulp.series('run-server-task', 'browser-sync-reload-task'));
-};
+const Logger = require('../lib/logger');
+
+function watch(options = { isVerbose: false }) {
+	const logger = new Logger({
+		name: 'watch',
+		isVerbose: options.isVerbose
+	});
+
+	logger.start('watching files');
+	logger.log('');
+	logger.done();
+}
+
+module.exports = watch;
