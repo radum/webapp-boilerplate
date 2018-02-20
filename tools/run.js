@@ -13,6 +13,7 @@ const compileSass = require('./tasks/styles-sass');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/runServer');
+const imagemin = require('./tasks/imagemin');
 
 async function startDev(flags) {
 	await clean();
@@ -39,7 +40,8 @@ async function startBuild(flags) {
 			isDebug: !flags.release,
 			sourceMapEmbed: !flags.release
 		}),
-		compiler()
+		compiler(),
+		imagemin()
 	]);
 }
 

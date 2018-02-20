@@ -11,10 +11,15 @@ const pMap = require('p-map');
 
 const config = require('../config');
 const fs = require('../lib/fs');
-const { plugin } = require('../start-runner');
+const Logger = require('../lib/logger');
 
-const imageminTask = plugin('imagemin')(() => async ({ log }) => {
-	log('minify images seamlessly');
+async function imageminTask(options = { isVerbose: false }) {
+	const logger = new Logger({
+		name: 'imagemin',
+		isVerbose: options.isVerbose
+	});
+
+	logger.start('minify images seamlessly');
 
 	const files = globby.sync(config.paths.imagesPath + '/**/*.{jpg,jpeg,png}');
 
@@ -46,18 +51,18 @@ const imageminTask = plugin('imagemin')(() => async ({ log }) => {
 			if (saved > 0) {
 				totalBytes += originalSize;
 				totalSavedBytes += saved;
-				totalFiles++;
+				totalFiles += 1;
 			}
 
 			fs.writeFile(file.replace(config.paths.imagesPath, config.paths.imagesOutputDest), optimizedBuf);
-			log(chalk.green('✔ ') + file + chalk.gray(` (${msg})`));
+			logger.log(file + chalk.gray(` (${msg})`));
 		})
 		.catch((err) => {
-			log(`${err} in file ${file}`);
+			logger.log(`${err} in file ${file}`);
 		});
 
 
-	await pMap(files, processFile, { concurrency: os.cpus().length }).then(() => {
+	return pMap(files, processFile, { concurrency: os.cpus().length }).then(() => {
 		const percent = totalBytes > 0 ? (totalSavedBytes / totalBytes) * 100 : 0;
 		let msg = `minified ${totalFiles} images`;
 
@@ -65,8 +70,8 @@ const imageminTask = plugin('imagemin')(() => async ({ log }) => {
 			msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
 		}
 
-		log(msg);
+		logger.done(msg);
 	});
-});
+}
 
 module.exports = imageminTask;
