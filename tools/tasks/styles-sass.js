@@ -7,10 +7,17 @@ const Logger = require('../lib/logger');
 const minifyCss = require('./minify-css');
 const config = require('../config');
 
-async function compileSass(options = { isVerbose: false, isDebug: true }) {
+const defaultOpts = {
+	isVerbose: false,
+	isDebug: true
+};
+
+async function compileSass(options) {
+	const opts = {...defaultOpts, ...options };
+
 	const logger = new Logger({
 		name: 'compile-sass',
-		isVerbose: options.isVerbose
+		isVerbose: opts.isVerbose
 	});
 
 	let cssOutput;
@@ -24,7 +31,7 @@ async function compileSass(options = { isVerbose: false, isDebug: true }) {
 			precision: 10,
 			includePaths: ['.'],
 			sourceMapContents: true,
-			sourceMapEmbed: options.sourceMapEmbed || false
+			sourceMapEmbed: opts.sourceMapEmbed || false
 		}, async (err, result) => {
 			if (err) {
 				reject(err);
@@ -32,7 +39,7 @@ async function compileSass(options = { isVerbose: false, isDebug: true }) {
 				try {
 					await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
 
-					if (options.isDebug) {
+					if (opts.isDebug) {
 						// TODO: This exports more cool info that could be logged as verbose.
 						cssOutput = result.css;
 					} else {

@@ -1,9 +1,16 @@
 const Logger = require('../lib/logger');
 
-function watch(options = { isVerbose: false }) {
+const defaultOpts = {
+	isVerbose: false,
+	isDebug: true
+};
+
+function watch(glob, options) {
+	const opts = { ...defaultOpts, ...options };
+
 	const logger = new Logger({
 		name: 'watch',
-		isVerbose: options.isVerbose
+		isVerbose: opts.isVerbose
 	});
 
 	logger.start('watching files');

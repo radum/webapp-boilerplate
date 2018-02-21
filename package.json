@@ -86,7 +86,6 @@
     "ora": "~1.4.0",
     "os": "~0.1.1",
     "p-map": "~1.2.0",
-    "pixrem": "~4.0.1",
     "postcss-custom-properties": "~7.0.0",
     "postcss-flexbugs-fixes": "~3.3.0",
     "postcss-reporter": "~5.0.0",
