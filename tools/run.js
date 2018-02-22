@@ -28,6 +28,7 @@ async function startDev(flags) {
 	]);
 	await runServer();
 	await bs.init({ https: true });
+
 	watcher(['src/static/**/*.*'], copyStatic);
 }
 
