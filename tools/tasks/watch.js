@@ -2,7 +2,7 @@
 
 const chokidar = require('chokidar');
 const _ = require('lodash');
-// var asyncDone = require('async-done');
+// const asyncDone = require('async-done');
 const Logger = require('../lib/logger');
 
 const defaultOpts = {
@@ -28,6 +28,17 @@ function hasErrorListener(ee) {
 	return listenerCount(ee, 'error') !== 0;
 }
 
+/**
+ * Watch for changes and run the callback function on change.
+ *
+ * This is heavily inspired from https://github.com/gulpjs/glob-watcher (more like a rip off)
+ * Kudos to them for making it so simple.
+ *
+ * @param {Array} glob
+ * @param {Object} options
+ * @param {Function} cb
+ * @returns Object
+ */
 function watch(glob, options, cb) {
 	if (typeof options === 'function') {
 		cb = options;
