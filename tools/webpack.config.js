@@ -5,7 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
-const ChunkManifestPlugin = require('chunk-manifest-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -168,13 +168,6 @@ const webpackConfig = {
 			prettyPrint: true
 		}),
 
-		// TODO: Explore which one is better. ManifestPlugin or AssetsPlugin.
-		// new ManifestPlugin({
-		// 	fileName: 'assets-2.json',
-		// 	publicPath: '/test',
-		// 	writeToFileEmit: true
-		// }),
-
 		// Allows exporting a manifest that maps entry chunk names to their output files,
 		// instead of keeping the mapping inside the webpack bootstrap.
 		// The resulted content should then be inlined in a script tag like this:
@@ -191,10 +184,8 @@ const webpackConfig = {
 		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
 		// Webpack can then read this mapping, assuming it is provided somehow on the client,
 		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
-		new ChunkManifestPlugin({
-			filename: 'manifest.json',
-			manifestVariable: 'webpackChunkManifest',
-			inlineManifest: true
+		new ManifestPlugin({
+			filename: 'manifest.json'
 		}),
 
 		// Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk)
@@ -255,6 +246,9 @@ const webpackConfig = {
 			// https://github.com/webpack/webpack/blob/master/examples/scope-hoisting/README.md
 			// https://webpack.js.org/plugins/module-concatenation-plugin/
 			new webpack.optimize.ModuleConcatenationPlugin(),
+
+			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
+			new webpack.HashedModuleIdsPlugin(),
 
 			// Minimize all JavaScript output of chunks
 			// https://github.com/mishoo/UglifyJS2#compress-options

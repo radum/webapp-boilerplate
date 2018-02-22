@@ -13,6 +13,7 @@ const compileSass = require('./tasks/styles-sass');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/runServer');
+const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
 
 async function startDev(flags) {
@@ -27,6 +28,7 @@ async function startDev(flags) {
 	]);
 	await runServer();
 	await bs.init({ https: true });
+	watcher(['src/static/**/*.*'], copyStatic);
 }
 
 async function startBuild(flags) {
