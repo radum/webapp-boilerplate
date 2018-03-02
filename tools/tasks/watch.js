@@ -31,7 +31,7 @@ function hasErrorListener(ee) {
 /**
  * Watch for changes and run the callback function on change.
  *
- * This is heavily inspired from https://github.com/gulpjs/glob-watcher (more like a rip off)
+ * This is heavily inspired from https://github.com/gulpjs/glob-watcher (more like a rip off) (10d7de9 5.0.1)
  * Kudos to them for making it so simple.
  *
  * @param {Array} glob

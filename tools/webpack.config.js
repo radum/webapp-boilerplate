@@ -78,6 +78,15 @@ const webpackConfig = {
 		ignored: /node_modules/
 	},
 
+	// Production Mode enables all sorts of optimizations
+	// This includes, minification, scope hoisting, tree-shaking,
+	// side-effect - free module pruning,
+	// and includes plugins you would have to manually use like NoEmitOnErrorsPlugin
+	// Development Mode optimized for speed and developer experience
+	// automatically include features like path names in your bundle output, eval-source-maps,
+	// that are meant for easy-to-read code, and fast build times
+	mode: !config.isProd ? 'development' : 'production',
+
 	// Compile for usage in a browser-like environment (default)
 	target: 'web',
 
@@ -144,6 +153,20 @@ const webpackConfig = {
 		]
 	},
 
+	optimization: {
+		runtimeChunk: 'single',
+		splitChunks: {
+			chunks: 'all',
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all'
+				}
+			}
+		}
+	},
+
 	plugins: [
 		// The DefinePlugin allows you to create global constants which can be configured at compile time
 		// https://webpack.js.org/plugins/define-plugin/
@@ -168,46 +191,24 @@ const webpackConfig = {
 			prettyPrint: true
 		}),
 
-		// Allows exporting a manifest that maps entry chunk names to their output files,
-		// instead of keeping the mapping inside the webpack bootstrap.
-		// The resulted content should then be inlined in a script tag like this:
-		//
-		// ```
-		// <script>
-		// window.webpackChunkManifest = {content of manifest.json};
-		// </script>
-		// ```
-		//
-		// Basicaly in the runtime.js generated file the following line:
-		// script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
-		// becomes this:
-		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
-		// Webpack can then read this mapping, assuming it is provided somehow on the client,
-		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
-		new ManifestPlugin({
-			filename: 'manifest.json'
-		}),
-
-		// Move modules that occur in multiple entry chunks to a new entry chunk (the commons chunk)
-		// https://webpack.js.org/plugins/commons-chunk-plugin/
-		new webpack.optimize.CommonsChunkPlugin({
-			name: 'commons',
-			minChunks: module => /node_modules/.test(module.resource)
-		}),
-
-		// TODO: Document this
-		new webpack.optimize.CommonsChunkPlugin({
-			name: ['commons', 'runtime'],
-			minChunks: Infinity
-		}),
-
-		// new HtmlWebpackPlugin({
-		// 	filename: path.resolve(__dirname, '..', config.paths.staticAssetsOutput) + '/index.html',
-		// 	template: path.resolve(__dirname, '..', config.paths.htmlPath, config.paths.htmlIndexFileName),
-		// 	inject: false,
-		// 	minify: config.isDebug ? {
-		// 		removeComments: true
-		// 	} : false
+		// // Allows exporting a manifest that maps entry chunk names to their output files,
+		// // instead of keeping the mapping inside the webpack bootstrap.
+		// // The resulted content should then be inlined in a script tag like this:
+		// //
+		// // ```
+		// // <script>
+		// // window.webpackChunkManifest = {content of manifest.json};
+		// // </script>
+		// // ```
+		// //
+		// // Basicaly in the runtime.js generated file the following line:
+		// // script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
+		// // becomes this:
+		// // script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
+		// // Webpack can then read this mapping, assuming it is provided somehow on the client,
+		// // instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
+		// new ManifestPlugin({
+		// 	filename: 'manifest.json'
 		// }),
 
 		// TODO: Document this
@@ -226,13 +227,6 @@ const webpackConfig = {
 			// See https://github.com/facebookincubator/create-react-app/issues/240
 			new CaseSensitivePathsPlugin(),
 
-			// TODO: Document this
-			new webpack.NoEmitOnErrorsPlugin(),
-
-			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
-			// Add module names to factory functions so they appear in browser profiler.
-			new webpack.NamedModulesPlugin(),
-
 			// TODO: Should run for PROD also, but under a flag clik like --monitor
 			// TODO: Maybe set `launch` to true unde a flag?
 			new WebpackMonitor({
@@ -242,39 +236,8 @@ const webpackConfig = {
 				port: 3030, // default -> 8081
 			})
 		] : [
-			// Decrease script evaluation time
-			// https://github.com/webpack/webpack/blob/master/examples/scope-hoisting/README.md
-			// https://webpack.js.org/plugins/module-concatenation-plugin/
-			new webpack.optimize.ModuleConcatenationPlugin(),
-
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.HashedModuleIdsPlugin(),
-
-			// Minimize all JavaScript output of chunks
-			// https://github.com/mishoo/UglifyJS2#compress-options
-			// Note:
-			// This will fail if babel is set to allow ES6 based on browserlist config.
-			// https://github.com/webpack/webpack/issues/2972
-			// alternatives:
-			//   * Wait for Webpack 4
-			//   * https://github.com/webpack-contrib/uglifyjs-webpack-plugin
-			//   * https://github.com/webpack-contrib/babel-minify-webpack-plugin
-			// new webpack.optimize.UglifyJsPlugin({
-			// 	sourceMap: true,
-			// 	compress: {
-			// 		screw_ie8: true, // React doesn't support IE8
-			// 		warnings: config.isVerbose,
-			// 		unused: true,
-			// 		dead_code: true,
-			// 	},
-			// 	mangle: {
-			// 		screw_ie8: true,
-			// 	},
-			// 	output: {
-			// 		comments: false,
-			// 		screw_ie8: true,
-			// 	}
-			// }),
 
 			// Alternative for Uglify until it supports ES6
 			new BabelMinifyPlugin()
@@ -304,7 +267,7 @@ const webpackConfig = {
 	// splitting or minification in interest of speed. These warnings become
 	// cumbersome.
 	performance: {
-		hints: false
+		hints: (!config.isProd && config.isDebug) ? 'warning' : false
 	}
 };
 

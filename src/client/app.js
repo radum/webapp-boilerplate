@@ -1,4 +1,5 @@
 /* global window */
+import now from 'lodash/now';
 
 import logger from './lib/logger';
 import Flickr from './lib/flickr-api';
@@ -7,6 +8,8 @@ class App {
 	constructor() {
 		this.reply = 'Hello';
 		this.document = window.document;
+
+		logger.log(`Module App initialized! ${now()}`);
 
 		this.flickr = new Flickr();
 	}

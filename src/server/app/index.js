@@ -93,7 +93,8 @@ app.use(markoExpress()); // enable res.marko(template, data)
 // -----------------------------------------------------------------------------
 const tplData = {
 	isProd: config.isProd,
-	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
+	// TODO: Removed for now because not sure how Webpack 4 works
+	webpackChunkManifestContent: false, // fs.readFileSync(config.server.paths.scriptsManifestFile),
 	assets: {
 		scripts: []
 	},
@@ -102,8 +103,8 @@ const tplData = {
 	}
 };
 
-tplData.assets.scripts.push(webpackStaticAssetsObj.runtime.js);
-tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
+if (webpackStaticAssetsObj.runtime) tplData.assets.scripts.push(webpackStaticAssetsObj.runtime.js);
+if (webpackStaticAssetsObj.commons) tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
 tplData.assets.scripts.push(webpackStaticAssetsObj.main.js);
 
 app.get('/', (req, res) => {
