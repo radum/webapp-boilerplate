@@ -17,19 +17,23 @@ const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
 
 async function startDev(flags) {
+	const defaultSettings = {
+		isDebug: !flags.release,
+		sourceMapEmbed: !flags.release,
+		bsReload: bs.bsReload
+	};
+
 	await clean();
 	await copyStatic();
 	await Promise.all([
-		compileSass({
-			isDebug: !flags.release,
-			sourceMapEmbed: !flags.release
-		}),
+		compileSass(defaultSettings),
 		compiler({ bsReload: bs.bsReload })
 	]);
 	await runServer();
 	await bs.init({ https: true });
 
 	watcher(['src/static/**/*.*'], copyStatic);
+	watcher(['src/styles/**/*.scss'], () => compileSass(defaultSettings));
 }
 
 async function startBuild(flags) {

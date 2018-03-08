@@ -9,11 +9,12 @@ const config = require('../config');
 
 const defaultOpts = {
 	isVerbose: false,
-	isDebug: true
+	isDebug: true,
+	bsReload: undefined
 };
 
 async function compileSass(options) {
-	const opts = {...defaultOpts, ...options };
+	const opts = { ...defaultOpts, ...options };
 
 	const logger = new Logger({
 		name: 'compile-sass',
@@ -54,6 +55,14 @@ async function compileSass(options) {
 					resolve(cssOutput);
 
 					logger.done('styles compiled');
+
+					// TODO: Explore if using an EventEmitter will be better
+					// The export will have to be an object with an init and the emitter also.
+					if (options.bsReload) {
+						logger.log('BS reloaded');
+
+						options.bsReload();
+					}
 				} catch (error) {
 					reject(error);
 				}

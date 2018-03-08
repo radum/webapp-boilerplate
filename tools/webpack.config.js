@@ -54,6 +54,7 @@ const webpackConfig = {
 		// [chunkhash] - applies hash to every file separately
 		// filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
 		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
+
 		// TODO: Understand what this does
 		chunkFilename: '[name].build.[chunkhash:8].js',
 
@@ -211,13 +212,6 @@ const webpackConfig = {
 		// 	filename: 'manifest.json'
 		// }),
 
-		// TODO: Document this
-		new WorkboxPlugin({
-			globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-			globPatterns: ['**/*.{html,js,css}'],
-			swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-		}),
-
 		...(config.isDebug ? [
 			// TODO: Document this
 			new webpack.HotModuleReplacementPlugin(),
@@ -238,6 +232,14 @@ const webpackConfig = {
 		] : [
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.HashedModuleIdsPlugin(),
+
+			// TODO: Document this
+			// TODO: Maybe find a way to refresh the workers on DEV also
+			new WorkboxPlugin({
+				globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+				globPatterns: ['**/*.{html,js,css}'],
+				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+			}),
 
 			// Alternative for Uglify until it supports ES6
 			new BabelMinifyPlugin()

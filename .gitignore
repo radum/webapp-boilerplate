@@ -2,6 +2,7 @@ node_modules
 npm-debug.log
 
 build
+build-tmp
 dist
 monitor
 .tmp
