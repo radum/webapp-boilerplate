@@ -87,6 +87,23 @@ We can maybe use [SemVer](http://semver.org/) for versioning. For the versions a
 Here you should write what are all of the configurations a user can enter when
 using the project.
 
+### Babel
+
+`"@babel/preset-env" - Env preset`
+
+Babel preset that automatically determines the Babel plugins you need based on your supported environments. Uses compat-table
+https://github.com/babel/babel/tree/master/packages/babel-preset-env
+
+TODO: Check that it actually works.
+Enable transformation of ES6 module syntax to another module type.
+Setting this to false will not transform modules.
+This means webpack will be able to do Tree Shaking and remove unused exports from your bundle to bring down the file size.
+"modules": false,
+
+TODO: Understand this thing and what it does
+A way to apply @babel/preset-env for polyfills (via @babel/polyfill).
+"useBuiltIns": "usage"
+
 ## Tests
 
 Describe and show how to run the tests with code examples.

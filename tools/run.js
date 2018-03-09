@@ -23,17 +23,22 @@ async function startDev(flags) {
 		bsReload: bs.bsReload
 	};
 
-	await clean();
-	await copyStatic();
-	await Promise.all([
-		compileSass(defaultSettings),
-		compiler({ bsReload: bs.bsReload })
-	]);
-	await runServer();
-	await bs.init({ https: true });
+	try {
+		await clean();
+		await copyStatic();
+		await Promise.all([
+			compileSass(defaultSettings),
+			compiler({ bsReload: bs.bsReload })
+		]);
+		await runServer();
+		await bs.init({ https: true });
 
-	watcher(['src/static/**/*.*'], copyStatic);
-	watcher(['src/styles/**/*.scss'], () => compileSass(defaultSettings));
+		watcher(['src/static/**/*.*'], copyStatic);
+		watcher(['src/styles/**/*.scss'], () => compileSass(defaultSettings));
+	} catch (error) {
+		// TODO: Standardise this for all plugins
+		console.log(error);
+	}
 }
 
 async function startBuild(flags) {

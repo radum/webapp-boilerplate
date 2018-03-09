@@ -8,22 +8,25 @@
 			<h1>Hello World!</h1>
 		</header>
 
-		<section class="main-section">
-			<div class="Portfolio">
-				<div class="Portfolio__item Portfolio__item--large">
-					<div class="Portfolio__content">
-						<div class="Portfolio__title">
-							<h2>Lorem ipsum dolorem</h2>
-						</div>
-						<div class="Portfolio__media">
-							<img src="" alt="lorem ipsum dolorem">
-						</div>
-						<div class="Portfolio__supporting-text">
-							<p></p>
-						</div>
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<input class="new-todo" placeholder="What needs to be done?" autofocus>
+			</header>
+			<section style="display:none" class="main">
+				<input class="toggle-all" type="checkbox">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list"></ul>
+				<footer class="footer">
+					<span class="todo-count"></span>
+					<div class="filters">
+						<a href="#/" class="selected">All</a>
+						<a href="#/active">Active</a>
+						<a href="#/completed">Completed</a>
 					</div>
-				</div>
-			</div>
+					<button class="clear-completed">Clear completed</button>
+				</footer>
+			</section>
 		</section>
 
 		<footer>

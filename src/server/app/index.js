@@ -14,6 +14,7 @@ const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
 const logger = require('morgan');
 const expressStatusMonitor = require('express-status-monitor');
+const serverTiming = require('server-timing');
 
 const config = require('../config');
 
@@ -88,6 +89,9 @@ app.use(lusca.xssProtection(true));
 
 // View engine via Marko
 app.use(markoExpress()); // enable res.marko(template, data)
+
+// This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
+app.use(serverTiming());
 
 // Routes
 // -----------------------------------------------------------------------------

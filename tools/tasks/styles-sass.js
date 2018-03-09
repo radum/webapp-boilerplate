@@ -13,6 +13,27 @@ const defaultOpts = {
 	bsReload: undefined
 };
 
+// TODO: Standardise this for all plugins
+function formatError(error) {
+	let relativePath = '';
+	const filePath = error.file;
+
+	let message = '';
+
+	relativePath = path.relative(process.cwd(), filePath);
+
+	message += (relativePath) + '\n';
+	message += error.formatted;
+
+	error.messageFormatted = message;
+	error.messageOriginal = error.message;
+	error.message = message;
+
+	error.relativePath = relativePath;
+
+	return error.messageFormatted;
+}
+
 async function compileSass(options) {
 	const opts = { ...defaultOpts, ...options };
 
@@ -35,7 +56,7 @@ async function compileSass(options) {
 			sourceMapEmbed: opts.sourceMapEmbed || false
 		}, async (err, result) => {
 			if (err) {
-				reject(err);
+				reject(formatError(err));
 			} else {
 				try {
 					await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
@@ -64,7 +85,7 @@ async function compileSass(options) {
 						options.bsReload();
 					}
 				} catch (error) {
-					reject(error);
+					reject(formatError(error));
 				}
 
 				resolve(result);

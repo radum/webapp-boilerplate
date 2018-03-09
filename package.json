@@ -49,6 +49,7 @@
     "marko": "~4.9.1",
     "morgan": "~1.9.0",
     "pretty-error": "~2.1.1",
+    "server-timing": "^2.0.0",
     "spdy": "~3.4.7",
     "time-stamp": "~2.0.0"
   },
@@ -57,7 +58,6 @@
     "@babel/preset-env": "~7.0.0-beta.40",
     "assets-webpack-plugin": "~3.5.1",
     "babel-loader": "~8.0.0-beta.2",
-    "babel-minify-webpack-plugin": "~0.3.0",
     "browser-sync": "~2.23.6",
     "case-sensitive-paths-webpack-plugin": "~2.1.2",
     "chokidar": "~2.0.2",
@@ -89,6 +89,7 @@
     "postcss-flexbugs-fixes": "~3.3.0",
     "postcss-reporter": "~5.0.0",
     "postcss-scss": "~1.0.4",
+    "prettier": "^1.11.1",
     "pretty-bytes": "~4.0.2",
     "randoma": "~1.2.0",
     "raw-loader": "~0.5.1",

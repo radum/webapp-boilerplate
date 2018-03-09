@@ -6,8 +6,6 @@
 // import fastClick from 'fastclick';
 import now from 'lodash/now';
 import App from './app';
-import A from './a';
-import B from './b';
 
 // Eliminates the 300ms delay between a physical tap
 // and the firing of a click event on mobile browsers
@@ -17,9 +15,3 @@ import B from './b';
 console.log('Date: ' + now());
 
 const app = new App();
-
-const aModule = new A();
-const bModule = new B();
-
-app.sayHi('RaduM');
-app.loadPortfolioItems();

@@ -7,7 +7,6 @@ const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const BabelMinifyPlugin = require('babel-minify-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -240,9 +239,6 @@ const webpackConfig = {
 				globPatterns: ['**/*.{html,js,css}'],
 				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
 			}),
-
-			// Alternative for Uglify until it supports ES6
-			new BabelMinifyPlugin()
 		]),
 
 		// Webpack Bundle Analyzer
