@@ -11,6 +11,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
 
@@ -219,6 +220,11 @@ const webpackConfig = {
 			// a plugin that prints an error when you attempt to do this.
 			// See https://github.com/facebookincubator/create-react-app/issues/240
 			new CaseSensitivePathsPlugin(),
+
+			// TODO: This is cool but do I need it?
+			// Huge vendors file, and Express server needs to restart each time
+			// because new compiled files are added to the mix
+			// new ErrorOverlayPlugin(),
 
 			// TODO: Should run for PROD also, but under a flag clik like --monitor
 			// TODO: Maybe set `launch` to true unde a flag?

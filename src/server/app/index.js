@@ -109,6 +109,7 @@ const tplData = {
 
 if (webpackStaticAssetsObj.runtime) tplData.assets.scripts.push(webpackStaticAssetsObj.runtime.js);
 if (webpackStaticAssetsObj.commons) tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
+if (webpackStaticAssetsObj.vendors) tplData.assets.scripts.push(webpackStaticAssetsObj.vendors.js);
 tplData.assets.scripts.push(webpackStaticAssetsObj.main.js);
 
 app.get('/', (req, res) => {
