@@ -5,13 +5,13 @@ const path = require('path');
 const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
+// const ManifestPlugin = require('webpack-manifest-plugin');
+// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
 
@@ -240,7 +240,7 @@ const webpackConfig = {
 
 			// TODO: Document this
 			// TODO: Maybe find a way to refresh the workers on DEV also
-			new WorkboxPlugin({
+			new GenerateSW({
 				globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
 				globPatterns: ['**/*.{html,js,css}'],
 				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
