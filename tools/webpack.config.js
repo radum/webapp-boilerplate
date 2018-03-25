@@ -14,6 +14,7 @@ const WebpackMonitor = require('webpack-monitor');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
+// const WebpackBar = require('webpackbar');
 
 const config = require('./config');
 
@@ -233,7 +234,9 @@ const webpackConfig = {
 				target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
 				launch: false, // -> default 'false'
 				port: 3030, // default -> 8081
-			})
+			}),
+
+			// new WebpackBar()
 		] : [
 			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
 			new webpack.HashedModuleIdsPlugin(),

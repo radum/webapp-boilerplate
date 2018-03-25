@@ -4,7 +4,7 @@ npm-debug.log
 build
 build-tmp
 dist
-monitor
+.webpack-monitor
 .tmp
 .sass-cache
 .esm-cache
