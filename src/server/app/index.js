@@ -96,20 +96,21 @@ app.use(serverTiming());
 // -----------------------------------------------------------------------------
 const tplData = {
 	isProd: config.isProd,
-	// TODO: Removed for now because not sure how Webpack 4 works
-	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
+	// TODO: Removed for now because not sure how Webpack 4 works and I removed
+	// soundcloud/chunk-manifest-webpack-plugin as it was to old, alternative should be found if
+	// is really needed now with Webpack 4
+	webpackChunkManifestContent: false, // fs.readFileSync(config.server.paths.XXX),
 	assets: {
-		scripts: []
+		scripts: [],
 	},
 	browserSync: {
-		HOST: ''
-	}
+		HOST: '',
+	},
 };
 
-if (webpackStaticAssetsObj.runtime) tplData.assets.scripts.push(webpackStaticAssetsObj.runtime.js);
-if (webpackStaticAssetsObj.commons) tplData.assets.scripts.push(webpackStaticAssetsObj.commons.js);
-if (webpackStaticAssetsObj.vendors) tplData.assets.scripts.push(webpackStaticAssetsObj.vendors.js);
-tplData.assets.scripts.push(webpackStaticAssetsObj.main.js);
+if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['runtime.js']);
+if (webpackStaticAssetsObj['vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['vendors.js']);
+tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
 
 app.get('/', (req, res) => {
 	if (req.isSpdy) {

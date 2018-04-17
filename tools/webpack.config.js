@@ -4,7 +4,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const AssetsPlugin = require('assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
@@ -164,7 +163,7 @@ const webpackConfig = {
 				commons: {
 					test: /[\\/]node_modules[\\/]/,
 					name: 'vendors',
-					chunks: 'all',
+					chunks: 'initial',
 				},
 			},
 		},
@@ -186,12 +185,13 @@ const webpackConfig = {
 			exitOnErrors: false,
 		}),
 
-		// Emit a file with assets paths
-		// https://github.com/kossnocorp/assets-webpack-plugin#options
-		new AssetsPlugin({
-			path: path.resolve(__dirname, '..', config.paths.buildPath),
-			filename: 'assets.json',
-			prettyPrint: true,
+		// Generate a manifest file which contains a mapping of all asset filenames
+		// to their corresponding output file so that tools can pick it up.
+		new ManifestPlugin({
+			fileName: '../../asset-manifest.json',
+			filter: (file) => {
+				return file.name.indexOf('.map') < 0;
+			}
 		}),
 
 		// Allows exporting a manifest that maps entry chunk names to their output files,
@@ -210,12 +210,7 @@ const webpackConfig = {
 		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
 		// Webpack can then read this mapping, assuming it is provided somehow on the client,
 		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
-
-		// Generate a manifest file which contains a mapping of all asset filenames
-		// to their corresponding output file so that tools can pick it up.
-		new ManifestPlugin({
-			fileName: 'asset-manifest.json',
-		}),
+		// [soundcloud/chunk-manifest-webpack-plugin used to do this here]
 
 		...(config.isDebug
 			? [

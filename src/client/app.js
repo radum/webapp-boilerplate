@@ -1,4 +1,5 @@
 import now from 'lodash/now';
+import $ from 'jquery';
 
 import logger from './lib/logger';
 import Controller from './controller';
@@ -22,6 +23,8 @@ class App {
 		const setView = () => controller.setView(document.location.hash);
 		$on(window, 'load', setView);
 		$on(window, 'hashchange', setView);
+
+		$('body').append('jQuery fire to test webpack vendors split');
 
 		logger.log(`App module a initialized! ${now()}`);
 	}

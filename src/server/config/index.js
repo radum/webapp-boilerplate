@@ -16,7 +16,7 @@ const config = {
 			scriptsManifestFile: isProd ?
 				path.resolve(__dirname, '../static/scripts/asset-manifest.json') : path.resolve(__dirname, '../../../build/static/scripts/asset-manifest.json'),
 			assetsWebpackJsonFile: isProd ?
-				path.resolve(__dirname, '../assets.json') : path.resolve(__dirname, '../../../build/assets.json')
+				path.resolve(__dirname, '../asset-manifest.json') : path.resolve(__dirname, '../../../build/asset-manifest.json')
 		}
 	}
 };
