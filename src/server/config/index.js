@@ -14,7 +14,7 @@ const config = {
 			staticAssets: isProd ? path.resolve(__dirname, '../static') : path.resolve(__dirname, '../../../build/static'),
 			htmlTemplates: isProd ? path.resolve(__dirname, '../html') : path.resolve(__dirname, '../../html'),
 			scriptsManifestFile: isProd ?
-				path.resolve(__dirname, '../static/scripts/manifest.json') : path.resolve(__dirname, '../../../build/static/scripts/manifest.json'),
+				path.resolve(__dirname, '../static/scripts/asset-manifest.json') : path.resolve(__dirname, '../../../build/static/scripts/asset-manifest.json'),
 			assetsWebpackJsonFile: isProd ?
 				path.resolve(__dirname, '../assets.json') : path.resolve(__dirname, '../../../build/assets.json')
 		}

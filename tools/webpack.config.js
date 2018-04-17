@@ -5,12 +5,11 @@ const path = require('path');
 const webpack = require('webpack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
-// const ManifestPlugin = require('webpack-manifest-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
@@ -71,13 +70,13 @@ const webpackConfig = {
 				return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
 			}
 
-			return path.relative(config.paths.scriptsPath, info.absoluteResourcePath).replace(/\\/g, '/')
-		}
+			return path.relative(config.paths.scriptsPath, info.absoluteResourcePath).replace(/\\/g, '/');
+		},
 	},
 
 	watch: !config.isProd && config.isDebug,
 	watchOptions: {
-		ignored: /node_modules/
+		ignored: /node_modules/,
 	},
 
 	// Production Mode enables all sorts of optimizations
@@ -143,18 +142,20 @@ const webpackConfig = {
 				exclude: /(node_modules)/,
 				// https://github.com/babel/babel-loader#options
 				options: {
-					cacheDirectory: config.isDebug
-				}
+					cacheDirectory: config.isDebug,
+				},
 			},
 
 			// Convert plain text into JS module
 			{
 				test: /\.txt$/,
-				loader: 'raw-loader'
-			}
-		]
+				loader: 'raw-loader',
+			},
+		],
 	},
 
+	// optimization.runtimeChunk: true adds an additonal chunk to each entrypoint containing only the runtime
+	// optimization.runtimeChunk: 'single' is to be used if there is only 1 entry file
 	optimization: {
 		runtimeChunk: 'single',
 		splitChunks: {
@@ -163,10 +164,10 @@ const webpackConfig = {
 				commons: {
 					test: /[\\/]node_modules[\\/]/,
 					name: 'vendors',
-					chunks: 'all'
-				}
-			}
-		}
+					chunks: 'all',
+				},
+			},
+		},
 	},
 
 	plugins: [
@@ -176,13 +177,13 @@ const webpackConfig = {
 			'process.env.NODE_ENV': config.isDebug ? '"development"' : '"production"',
 			'process.env.BROWSER': true,
 			__BROWSER__: true,
-			__DEV__: config.isDebug
+			__DEV__: config.isDebug,
 		}),
 
 		// Forces webpack-dev-server program to write bundle files to the file system
 		// https://github.com/gajus/write-file-webpack-plugin
 		new WriteFilePlugin({
-			exitOnErrors: false
+			exitOnErrors: false,
 		}),
 
 		// Emit a file with assets paths
@@ -190,74 +191,82 @@ const webpackConfig = {
 		new AssetsPlugin({
 			path: path.resolve(__dirname, '..', config.paths.buildPath),
 			filename: 'assets.json',
-			prettyPrint: true
+			prettyPrint: true,
 		}),
 
-		// // Allows exporting a manifest that maps entry chunk names to their output files,
-		// // instead of keeping the mapping inside the webpack bootstrap.
-		// // The resulted content should then be inlined in a script tag like this:
-		// //
-		// // ```
-		// // <script>
-		// // window.webpackChunkManifest = {content of manifest.json};
-		// // </script>
-		// // ```
-		// //
-		// // Basicaly in the runtime.js generated file the following line:
-		// // script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
-		// // becomes this:
-		// // script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
-		// // Webpack can then read this mapping, assuming it is provided somehow on the client,
-		// // instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
-		// new ManifestPlugin({
-		// 	filename: 'manifest.json'
-		// }),
+		// Allows exporting a manifest that maps entry chunk names to their output files,
+		// instead of keeping the mapping inside the webpack bootstrap.
+		// The resulted content should then be inlined in a script tag like this:
+		//
+		// ```
+		// <script>
+		// window.webpackChunkManifest = {content of asset-manifest.json};
+		// </script>
+		// ```
+		//
+		// Basicaly in the runtime.js generated file the following line:
+		// script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
+		// becomes this:
+		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
+		// Webpack can then read this mapping, assuming it is provided somehow on the client,
+		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
 
-		...(config.isDebug ? [
-			// TODO: Document this
-			new webpack.HotModuleReplacementPlugin(),
+		// Generate a manifest file which contains a mapping of all asset filenames
+		// to their corresponding output file so that tools can pick it up.
+		new ManifestPlugin({
+			fileName: 'asset-manifest.json',
+		}),
 
-			// Watcher doesn't work well if you mistype casing in a path so we use
-			// a plugin that prints an error when you attempt to do this.
-			// See https://github.com/facebookincubator/create-react-app/issues/240
-			new CaseSensitivePathsPlugin(),
+		...(config.isDebug
+			? [
+				// TODO: Document this
+				new webpack.HotModuleReplacementPlugin(),
 
-			// TODO: This is cool but do I need it?
-			// Huge vendors file, and Express server needs to restart each time
-			// because new compiled files are added to the mix
-			// new ErrorOverlayPlugin(),
+				// Watcher doesn't work well if you mistype casing in a path so we use
+				// a plugin that prints an error when you attempt to do this.
+				// See https://github.com/facebookincubator/create-react-app/issues/240
+				new CaseSensitivePathsPlugin(),
 
-			// TODO: Should run for PROD also, but under a flag clik like --monitor
-			// TODO: Maybe set `launch` to true under a flag?
-			new WebpackMonitor({
-				capture: true, // -> default 'true'
-				target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
-				launch: false, // -> default 'false'
-				port: 3030, // default -> 8081
-			}),
+				// TODO: This is cool but do I need it?
+				// Huge vendors file, and Express server needs to restart each time
+				// because new compiled files are added to the mix
+				// new ErrorOverlayPlugin(),
 
-			// new WebpackBar()
-		] : [
-			// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
-			new webpack.HashedModuleIdsPlugin(),
+				// TODO: Should run for PROD also, but under a flag clik like --monitor
+				// TODO: Maybe set `launch` to true under a flag?
+				new WebpackMonitor({
+					capture: true, // -> default 'true'
+					target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
+					launch: false, // -> default 'false'
+					port: 3030, // default -> 8081
+				}),
+			]
+			: [
+				// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
+				new webpack.HashedModuleIdsPlugin(),
 
-			// TODO: Document this
-			// TODO: Maybe find a way to refresh the workers on DEV also
-			new GenerateSW({
-				globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-				globPatterns: ['**/*.{html,js,css}'],
-				swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-			}),
-		]),
+				// TODO: Document this
+				// TODO: Maybe find a way to refresh the workers on DEV also
+				new GenerateSW({
+					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+					globPatterns: ['**/*.{html,js,css}'],
+					swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+				}),
+
+				// // Elegant ProgressBar and Profiler for Webpack
+				// new WebpackBar()
+			]),
 
 		// Webpack Bundle Analyzer
 		// https://github.com/th0r/webpack-bundle-analyzer
-		...(!config.isAnalyze ? [] : [
-			new BundleAnalyzerPlugin(),
-			new Jarvis({
-				port: 1337
-			})
-		])
+		...(!config.isAnalyze
+			? []
+			: [
+				new BundleAnalyzerPlugin(),
+				new Jarvis({
+					port: 1337,
+				}),
+			]),
 	],
 
 	// Some libraries import Node modules but don't use them in the browser.
@@ -274,8 +283,8 @@ const webpackConfig = {
 	// splitting or minification in interest of speed. These warnings become
 	// cumbersome.
 	performance: {
-		hints: (!config.isProd && config.isDebug) ? 'warning' : false
-	}
+		hints: !config.isProd && config.isDebug ? 'warning' : false,
+	},
 };
 
 // Export the webpack config

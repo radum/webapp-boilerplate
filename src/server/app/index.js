@@ -42,7 +42,6 @@ app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
 
 // Register Node.js middleware
-// app.use(express.static(config.server.paths.staticAssets));
 app.use('/', express.static(config.server.paths.staticAssets));
 
 // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
@@ -98,7 +97,7 @@ app.use(serverTiming());
 const tplData = {
 	isProd: config.isProd,
 	// TODO: Removed for now because not sure how Webpack 4 works
-	webpackChunkManifestContent: false, // fs.readFileSync(config.server.paths.scriptsManifestFile),
+	webpackChunkManifestContent: fs.readFileSync(config.server.paths.scriptsManifestFile),
 	assets: {
 		scripts: []
 	},
