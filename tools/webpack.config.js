@@ -23,17 +23,18 @@ const webpackConfig = {
 	context: path.resolve(__dirname, '..'),
 
 	// Point of entry for webpack to do its magic
-	entry: [
+	entry: {
 		// Usual entry location: './src/client/main.js'
 		// TODO: This `./` is stupid fix it
-		'./' + config.paths.scriptsEntryPoint,
+		main: './' + config.paths.scriptsEntryPoint,
+		about: './src/client/pages/about.js',
 
 		// This is use to auto reload the browser when the code changes. We don't have a watch and webpack complile repeat task.
 		// The hot middleware handles the browser reload for us.
 		// Only used in dev mode and reload automaticaly if webpack is stuck
 		// https://github.com/glenjamin/webpack-hot-middleware
 		// ...(config.isDebug ? ['webpack-hot-middleware/client?name=client&reload=true&noInfo=false'] : [])
-	],
+	},
 
 	// Output will be saved in `build/static/scripts` folder as per the `path` prop here
 	// And the filename will be `main.build.js`. With every line of the source in the bundle prefixed with 1 tab
@@ -55,7 +56,7 @@ const webpackConfig = {
 		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 
 		// TODO: Understand what this does
-		chunkFilename: '[name].build.[chunkhash:8].js',
+		chunkFilename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 
 		// Change the prefix for each line in the output bundles.
 		// Using some kind of indentation makes bundles look more pretty, but will cause issues with multi-line strings.
@@ -64,7 +65,7 @@ const webpackConfig = {
 		// Point sourcemap entries to original disk location (format as URL on Windows)
 		// In devtools sources tab, the original files will not appear under webpack.
 		// They will appear in the main url root next to styles.
-		devtoolModuleFilenameTemplate: (info) => {
+		devtoolModuleFilenameTemplate: info => {
 			if (config.isDebug) {
 				return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
 			}
@@ -189,9 +190,9 @@ const webpackConfig = {
 		// to their corresponding output file so that tools can pick it up.
 		new ManifestPlugin({
 			fileName: '../../asset-manifest.json',
-			filter: (file) => {
+			filter: file => {
 				return file.name.indexOf('.map') < 0;
-			}
+			},
 		}),
 
 		// Allows exporting a manifest that maps entry chunk names to their output files,
@@ -214,54 +215,54 @@ const webpackConfig = {
 
 		...(config.isDebug
 			? [
-				// TODO: Document this
-				new webpack.HotModuleReplacementPlugin(),
+					// TODO: Document this
+					new webpack.HotModuleReplacementPlugin(),
 
-				// Watcher doesn't work well if you mistype casing in a path so we use
-				// a plugin that prints an error when you attempt to do this.
-				// See https://github.com/facebookincubator/create-react-app/issues/240
-				new CaseSensitivePathsPlugin(),
+					// Watcher doesn't work well if you mistype casing in a path so we use
+					// a plugin that prints an error when you attempt to do this.
+					// See https://github.com/facebookincubator/create-react-app/issues/240
+					new CaseSensitivePathsPlugin(),
 
-				// TODO: This is cool but do I need it?
-				// Huge vendors file, and Express server needs to restart each time
-				// because new compiled files are added to the mix
-				// new ErrorOverlayPlugin(),
+					// TODO: This is cool but do I need it?
+					// Huge vendors file, and Express server needs to restart each time
+					// because new compiled files are added to the mix
+					// new ErrorOverlayPlugin(),
 
-				// TODO: Should run for PROD also, but under a flag clik like --monitor
-				// TODO: Maybe set `launch` to true under a flag?
-				new WebpackMonitor({
-					capture: true, // -> default 'true'
-					target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
-					launch: false, // -> default 'false'
-					port: 3030, // default -> 8081
-				}),
-			]
+					// TODO: Should run for PROD also, but under a flag clik like --monitor
+					// TODO: Maybe set `launch` to true under a flag?
+					new WebpackMonitor({
+						capture: true, // -> default 'true'
+						target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
+						launch: false, // -> default 'false'
+						port: 3030, // default -> 8081
+					}),
+			  ]
 			: [
-				// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
-				new webpack.HashedModuleIdsPlugin(),
+					// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
+					new webpack.HashedModuleIdsPlugin(),
 
-				// TODO: Document this
-				// TODO: Maybe find a way to refresh the workers on DEV also
-				new GenerateSW({
-					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-					globPatterns: ['**/*.{html,js,css}'],
-					swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-				}),
+					// TODO: Document this
+					// TODO: Maybe find a way to refresh the workers on DEV also
+					new GenerateSW({
+						globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+						globPatterns: ['**/*.{html,js,css}'],
+						swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+					}),
 
-				// // Elegant ProgressBar and Profiler for Webpack
-				// new WebpackBar()
-			]),
+					// // Elegant ProgressBar and Profiler for Webpack
+					// new WebpackBar()
+			  ]),
 
 		// Webpack Bundle Analyzer
 		// https://github.com/th0r/webpack-bundle-analyzer
 		...(!config.isAnalyze
 			? []
 			: [
-				new BundleAnalyzerPlugin(),
-				new Jarvis({
-					port: 1337,
-				}),
-			]),
+					new BundleAnalyzerPlugin(),
+					new Jarvis({
+						port: 1337,
+					}),
+			  ]),
 	],
 
 	// Some libraries import Node modules but don't use them in the browser.

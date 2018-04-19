@@ -25,6 +25,13 @@ class App {
 		$on(window, 'hashchange', setView);
 
 		$('body').append('jQuery fire to test webpack vendors split');
+		// import(
+		// 	/* webpackChunkName: "jquery" */
+		// 	/* webpackMode: "lazy" */
+		// 	'jquery'
+		// ).then($ => {
+		// 	$.default('body').append('jQuery fire to test webpack vendors split');
+		// });
 
 		logger.log(`App module a initialized! ${now()}`);
 	}

@@ -33,7 +33,7 @@ require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
 require('marko/node-require'); // Allow Node.js to require and load `.marko` files
 const markoExpress = require('marko/express');
 
-const indexTpl = require(config.server.paths.htmlTemplates + '/index.marko');
+const appTpl = require(`${config.server.paths.htmlTemplates}/app.marko`);
 
 const app = express();
 
@@ -105,7 +105,7 @@ const tplData = {
 	},
 	browserSync: {
 		HOST: '',
-	},
+	}
 };
 
 if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['runtime.js']);
@@ -117,7 +117,7 @@ app.get('/', (req, res) => {
 		tplData.browserSync.HOST = req.headers.host;
 	}
 
-	res.marko(indexTpl, tplData);
+	res.marko(appTpl, tplData);
 });
 
 //

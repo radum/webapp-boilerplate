@@ -4,34 +4,7 @@
 		<include('./includes/head-content.marko', data) />
 	</head>
 	<body>
-		<header>
-			<h1>Hello World!</h1>
-		</header>
-
-		<section class="todoapp">
-			<header class="header">
-				<h1>todos</h1>
-				<input class="new-todo" placeholder="What needs to be done?" autofocus>
-			</header>
-			<section style="display:none" class="main">
-				<input class="toggle-all" type="checkbox">
-				<label for="toggle-all">Mark all as complete</label>
-				<ul class="todo-list"></ul>
-				<footer class="footer">
-					<span class="todo-count"></span>
-					<div class="filters">
-						<a href="#/" class="selected">All</a>
-						<a href="#/active">Active</a>
-						<a href="#/completed">Completed</a>
-					</div>
-					<button class="clear-completed">Clear completed</button>
-				</footer>
-			</section>
-		</section>
-
-		<footer>
-			<p>Made with ❤️ by RaduM</p>
-		</footer>
+		<include('./pages/index.marko') />
 
 		<!-- <script src="https://cdn.jsdelivr.net/modernizr/3.3.1/modernizr.min.js" integrity="sha256-65rhSmwPSQGe83K1p6cudTQxfiMNutuHCIB0n8CqvF4=" crossorigin="anonymous"></script> -->
 		<if(data.webpackChunkManifestContent)>
