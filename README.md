@@ -183,6 +183,7 @@ Documents your database design and schemas, relations etc...
       - https://alistapart.com/article/yes-that-web-project-should-be-a-pwa
       - https://www.viget.com/articles/managing-css-js-http-2
       - https://youtu.be/5xj4kqSFs8Q?t=19055
+	  - https://blog.risingstack.com/node-js-project-structure-tutorial-node-js-at-scale/
 
 ## Contribute
 
