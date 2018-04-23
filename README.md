@@ -188,6 +188,7 @@ Documents your database design and schemas, relations etc...
 	  - https://philipwalton.com/articles/the-google-analytics-setup-i-use-on-every-site-i-build/
 	  - https://github.com/GoogleChromeLabs/webpack-libs-optimizations
 	  - https://github.com/GoogleChromeLabs/webpack-training-project
+	  - https://github.com/lakshyaranganath/pwa
 
 ## Contribute
 
