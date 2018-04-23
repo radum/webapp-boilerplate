@@ -48,8 +48,8 @@ Before you start, take a moment to see how the project structure looks like:
 You can start by cloning the latest version on your local machine by running:
 
 ```shell
-$ git clone -o webapp-boilerplate-webpack -b master --single-branch \
-      https://github.com/radum/webapp-boilerplate-webpack.git MyApp
+$ git clone -o webapp-boilerplate -b master --single-branch \
+      https://github.com/radum/webapp-boilerplate.git MyApp
 $ cd MyApp
 ```
 
@@ -113,12 +113,12 @@ $ npm run deploy
 ### How to Update
 
 If you need to keep your project up to date with the recent changes made to RSK,
-you can always fetch and merge them from [this repo](https://github.com/radum/webapp-boilerplate-webpack)
+you can always fetch and merge them from [this repo](https://github.com/radum/webapp-boilerplate)
 back into your own project by running:
 
 ```shell
 $ git checkout master
-$ git fetch webapp-boilerplate-webpack
-$ git merge webapp-boilerplate-webpack/master
+$ git fetch webapp-boilerplate
+$ git merge webapp-boilerplate/master
 $ npm install
 ```

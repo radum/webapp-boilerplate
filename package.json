@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "webapp-boilerplate-webpack",
+  "name": "webapp-boilerplate",
   "version": "0.1.0",
   "description": "Scaffold out a front-end web app using Webpack, Express.js, and others",
   "license": "MIT @ Radu Micu",
