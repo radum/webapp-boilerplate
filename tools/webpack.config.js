@@ -65,7 +65,7 @@ const webpackConfig = {
 		// Point sourcemap entries to original disk location (format as URL on Windows)
 		// In devtools sources tab, the original files will not appear under webpack.
 		// They will appear in the main url root next to styles.
-		devtoolModuleFilenameTemplate: info => {
+		devtoolModuleFilenameTemplate: (info) => {
 			if (config.isDebug) {
 				return path.resolve(info.absoluteResourcePath).replace(/\\/g, '/');
 			}
@@ -190,7 +190,7 @@ const webpackConfig = {
 		// to their corresponding output file so that tools can pick it up.
 		new ManifestPlugin({
 			fileName: '../../asset-manifest.json',
-			filter: file => {
+			filter: (file) => {
 				return file.name.indexOf('.map') < 0;
 			},
 		}),
@@ -215,54 +215,62 @@ const webpackConfig = {
 
 		...(config.isDebug
 			? [
-					// TODO: Document this
-					new webpack.HotModuleReplacementPlugin(),
+				// Enables Hot Module Replacement, otherwise known as HMR
+				// Should never be used in PROD. For each small change will add change or remove
+				// modules (tiny js files), while the app is running. This will hekp to retai app state, etc.
+				// https://webpack.js.org/concepts/hot-module-replacement/
+				new webpack.HotModuleReplacementPlugin(),
 
-					// Watcher doesn't work well if you mistype casing in a path so we use
-					// a plugin that prints an error when you attempt to do this.
-					// See https://github.com/facebookincubator/create-react-app/issues/240
-					new CaseSensitivePathsPlugin(),
+				// Will cause the relative path of the module to be displayed when HMR is enabled
+				new webpack.NamedModulesPlugin(),
 
-					// TODO: This is cool but do I need it?
-					// Huge vendors file, and Express server needs to restart each time
-					// because new compiled files are added to the mix
-					// new ErrorOverlayPlugin(),
+				// Watcher doesn't work well if you mistype casing in a path so we use
+				// a plugin that prints an error when you attempt to do this.
+				// See https://github.com/facebookincubator/create-react-app/issues/240
+				new CaseSensitivePathsPlugin(),
 
-					// TODO: Should run for PROD also, but under a flag clik like --monitor
-					// TODO: Maybe set `launch` to true under a flag?
-					new WebpackMonitor({
-						capture: true, // -> default 'true'
-						target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
-						launch: false, // -> default 'false'
-						port: 3030, // default -> 8081
-					}),
-			  ]
+				// TODO: This is cool but do I need it?
+				// Huge vendors file, and Express server needs to restart each time
+				// because new compiled files are added to the mix
+				// new ErrorOverlayPlugin(),
+
+				// TODO: Should run for PROD also, but under a flag clik like --monitor
+				// TODO: Maybe set `launch` to true under a flag?
+				new WebpackMonitor({
+					capture: true, // -> default 'true'
+					target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
+					launch: false, // -> default 'false'
+					port: 3030, // default -> 8081
+				})
+			]
 			: [
-					// TODO: NamedModulesPlugin leaks path (suited for DEV), alternative could be HashedModuleIdsPlugin (more suited for PRDO)
-					new webpack.HashedModuleIdsPlugin(),
+				// NamedModulesPlugin leaks path (suited for DEV)
+				// Will cause hashes to be based on the relative path of the module,
+				// generating a four character string as the module id
+				new webpack.HashedModuleIdsPlugin(),
 
-					// TODO: Document this
-					// TODO: Maybe find a way to refresh the workers on DEV also
-					new GenerateSW({
-						globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-						globPatterns: ['**/*.{html,js,css}'],
-						swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-					}),
+				// TODO: Document this
+				// TODO: Maybe find a way to refresh the workers on DEV also
+				new GenerateSW({
+					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+					globPatterns: ['**/*.{html,js,css}'],
+					swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+				}),
 
-					// // Elegant ProgressBar and Profiler for Webpack
-					// new WebpackBar()
-			  ]),
+				// // Elegant ProgressBar and Profiler for Webpack
+				// new WebpackBar()
+			]),
 
 		// Webpack Bundle Analyzer
 		// https://github.com/th0r/webpack-bundle-analyzer
 		...(!config.isAnalyze
 			? []
 			: [
-					new BundleAnalyzerPlugin(),
-					new Jarvis({
-						port: 1337,
-					}),
-			  ]),
+				new BundleAnalyzerPlugin(),
+				new Jarvis({
+					port: 1337,
+				}),
+			]),
 	],
 
 	// Some libraries import Node modules but don't use them in the browser.
