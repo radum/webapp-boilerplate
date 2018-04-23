@@ -155,8 +155,6 @@ Documents your database design and schemas, relations etc...
       - https://github.com/jonathantneal/postcss-normalize
       - https://github.com/NekR/offline-plugin
       - https://github.com/fervorous/fervor
-      - https://philipwalton.com/articles/the-google-analytics-setup-i-use-on-every-site-i-build/
-      - https://philipwalton.com/articles/deploying-es2015-code-in-production-today/
       - https://mozilla.github.io/server-side-tls/ssl-config-generator/
       - https://github.com/evilebottnawi/favicons
       - https://www.npmjs.com/package/npm-run-all
@@ -170,6 +168,8 @@ Documents your database design and schemas, relations etc...
       - https://www.npmjs.com/package/boom
       - https://github.com/godaddy/terminus
       - https://github.com/mzgoddard/hard-source-webpack-plugin
+	  - https://github.com/terkelg/tiny-glob
+	  - https://github.com/webpack/watchpack
 - [ ]  Learn from others how its done:
       - https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
       - https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
@@ -184,6 +184,10 @@ Documents your database design and schemas, relations etc...
       - https://www.viget.com/articles/managing-css-js-http-2
       - https://youtu.be/5xj4kqSFs8Q?t=19055
 	  - https://blog.risingstack.com/node-js-project-structure-tutorial-node-js-at-scale/
+	  - https://philipwalton.com/articles/deploying-es2015-code-in-production-today/
+	  - https://philipwalton.com/articles/the-google-analytics-setup-i-use-on-every-site-i-build/
+	  - https://github.com/GoogleChromeLabs/webpack-libs-optimizations
+	  - https://github.com/GoogleChromeLabs/webpack-training-project
 
 ## Contribute
 
