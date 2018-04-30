@@ -31,7 +31,11 @@ class App {
 		// 	'jquery'
 		// ).then($ => {
 		// 	$.default('body').append('jQuery fire to test webpack vendors split');
-		// });
+		// }).catch(
+		// 	error => {
+		// 		console.log(err);
+		// 	}
+		// );
 
 		const testBabelNeedForRuntimeOrPolyfil = [6, -5, 8].find(x => x < 0);
 		console.log(`Babel runtime or polyfil added and works: ${testBabelNeedForRuntimeOrPolyfil}`);
