@@ -14,6 +14,7 @@ const config = {
 	paths: {
 		srcPath: 'src',
 		buildPath: 'build',
+		cacheFolder: '.cache',
 
 		styles: 'src/styles/**/*.scss',
 		stylesEntryPoint: 'src/styles/main.scss',

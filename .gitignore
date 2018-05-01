@@ -8,6 +8,7 @@ dist
 .tmp
 .sass-cache
 .esm-cache
+.cache
 
 coverage
 .nyc_output

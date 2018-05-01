@@ -15,6 +15,7 @@ const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/runServer');
 const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
+const stylesLint = require('./tasks/styles-lint');
 
 async function startDev(flags) {
 	const defaultSettings = {
@@ -57,12 +58,19 @@ async function startBuild(flags) {
 	]);
 }
 
+async function startLint(flags) {
+	await stylesLint();
+}
+
 switch (cli.input[0]) {
 	case 'dev':
 		startDev(cli.flags);
 		break;
 	case 'build':
 		startBuild(cli.flags);
+		break;
+	case 'lint':
+		startLint(cli.flags);
 		break;
 	default:
 		startBuild(cli.flags);
