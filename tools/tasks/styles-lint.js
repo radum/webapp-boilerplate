@@ -6,7 +6,7 @@ const stylelintFormatter = require('stylelint-formatter-pretty');
 const config = require('../config');
 const Logger = require('../lib/logger');
 
-function clean(options = { isVerbose: false }) {
+function stylesLint(options = { isVerbose: false }) {
 	const logger = new Logger({
 		name: 'styles-lint',
 		isVerbose: options.isVerbose,
@@ -39,4 +39,4 @@ function clean(options = { isVerbose: false }) {
 	return task;
 }
 
-module.exports = clean;
+module.exports = stylesLint;

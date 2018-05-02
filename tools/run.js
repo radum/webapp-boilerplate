@@ -16,6 +16,7 @@ const runServer = require('./tasks/runServer');
 const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
 const stylesLint = require('./tasks/styles-lint');
+const jsLint = require('./tasks/js-lint');
 
 async function startDev(flags) {
 	const defaultSettings = {
@@ -58,8 +59,11 @@ async function startBuild(flags) {
 	]);
 }
 
-async function startLint(flags) {
-	await stylesLint();
+async function startLint() {
+	await Promise.all([
+		stylesLint(),
+		jsLint()
+	]);
 }
 
 switch (cli.input[0]) {

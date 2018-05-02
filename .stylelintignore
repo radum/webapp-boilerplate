@@ -1,2 +1,2 @@
 node_modules
-app/styles/generic/_generic.normalize.scss
+src/styles/generic/_generic.normalize.scss
