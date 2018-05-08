@@ -70,6 +70,7 @@
     "clean-css": "~4.1.11",
     "cross-env": "~5.1.4",
     "debug": "~3.1.0",
+    "directory-named-webpack-plugin": "^4.0.0",
     "emittery": "~0.3.0",
     "error-overlay-webpack-plugin": "~0.1.4",
     "eslint": "~4.19.1",

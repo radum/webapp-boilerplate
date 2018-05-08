@@ -8,6 +8,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WebpackMonitor = require('webpack-monitor');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -179,6 +180,12 @@ const webpackConfig = {
 			__BROWSER__: true,
 			__DEV__: config.isDebug,
 		}),
+
+		// Normally, Webpack looks for index file when the path passed to require points to a directory;
+		// which means there may have a lot of index files.
+		// This plugin makes it possible to control what file within directory will be treated as entry file.
+		// https://www.npmjs.com/package/directory-named-webpack-plugin
+		new DirectoryNamedWebpackPlugin(true),
 
 		// Forces webpack-dev-server program to write bundle files to the file system
 		// https://github.com/gajus/write-file-webpack-plugin
