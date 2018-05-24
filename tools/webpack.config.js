@@ -171,6 +171,16 @@ const webpackConfig = {
 		},
 	},
 
+	resolve: {
+		plugins: [
+			// Normally, Webpack looks for index file when the path passed to require points to a directory;
+			// which means there may have a lot of index files.
+			// This plugin makes it possible to control what file within directory will be treated as entry file.
+			// https://www.npmjs.com/package/directory-named-webpack-plugin
+			new DirectoryNamedWebpackPlugin(true)
+		]
+	},
+
 	plugins: [
 		// The DefinePlugin allows you to create global constants which can be configured at compile time
 		// https://webpack.js.org/plugins/define-plugin/
@@ -180,12 +190,6 @@ const webpackConfig = {
 			__BROWSER__: true,
 			__DEV__: config.isDebug,
 		}),
-
-		// Normally, Webpack looks for index file when the path passed to require points to a directory;
-		// which means there may have a lot of index files.
-		// This plugin makes it possible to control what file within directory will be treated as entry file.
-		// https://www.npmjs.com/package/directory-named-webpack-plugin
-		new DirectoryNamedWebpackPlugin(true),
 
 		// Forces webpack-dev-server program to write bundle files to the file system
 		// https://github.com/gajus/write-file-webpack-plugin
