@@ -4,6 +4,8 @@
 const path = require('path');
 const webpack = require('webpack');
 
+const aliases = require('./aliases.config');
+
 const ManifestPlugin = require('webpack-manifest-plugin');
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
@@ -172,6 +174,11 @@ const webpackConfig = {
 	},
 
 	resolve: {
+		// Create aliases to import or require certain modules more easily, for example:
+		// `@design': './../src/styles/main.scss` and the we can import like this:
+		// `import '@design';` which will import the main.scss from above using the right path
+		alias: aliases.webpack,
+		// A list of additional resolve plugins which should be applied
 		plugins: [
 			// Normally, Webpack looks for index file when the path passed to require points to a directory;
 			// which means there may have a lot of index files.
