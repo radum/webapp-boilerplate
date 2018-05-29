@@ -77,11 +77,6 @@ const webpackConfig = {
 		},
 	},
 
-	watch: !config.isProd && config.isDebug,
-	watchOptions: {
-		ignored: /node_modules/,
-	},
-
 	// Production Mode enables all sorts of optimizations
 	// This includes, minification, scope hoisting, tree-shaking,
 	// side-effect - free module pruning,
@@ -89,10 +84,13 @@ const webpackConfig = {
 	// Development Mode optimized for speed and developer experience
 	// automatically include features like path names in your bundle output, eval-source-maps,
 	// that are meant for easy-to-read code, and fast build times
+	// https://webpack.js.org/concepts/mode/
 	mode: !config.isProd ? 'development' : 'production',
 
-	// Compile for usage in a browser-like environment (default)
-	target: 'web',
+	watch: !config.isProd && config.isDebug,
+	watchOptions: {
+		ignored: /node_modules/
+	},
 
 	// Choose a developer tool to enhance debugging
 	// https://webpack.js.org/configuration/devtool/#devtool
@@ -235,12 +233,9 @@ const webpackConfig = {
 			? [
 				// Enables Hot Module Replacement, otherwise known as HMR
 				// Should never be used in PROD. For each small change will add change or remove
-				// modules (tiny js files), while the app is running. This will hekp to retai app state, etc.
+				// modules (tiny js files), while the app is running. This will help to retain app state, etc.
 				// https://webpack.js.org/concepts/hot-module-replacement/
 				new webpack.HotModuleReplacementPlugin(),
-
-				// Will cause the relative path of the module to be displayed when HMR is enabled
-				new webpack.NamedModulesPlugin(),
 
 				// Watcher doesn't work well if you mistype casing in a path so we use
 				// a plugin that prints an error when you attempt to do this.
