@@ -29,7 +29,7 @@ class Reporter {
 
 	set taskname(name) {
 		this.taskName = name;
-		this.prefixColor = (new Randoma({ seed: `${name}x` })).color().hex().toString();
+		// this.prefixColor = (new Randoma({ seed: `${Randoma.seed()}` })).color(0.75).hex().toString();
 	}
 
 	chalkColor(text) {

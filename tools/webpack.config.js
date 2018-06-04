@@ -11,7 +11,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
-const WebpackMonitor = require('webpack-monitor');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
@@ -246,15 +245,6 @@ const webpackConfig = {
 				// Huge vendors file, and Express server needs to restart each time
 				// because new compiled files are added to the mix
 				// new ErrorOverlayPlugin(),
-
-				// TODO: Should run for PROD also, but under a flag clik like --monitor
-				// TODO: Maybe set `launch` to true under a flag?
-				new WebpackMonitor({
-					capture: true, // -> default 'true'
-					target: '../.webpack-monitor/myStatsStore.json', // default -> '../monitor/stats.json'
-					launch: false, // -> default 'false'
-					port: 3030, // default -> 8081
-				})
 			]
 			: [
 				// NamedModulesPlugin leaks path (suited for DEV)
