@@ -68,7 +68,7 @@
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "chokidar": "^2.0.3",
     "clean-css": "^4.1.11",
-    "cross-env": "^5.1.6",
+    "cross-env": "^5.2.0",
     "debug": "^3.1.0",
     "directory-named-webpack-plugin": "^4.0.0",
     "emittery": "^0.3.0",
