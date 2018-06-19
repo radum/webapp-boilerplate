@@ -47,7 +47,7 @@
     "express": "^4.16.3",
     "express-minify-html": "^0.12.0",
     "express-session": "^1.15.6",
-    "express-status-monitor": "^1.0.1",
+    "express-status-monitor": "^1.1.0",
     "jquery": "^3.3.1",
     "lodash": "^4.17.10",
     "lusca": "^1.6.0",
@@ -66,7 +66,7 @@
     "babel-loader": "^8.0.0-beta.3",
     "browser-sync": "^2.24.4",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
-    "chokidar": "^2.0.3",
+    "chokidar": "^2.0.4",
     "clean-css": "^4.1.11",
     "cross-env": "^5.2.0",
     "debug": "^3.1.0",
@@ -118,7 +118,7 @@
     "webpack-manifest-plugin": "^2.0.3",
     "webpack-monitor": "^1.0.14",
     "webpackbar": "^2.6.1",
-    "workbox-webpack-plugin": "^3.2.0",
+    "workbox-webpack-plugin": "^3.3.0",
     "write-file-webpack-plugin": "^4.3.2"
   }
 }
