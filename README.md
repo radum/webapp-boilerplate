@@ -171,6 +171,7 @@ Documents your database design and schemas, relations etc...
 	  - https://github.com/terkelg/tiny-glob
 	  - https://github.com/webpack/watchpack
 - [ ]  Learn from others how its done:
+      - https://github.com/parcel-bundler/parcel/commit/af4cd330e91197fd88d826fd17440452f64e5c8a
       - https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js
       - https://github.com/insin/nwb/blob/next/src/createWebpackConfig.js
       - https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/config/webpack.config.dev.js
