@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
 const cli = require('./cli');
@@ -75,6 +76,9 @@ switch (cli.input[0]) {
 		break;
 	case 'lint':
 		startLint(cli.flags);
+		break;
+	case 'version':
+		console.log('{version.number}');
 		break;
 	default:
 		startBuild(cli.flags);
