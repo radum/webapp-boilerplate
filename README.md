@@ -1,4 +1,4 @@
-[![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate/status.svg)](https://david-dm.org/radum/webapp-boilerplate/) [![David Dev Dependency Badge](https://david-dm.org/radum/webapp-boilerplate/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate/#info=devDependencies)
+[![David Dependency Badge](https://david-dm.org/radum/webapp-boilerplate/status.svg)](https://david-dm.org/radum/webapp-boilerplate/) [![David Dev Dependency Badge](https://david-dm.org/radum/webapp-boilerplate/dev-status.svg)](https://david-dm.org/radum/webapp-boilerplate/#info=devDependencies) [![Greenkeeper badge](https://badges.greenkeeper.io/radum/webapp-boilerplate.svg)](https://greenkeeper.io/)
 
 ![Logo of the project](./images/logo.sample.png)
 
