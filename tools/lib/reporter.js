@@ -16,6 +16,19 @@ const defaults = {
 	verbose: false
 };
 
+const ICONS = {
+	start: figures('●'),
+	info: figures('ℹ'),
+	success: figures('✔'),
+	error: figures('✖'),
+	fatal: figures('✖'),
+	warn: figures('⚠'),
+	debug: figures('…'),
+	trace: figures('…'),
+	default: figures('❯'),
+	ready: figures('♥')
+}
+
 const tasks = {};
 
 class Reporter {
@@ -45,9 +58,12 @@ class Reporter {
 			totalTime: +new Date()
 		};
 
-		const text = msg ? `Starting - ${msg}` : 'Starting';
+		let text = chalk.blue(`${ICONS.start} start`);
+		if (msg) {
+			text += ' ' + msg;
+		}
 
-		console.log(this._getPrefix() + ' ' + chalk.yellow(`${figures.arrowRight} ${text}`));
+		console.log(this._getPrefix() + ' ' + chalk.yellow(`${text}`));
 	}
 
 	log(msg) {
@@ -55,14 +71,14 @@ class Reporter {
 	}
 
 	done(msg) {
-		const text = msg ? `done - ${msg}` : 'done';
+		const text = msg ? `success - ${msg}` : 'success';
 		const time = chalk.gray(humanizeMs(new Date() - tasks[this.taskName].totalTime));
 
-		console.log(this._getPrefix() + ' ' + chalk.green(`${figures.tick} ${text}`) + ' ' + time);
+		console.log(this._getPrefix() + ' ' + chalk.green(`${ICONS.success} ${text}`) + ' ' + time);
 	}
 
 	error(msg) {
-		const text = msg ? `Task error - ${msg}` : 'Task error';
+		const text = msg ? `task error - ${msg}` : 'task error';
 
 		console.error(this._getPrefix() + ' ' + chalk.red(`${figures.cross} ${text}`));
 	}

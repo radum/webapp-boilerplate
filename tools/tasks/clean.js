@@ -16,7 +16,7 @@ function clean(options = { isVerbose: false }) {
 	});
 
 	logger.start('cleaning temp folders');
-	logger.log('cleaning path: ' + config.paths.buildPath);
+	logger.verbose().log('cleaning path: ' + config.paths.buildPath);
 
 	const task = Promise.all([
 		fs.cleanDir(config.paths.buildPath + '/*', {

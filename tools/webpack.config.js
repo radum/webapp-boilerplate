@@ -84,7 +84,7 @@ const webpackConfig = {
 	// automatically include features like path names in your bundle output, eval-source-maps,
 	// that are meant for easy-to-read code, and fast build times
 	// https://webpack.js.org/concepts/mode/
-	mode: !config.isProd ? 'development' : 'production',
+	mode: config.isDebug ? 'development' : 'production',
 
 	watch: !config.isProd && config.isDebug,
 	watchOptions: {
