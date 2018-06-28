@@ -55,7 +55,7 @@
     "marko": "^4.11.3",
     "morgan": "^1.9.0",
     "pretty-error": "^2.1.1",
-    "server-timing": "^2.0.0",
+    "server-timing": "^2.1.0",
     "spdy": "^3.4.7",
     "time-stamp": "^2.0.0"
   },
@@ -112,7 +112,7 @@
     "stylelint-no-unsupported-browser-features": "^3.0.0",
     "stylelint-scss": "^3.1.3",
     "supports-color": "^5.4.0",
-    "webpack": "^4.12.1",
+    "webpack": "^4.12.2",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-dev-middleware": "^3.1.3",
     "webpack-hot-middleware": "^2.22.2",
@@ -120,7 +120,7 @@
     "webpack-manifest-plugin": "^2.0.3",
     "webpack-monitor": "^1.0.14",
     "webpackbar": "^2.6.1",
-    "workbox-webpack-plugin": "^3.3.0",
+    "workbox-webpack-plugin": "^3.3.1",
     "write-file-webpack-plugin": "^4.3.2"
   }
 }
