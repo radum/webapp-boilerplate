@@ -33,6 +33,7 @@
     "build": "cross-env NODE_ENV=production node tools/run.js build",
     "build:release": "cross-env NODE_ENV=production node tools/run.js build --release",
     "build:analyze": "npm run build -- --analyze",
+    "analyze:bundle-buddy": "npx bundle-buddy build/static/scripts/*.map",
     "deploy:heroku": "git subtree push --prefix build heroku master",
     "analyze:slow-deps": "npm slow-deps",
     "test": "ava --verbose"
