@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
+// NPM dep was removed "favicons": "^5.1.1",
 const fs = require('fs');
 const chalk = require('chalk');
 const favicons = require('favicons');

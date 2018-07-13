@@ -1,6 +1,7 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const path = require('path');
+// TODO: use dart Sass?
 const sass = require('node-sass');
 const fs = require('../lib/fs');
 const Logger = require('../lib/logger');

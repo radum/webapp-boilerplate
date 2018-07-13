@@ -14,15 +14,15 @@ const Logger = require('../lib/logger');
 async function copyStatic(options = { isVerbose: false }) {
 	const logger = new Logger({
 		name: 'copy:static',
-		isVerbose: options.isVerbose
+		verbose: config.isVerbose
 	});
 
 	logger.start();
 
-	logger.log('make dir → ' + config.paths.buildPath);
+	logger.verbose().log('make dir → ' + config.paths.buildPath);
 	await fs.makeDir(config.paths.buildPath);
 
-	logger.log('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
+	logger.verbose().log('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
 	await fs.copyDir(config.paths.staticAssets, config.paths.staticAssetsOutput);
 
 	logger.done();
@@ -31,13 +31,13 @@ async function copyStatic(options = { isVerbose: false }) {
 async function copyServer(options = { isVerbose: false }) {
 	const logger = new Logger({
 		name: 'copy:server',
-		isVerbose: options.isVerbose
+		verbose: config.isVerbose
 	});
 
 	logger.start();
 
-	logger.log('copy server files ' + config.paths.serverPath);
-	logger.log('copy server files ' + config.paths.serverHtmlPath);
+	logger.verbose().log('copy server files ' + config.paths.serverPath);
+	logger.verbose().log('copy server files ' + config.paths.serverHtmlPath);
 
 	await Promise.all([
 		fs.copyDir(config.paths.serverPath, config.paths.serverOutput),
@@ -50,11 +50,11 @@ async function copyServer(options = { isVerbose: false }) {
 async function copySSL(options = { isVerbose: false }) {
 	const logger = new Logger({
 		name: 'copy:ssl',
-		isVerbose: options.isVerbose
+		verbose: config.isVerbose
 	});
 
 	logger.start();
-	logger.log('copy ssl files ' + config.paths.sslFilesPath);
+	logger.verbose().log('copy ssl files ' + config.paths.sslFilesPath);
 
 	await fs.copyDir(config.paths.sslFilesPath, config.paths.sslFilesOutput);
 
@@ -64,11 +64,11 @@ async function copySSL(options = { isVerbose: false }) {
 async function copyExtra(options = { isVerbose: false }) {
 	const logger = new Logger({
 		name: 'copy:extra',
-		isVerbose: options.isVerbose
+		verbose: config.isVerbose
 	});
 
 	logger.start();
-	logger.log('copy extra files (package.json, .env)');
+	logger.verbose().log('copy extra files (package.json, .env)');
 
 	await Promise.all([
 		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({

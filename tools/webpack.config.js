@@ -117,6 +117,8 @@ const webpackConfig = {
 		chunkModules: config.isVerbose,
 		// `webpack --colors` equivalent
 		colors: true,
+		// Add --env information
+		env: config.isVerbose,
 		// Add the hash of the compilation
 		hash: config.isVerbose,
 		// Add built modules information

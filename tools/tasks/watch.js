@@ -49,7 +49,7 @@ function watch(glob, options, cb) {
 
 	const logger = new Logger({
 		name: 'watch',
-		isVerbose: opts.isVerbose
+		verbose: opts.isVerbose
 	});
 
 	let queued = false;
@@ -99,7 +99,7 @@ function watch(glob, options, cb) {
 	}
 
 	logger.start('watching files');
-	logger.log('');
+	logger.verbose().log('');
 	logger.done();
 
 	return watcher;

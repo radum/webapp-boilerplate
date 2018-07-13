@@ -16,7 +16,7 @@ let pending = true;
 // const RUNNING_REGEXP = /Server is running at (http|https):\/\/(.*?)/;
 const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
-function runServer(options = { isVerbose: false }) {
+function runServer(options = { inspect: false, isVerbose: false }) {
 	const logger = new Logger({
 		name: 'express-server',
 		isVerbose: options.isVerbose
@@ -50,14 +50,19 @@ function runServer(options = { isVerbose: false }) {
 			server.kill('SIGTERM');
 		}
 
-		server = cp.spawn('node', [config.paths.serverEntryPoint], {
-			env: Object.assign({ NODE_ENV: 'development', FORCE_COLOR: true }, process.env),
+		const appParams = [
+			...(options.inspect ? ['--inspect'] : []),
+			config.paths.serverEntryPoint
+		];
+
+		server = cp.spawn('node', appParams, {
+			env: Object.assign({ FORCE_COLOR: true }, process.env),
 			silent: false
 		});
 
 		// TODO: Can I use execa maybe?
-		// execa('node', [config.paths.serverEntryPoint], {
-		// 	env: Object.assign({ NODE_ENV: 'development', FORCE_COLOR: true }, process.env),
+		// execa('node', appParams, {
+		// 	env: Object.assign({ FORCE_COLOR: true }, process.env),
 		// 	silent: false
 		// }).then((result) => {
 		// 	console.log(result.stdout);

@@ -1,6 +1,5 @@
 const fs = require('fs');
 const timestamp = require('time-stamp');
-const dotenv = require('dotenv');
 const chalk = require('chalk');
 const express = require('express');
 const session = require('express-session');

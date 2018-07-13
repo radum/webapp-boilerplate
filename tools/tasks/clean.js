@@ -9,10 +9,10 @@ const Logger = require('../lib/logger');
  * @param {Object} options - Options object
  * @returns Promise
  */
-function clean(options = { isVerbose: false }) {
+function clean(options) {
 	const logger = new Logger({
 		name: 'clean',
-		isVerbose: options.isVerbose
+		verbose: config.isVerbose
 	});
 
 	logger.start('cleaning temp folders');

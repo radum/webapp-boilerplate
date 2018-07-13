@@ -33,7 +33,7 @@ async function startDev(flags) {
 			compileSass(defaultSettings),
 			compiler({ bsReload: bs.bsReload })
 		]);
-		await runServer();
+		await runServer({ inspect: flags.inspect });
 		await bs.init({ https: true });
 
 		watcher(['src/static/**/*.*'], copyStatic);
