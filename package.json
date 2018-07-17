@@ -93,7 +93,7 @@
     "mkdirp": "^0.5.1",
     "ms": "^2.1.1",
     "node-sass": "^4.9.2",
-    "ora": "^2.1.0",
+    "ora": "^3.0.0",
     "os": "^0.1.1",
     "p-map": "^1.2.0",
     "postcss-custom-properties": "^7.0.0",
