@@ -1,0 +1,7 @@
+.git
+.cache
+.vscode
+.webpack-monitor
+node_modules
+
+.DS_Store

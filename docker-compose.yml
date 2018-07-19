@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  webapp-sample:
+    container_name: webapp-sample
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+
+# To run:
+# docker-compose -f docker-compose.yml up -d --build
+# If works to destroy:
+# eval $(docker-machine env -u)
+# docker-machine rm sample
