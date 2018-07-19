@@ -8,7 +8,7 @@ const http2 = require('spdy');
 const http = require('http');
 const chalk = require('chalk');
 
-const config = require('../config');
+const config = require('./config');
 
 dotenv.config({
 	path: config.isProd ? '.env' : '.env.dev'

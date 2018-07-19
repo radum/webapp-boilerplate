@@ -2,9 +2,11 @@
 # Read about how to use .gitignore: https://help.github.com/articles/ignoring-files
 # Useful .gitignore templates: https://github.com/github/gitignore
 
+# Node
 node_modules
 npm-debug.log
 
+# Build, cache
 build
 build-tmp
 dist
@@ -14,7 +16,12 @@ dist
 .esm-cache
 .cache
 
+# Code coverage
 coverage
 .nyc_output
 
+# Editors
 .vscode
+
+# Env settings
+.env

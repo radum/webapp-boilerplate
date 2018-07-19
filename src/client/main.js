@@ -4,6 +4,7 @@
 // import 'babel-polyfill';
 // import 'whatwg-fetch';
 // import fastClick from 'fastclick';
+import Raven from 'raven-js';
 import now from 'lodash/now';
 import App from './app';
 
@@ -12,6 +13,15 @@ import App from './app';
 // https://github.com/ftlabs/fastclick
 // fastClick(document.body);
 
-console.log('Date: ' + now());
+if (__SENTRY_DSN_URL__) {
+	Raven
+		.config(__SENTRY_DSN_URL__);
+		.install();
 
-const app = new App();
+	// TODO: Not sure I actually need this from Sentry
+	Raven.context(() => {
+		const app = new App();
+	});
+} else {
+	const app = new App();
+}

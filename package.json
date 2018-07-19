@@ -34,8 +34,8 @@
     "build:release": "cross-env NODE_ENV=production node tools/run.js build --release",
     "build:analyze": "npm run build -- --analyze",
     "analyze:bundle-buddy": "npx bundle-buddy build/static/scripts/*.map",
-    "deploy:heroku": "git subtree push --prefix build heroku master",
     "analyze:slow-deps": "npx slow-deps",
+    "deploy:heroku": "git subtree push --prefix build heroku master",
     "test": "ava --verbose"
   },
   "dependencies": {
@@ -56,6 +56,7 @@
     "marko": "^4.12.1",
     "morgan": "^1.9.0",
     "pretty-error": "^2.1.1",
+    "raven-js": "^3.26.3",
     "server-timing": "^2.1.0",
     "spdy": "^3.4.7",
     "time-stamp": "^2.0.0"
@@ -84,7 +85,7 @@
     "execa": "^0.10.0",
     "figures": "^2.0.0",
     "globby": "^8.0.1",
-    "html-webpack-plugin": "^3.2.0",
+    "html-webpack-plugin": "^4.0.0-alpha",
     "imagemin": "^5.3.1",
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-optipng": "^5.2.1",

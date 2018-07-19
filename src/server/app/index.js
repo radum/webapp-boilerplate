@@ -1,4 +1,4 @@
-const fs = require('fs');
+// const fs = require('fs');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const express = require('express');
@@ -16,10 +16,6 @@ const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
 
 const config = require('../config');
-
-dotenv.config({
-	path: config.isProd ? '.env' : '.env.dev'
-});
 
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
 
@@ -110,6 +106,19 @@ const tplData = {
 if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['runtime.js']);
 if (webpackStaticAssetsObj['vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['vendors.js']);
 tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
+
+// TODO: Fix this, doesn't work. I think the `express.static()` above breaks it.
+app.get(/\.js\.map/, (req, res, next) => {
+	if (req.headers['X-Sentry-Token'] !== process.env.X_SENTRY_TOKEN) {
+		res
+			.status(401)
+			.send('Authentication access token is required to access the source map.');
+
+		return;
+	}
+
+	next();
+});
 
 app.get('/', (req, res) => {
 	if (req.isSpdy) {

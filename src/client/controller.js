@@ -79,7 +79,7 @@ export default class Controller {
 	 * @param {!number} id ID of the Item in edit
 	 */
 	editItemCancel(id) {
-		this.store.find({ id }, data => {
+		this.store.find({ id }, (data) => {
 			const title = data[0].title;
 			this.view.editItemDone(id, title);
 		});
@@ -122,7 +122,7 @@ export default class Controller {
 	 * @param {boolean} completed Desired completed state
 	 */
 	toggleAll(completed) {
-		this.store.find({ completed: !completed }, data => {
+		this.store.find({ completed: !completed }, (data) => {
 			for (let { id } of data) {
 				this.toggleCompleted(id, completed);
 			}

@@ -7,13 +7,14 @@ const webpack = require('webpack');
 const aliases = require('./aliases.config');
 
 const ManifestPlugin = require('webpack-manifest-plugin');
-// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
 // const WebpackBar = require('webpackbar');
 
 const config = require('./config');
@@ -195,6 +196,7 @@ const webpackConfig = {
 			'process.env.BROWSER': true,
 			__BROWSER__: true,
 			__DEV__: config.isDebug,
+			__SENTRY_DSN_URL__: config.SENTRY_DSN_URL
 		}),
 
 		// Forces webpack-dev-server program to write bundle files to the file system

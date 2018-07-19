@@ -10,6 +10,7 @@ const config = {
 	isDebug,
 	isVerbose,
 	isAnalyze,
+	SENTRY_DSN_URL: process.env.SENTRY_DSN_URL,
 
 	paths: {
 		srcPath: 'src',
