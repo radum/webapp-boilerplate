@@ -15,7 +15,7 @@ import App from './app';
 
 if (__SENTRY_DSN_URL__) {
 	Raven
-		.config(__SENTRY_DSN_URL__);
+		.config(__SENTRY_DSN_URL__)
 		.install();
 
 	// TODO: Not sure I actually need this from Sentry

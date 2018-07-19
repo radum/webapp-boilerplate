@@ -8,10 +8,8 @@ const http2 = require('spdy');
 const http = require('http');
 const chalk = require('chalk');
 
-const config = require('./config');
-
 dotenv.config({
-	path: config.isProd ? '.env' : '.env.dev'
+	path: process.env.NODE_ENV === 'production' ? path.resolve(process.cwd(), '.env') : '.env.dev'
 });
 
 const app = require('./app');
