@@ -1,8 +1,9 @@
 # -------- Build environment
 # Base image
-FROM mhart/alpine-node:10 as builder
+FROM node:10-alpine as builder
 
 # Set working directory
+RUN mkdir /app
 WORKDIR /app
 
 # Add `/usr/src/app/node_modules/.bin` to $PATH
