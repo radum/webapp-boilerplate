@@ -192,6 +192,7 @@ Documents your database design and schemas, relations etc...
 	  - https://github.com/GoogleChromeLabs/webpack-training-project
 	  - https://github.com/lakshyaranganath/pwa
 	  - https://github.com/schleyfox/example-node-ops
+	  - https://medium.com/codyhouse/create-your-design-system-part-1-typography-7c630d9092bd
 
 ## Contribute
 
