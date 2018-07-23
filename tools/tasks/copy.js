@@ -79,7 +79,7 @@ async function copyExtra(options = { isVerbose: false }) {
 				start: 'node ./server/server.js',
 			},
 		}, null, 2)),
-		fs.copyFile('.env.dev', config.paths.buildPath + '/.env')
+		...(fs.fileExists('.env') ? [fs.copyFile('.env', config.paths.buildPath + '/.env')] : [])
 	]);
 
 	logger.done();

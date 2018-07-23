@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
-
 // Using `spdy` module until this lands into Express 5.x
 // https://github.com/expressjs/express/pull/3390
 const http2 = require('spdy');

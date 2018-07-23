@@ -4,4 +4,6 @@
 .webpack-monitor
 node_modules
 
+.env
+.env.dev
 .DS_Store

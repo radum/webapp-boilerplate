@@ -7,6 +7,16 @@ const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
 
 /**
+ * Check synchronously if a file exists or not
+ * @param {Path} file path
+ * @param {Object} opts object
+ * @returns Boolean
+ */
+const fileExists = (file, opts) => {
+	return fs.existsSync(file);
+};
+
+/**
  * Read the content of a file and return a Promise
  *
  * @param {String} file - File name / path to read
@@ -118,6 +128,7 @@ const cleanDir = (pattern, options) => new Promise((resolve, reject) => {
 });
 
 module.exports = {
+	fileExists,
 	readFile,
 	writeFile,
 	renameFile,
