@@ -19,25 +19,38 @@ const imagemin = require('./tasks/imagemin');
 const stylesLint = require('./tasks/styles-lint');
 const jsLint = require('./tasks/js-lint');
 
+const signale = require('./lib/signale');
+
+signale.config({
+	displayTimestamp: true,
+	logLevel: cli.flags.verbose ? 3 : 8
+});
+
 async function startDev(flags) {
-	const defaultSettings = {
+	const taskOpts = {
+		signale
+	};
+
+	const sassOpts = {
 		isDebug: !flags.release,
 		sourceMapEmbed: !flags.release,
 		bsReload: bs.bsReload
 	};
 
+	signale.log('starting dev');
+
 	try {
-		await clean();
-		await copyStatic();
+		await clean(taskOpts);
+		await copyStatic(taskOpts);
 		await Promise.all([
-			compileSass(defaultSettings),
-			compiler({ bsReload: bs.bsReload })
+			compileSass(sassOpts),
+			compiler({ signale, bsReload: bs.bsReload })
 		]);
 		await runServer({ inspect: flags.inspect });
 		await bs.init({ https: true });
 
 		watcher(['src/static/**/*.*'], copyStatic);
-		watcher(['src/styles/**/*.scss'], () => compileSass(defaultSettings));
+		watcher(['src/styles/**/*.scss'], () => compileSass(sassOpts));
 	} catch (error) {
 		// TODO: Standardise this for all plugins
 		console.log(error);

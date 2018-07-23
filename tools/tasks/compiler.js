@@ -1,10 +1,8 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config');
-const Logger = require('../lib/logger');
-
 const chalk = require('chalk');
+const webpackConfig = require('../webpack.config');
 const prettifyTime = require('../lib/prettifyTime');
 
 let logger;
@@ -38,15 +36,12 @@ function compilerLogger(err, stats) {
 function compiler(options = { isVerbose: false, bsReload: undefined }) {
 	let instance;
 
-	logger = new Logger({
-		name: 'js-compiler',
-		isVerbose: options.isVerbose
-	});
+	logger = options.signale.scope('js-compiler');
 
 	logger.start('bundle js with webpack');
 
 	return new Promise((resolve) => {
-		logger.log('running webpack');
+		logger.info('running webpack');
 
 		instance = webpack(webpackConfig, (err, stats) => {
 			compilerLogger(err, stats);
@@ -54,12 +49,12 @@ function compiler(options = { isVerbose: false, bsReload: undefined }) {
 			// TODO: Explore if using an EventEmitter will be better
 			// The export will have to be an object with an init and the emitter also.
 			if (options.bsReload) {
-				logger.log('BS reloaded');
+				logger.info('BS reloaded');
 
 				options.bsReload();
 			}
 
-			logger.done();
+			logger.success();
 
 			resolve(instance);
 		});

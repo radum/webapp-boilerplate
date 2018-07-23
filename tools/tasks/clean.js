@@ -1,6 +1,5 @@
 const config = require('../config');
 const fs = require('../lib/fs');
-const Logger = require('../lib/logger');
 
 /**
  * Cleans up the output (build) directory.
@@ -10,13 +9,10 @@ const Logger = require('../lib/logger');
  * @returns Promise
  */
 function clean(options) {
-	const logger = new Logger({
-		name: 'clean',
-		verbose: config.isVerbose
-	});
+	const logger = options.signale.scope('clean');
 
 	logger.start('cleaning temp folders');
-	logger.verbose().log('cleaning path: ' + config.paths.buildPath);
+	logger.info('cleaning path: ' + config.paths.buildPath);
 
 	const task = Promise.all([
 		fs.cleanDir(config.paths.buildPath + '/*', {
@@ -27,7 +23,7 @@ function clean(options) {
 	]);
 
 	task.then(() => {
-		logger.done();
+		logger.success();
 	}).catch((err) => {
 		logger.error(err);
 	});
