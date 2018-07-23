@@ -2,8 +2,14 @@
 .cache
 .vscode
 .webpack-monitor
+.gitignore
+.dockerignore
+.hg
+.svn
+.DS_Store
+README.md
+Dockerfile*
 node_modules
 
 .env
 .env.dev
-.DS_Store
