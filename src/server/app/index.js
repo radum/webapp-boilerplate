@@ -33,11 +33,16 @@ const appTpl = require(`${config.server.paths.htmlTemplates}/app.marko`);
 const app = express();
 
 // Express configuration.
+
+// Trust X-Forwarded-* headers so that when we are behind a reverse proxy,
+// our connection information is that of the original client (according to
+// the proxy), not of the proxy itself. We need this for HTTPS redirection
+// and bot rendering.
+app.set('trust proxy', true);
+
+// Express http/s ports
 app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
-
-// Register Node.js middleware
-app.use('/', express.static(config.server.paths.staticAssets));
 
 // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
 app.use(cookieParser());
@@ -86,6 +91,22 @@ app.use(markoExpress()); // enable res.marko(template, data)
 
 // This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
+
+// Register Node.js middleware
+app.use('/', express.static(config.server.paths.staticAssets));
+
+if (process.env.HTTPS_REDIRECT) {
+	console.info(`Redirecting HTTP requests to HTTPS.`);
+
+	app.use((req, res, next) => {
+		if (req.secure) {
+			next();
+			return;
+		}
+
+		res.redirect(301, `https://${req.hostname}${req.url}`);
+	});
+}
 
 // Routes
 // -----------------------------------------------------------------------------
