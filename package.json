@@ -86,7 +86,7 @@
     "figures": "^2.0.0",
     "globby": "^8.0.1",
     "html-webpack-plugin": "^4.0.0-alpha",
-    "imagemin": "^5.3.1",
+    "imagemin": "^6.0.0",
     "imagemin-mozjpeg": "^7.0.0",
     "imagemin-optipng": "^5.2.1",
     "indent-string": "^3.2.0",
