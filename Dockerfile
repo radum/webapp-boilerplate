@@ -25,8 +25,9 @@ ENV NODE_ENV production
 RUN npm run build:release
 
 # -------- Production environment
-FROM mhart/alpine-node:10
+FROM node:10-alpine
 ENV NODE_ENV production
+RUN mkdir /app
 WORKDIR /app
 COPY --from=builder /app/build /app
 RUN npm install
