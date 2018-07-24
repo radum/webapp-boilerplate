@@ -33,10 +33,10 @@ function compilerLogger(err, stats) {
 /**
  * Bundle JS files using webpack.
  */
-function compiler(options = { isVerbose: false, bsReload: undefined }) {
+function compiler(options = { bsReload: undefined }) {
 	let instance;
 
-	logger = options.signale.scope('js-compiler');
+	logger = options.logger.scope('js-compiler');
 
 	logger.start('bundle js with webpack');
 

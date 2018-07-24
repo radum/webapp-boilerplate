@@ -1,15 +1,11 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
 
 const path = require('path');
-const CLIEngine = require('eslint').CLIEngine;
+const { CLIEngine } = require('eslint');
 const config = require('../config');
-const Logger = require('../lib/logger');
 
 function jsLint(options = { isVerbose: false }) {
-	const logger = new Logger({
-		name: 'js-lint',
-		isVerbose: options.isVerbose,
-	});
+	const logger = options.logger.scope('js-lint');
 
 	const eslintOptions = {
 		cache: true,
@@ -25,14 +21,14 @@ function jsLint(options = { isVerbose: false }) {
 	const formatter = cli.getFormatter('pretty');
 
 	if (report.errorCount > 0 || report.warningCount > 0) {
-		logger.log('eslint violations 💥' + formatter(report.results));
+		logger.error('eslint violations 💥' + formatter(report.results));
 	}
 
 	if (report.errorCount === 0 && report.warningCount === 0) {
-		logger.log('no violations found ¯\\_(ツ)_/¯');
+		logger.fav('no violations found ¯\\_(ツ)_/¯');
 	}
 
-	logger.done();
+	logger.success();
 }
 
 module.exports = jsLint;

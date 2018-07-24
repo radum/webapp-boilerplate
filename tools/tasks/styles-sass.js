@@ -4,7 +4,6 @@ const path = require('path');
 // TODO: use dart Sass?
 const sass = require('node-sass');
 const fs = require('../lib/fs');
-const Logger = require('../lib/logger');
 const minifyCss = require('./minify-css');
 const config = require('../config');
 
@@ -38,10 +37,7 @@ function formatError(error) {
 async function compileSass(options) {
 	const opts = { ...defaultOpts, ...options };
 
-	const logger = new Logger({
-		name: 'compile-sass',
-		isVerbose: opts.isVerbose
-	});
+	const logger = options.logger.scope('compile-sass');
 
 	let cssOutput;
 
@@ -68,20 +64,20 @@ async function compileSass(options) {
 					} else {
 						const minifyResponse = await minifyCss(result.css, { verbose: true });
 
-						cssOutput = minifyResponse.css;
-						logger.log(minifyResponse.log);
+						cssOutput = minifyResponse.cssOutput;
+						logger.log(minifyResponse.logMsg);
 					}
 
 					await fs.writeFile(path.resolve(config.paths.stylesOutputDest + '/main.css'), cssOutput);
 
 					resolve(cssOutput);
 
-					logger.done('styles compiled');
+					logger.success('styles compiled');
 
 					// TODO: Explore if using an EventEmitter will be better
 					// The export will have to be an object with an init and the emitter also.
 					if (options.bsReload) {
-						logger.log('BS reloaded');
+						logger.info('BS reloaded');
 
 						options.bsReload();
 					}

@@ -4,13 +4,9 @@ const path = require('path');
 const stylelint = require('stylelint');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const config = require('../config');
-const Logger = require('../lib/logger');
 
-function stylesLint(options = { isVerbose: false }) {
-	const logger = new Logger({
-		name: 'styles-lint',
-		isVerbose: options.isVerbose,
-	});
+function stylesLint(options) {
+	const logger = options.logger.scope('styles-lint');
 
 	logger.start('linting styles with stylelint');
 
@@ -25,12 +21,12 @@ function stylesLint(options = { isVerbose: false }) {
 	task
 		.then((data) => {
 			if (data.errored) {
-				logger.log('stylelint violations 💥' + data.output);
+				logger.error('stylelint violations 💥' + data.output);
 			} else {
-				logger.log('no violations found 🎉');
+				logger.fav('no violations found 🎉');
 			}
 
-			logger.done();
+			logger.success();
 		})
 		.catch((err) => {
 			logger.error(err);

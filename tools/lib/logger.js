@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
+// TODO: DEPRECATED, Remove and deps also
 const Reporter = require('./reporter');
 
 const defaults = {

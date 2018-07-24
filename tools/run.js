@@ -2,7 +2,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
 const cli = require('./cli');
-
 const clean = require('./tasks/clean');
 const {
 	copyStatic,
@@ -18,7 +17,6 @@ const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
 const stylesLint = require('./tasks/styles-lint');
 const jsLint = require('./tasks/js-lint');
-
 const signale = require('./lib/signale');
 
 signale.config({
@@ -26,11 +24,11 @@ signale.config({
 	logLevel: cli.flags.verbose ? 3 : 8
 });
 
-async function startDev(flags) {
-	const taskOpts = {
-		signale
-	};
+const taskOpts = {
+	logger: signale
+};
 
+async function startDev(flags) {
 	const sassOpts = {
 		isDebug: !flags.release,
 		sourceMapEmbed: !flags.release,
@@ -43,43 +41,52 @@ async function startDev(flags) {
 		await clean(taskOpts);
 		await copyStatic(taskOpts);
 		await Promise.all([
-			compileSass(sassOpts),
-			compiler({ signale, bsReload: bs.bsReload })
+			compileSass({ ...taskOpts, ...sassOpts }),
+			compiler({ ...taskOpts, bsReload: bs.bsReload })
 		]);
-		await runServer({ inspect: flags.inspect });
-		await bs.init({ https: true });
+		await runServer({ ...taskOpts, inspect: flags.inspect });
+		// TODO: This should be behind a flag if BS doesn't work for both in the same time
+		await bs.init({ https: false });
 
-		watcher(['src/static/**/*.*'], copyStatic);
-		watcher(['src/styles/**/*.scss'], () => compileSass(sassOpts));
+		watcher(['src/static/**/*.*'], taskOpts, () => copyStatic(taskOpts));
+		watcher(['src/styles/**/*.scss'], taskOpts, () => compileSass({ ...taskOpts, ...sassOpts }));
 	} catch (error) {
 		// TODO: Standardise this for all plugins
-		console.log(error);
+		signale.fatal(error);
 	}
 }
 
 async function startBuild(flags) {
-	await clean();
-	await copyStatic();
-	await copyServer();
-	await copySSL();
-	await copyExtra();
+	signale.log('starting build');
+
+	await clean(taskOpts);
+	await copyStatic(taskOpts);
+	await copyServer(taskOpts);
+	await copySSL(taskOpts);
+	await copyExtra(taskOpts);
 	await Promise.all([
 		compileSass({
+			...taskOpts,
 			isDebug: !flags.release,
 			sourceMapEmbed: !flags.release
 		}),
-		compiler(),
-		imagemin()
+		compiler(taskOpts),
+		imagemin(taskOpts)
 	]);
 }
 
 async function startLint() {
+	signale.log('starting lint');
+
 	await Promise.all([
-		stylesLint(),
-		jsLint()
+		stylesLint(taskOpts),
+		jsLint(taskOpts)
 	]);
 }
 
+/**
+ * CLI commands switchboard
+ */
 switch (cli.input[0]) {
 	case 'dev':
 		startDev(cli.flags);

@@ -9,7 +9,7 @@ const fs = require('../lib/fs');
  * @returns Promise
  */
 function clean(options) {
-	const logger = options.signale.scope('clean');
+	const logger = options.logger.scope('clean');
 
 	logger.start('cleaning temp folders');
 	logger.info('cleaning path: ' + config.paths.buildPath);

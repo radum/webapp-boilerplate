@@ -95,7 +95,7 @@ app.use(serverTiming());
 // Register Node.js middleware
 app.use('/', express.static(config.server.paths.staticAssets));
 
-if (process.env.HTTPS_REDIRECT) {
+if (process.env.HTTPS_REDIRECT === 'true') {
 	console.info(`Redirecting HTTP requests to HTTPS.`);
 
 	app.use((req, res, next) => {

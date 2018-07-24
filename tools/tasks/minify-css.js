@@ -25,8 +25,8 @@ function minifyCSS(source) {
 				const timeSpent = output.stats.timeSpent;
 
 				resolve({
-					css: output.styles,
-					log: `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`
+					cssOutput: output.styles,
+					logMsg: `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`
 				});
 			})
 			.catch((error) => {

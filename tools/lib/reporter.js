@@ -1,5 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}], no-underscore-dangle: off, no-console: off */
 
+// TODO: DEPRECATED, Remove and deps also
 const chalk = require('chalk');
 const Randoma = require('randoma');
 const ora = require('ora');

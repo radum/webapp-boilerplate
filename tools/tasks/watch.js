@@ -3,7 +3,6 @@
 const chokidar = require('chokidar');
 const _ = require('lodash');
 // const asyncDone = require('async-done');
-const Logger = require('../lib/logger');
 
 const defaultOpts = {
 	isVerbose: false,
@@ -47,10 +46,7 @@ function watch(glob, options, cb) {
 
 	const opts = { ...defaultOpts, ...options };
 
-	const logger = new Logger({
-		name: 'watch',
-		verbose: opts.isVerbose
-	});
+	const logger = opts.logger.scope('watch');
 
 	let queued = false;
 	let running = false;
@@ -98,9 +94,9 @@ function watch(glob, options, cb) {
 		});
 	}
 
-	logger.start('watching files');
-	logger.verbose().log('');
-	logger.done();
+	logger.watch('watching files');
+	logger.info('');
+	logger.success();
 
 	return watcher;
 }

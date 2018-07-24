@@ -4,7 +4,6 @@ const execa = require('execa');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const config = require('../config');
-const Logger = require('../lib/logger');
 
 let server;
 let pending = true;
@@ -16,11 +15,8 @@ let pending = true;
 // const RUNNING_REGEXP = /Server is running at (http|https):\/\/(.*?)/;
 const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
-function runServer(options = { inspect: false, isVerbose: false }) {
-	const logger = new Logger({
-		name: 'express-server',
-		isVerbose: options.isVerbose
-	});
+function runServer(options = { inspect: false }) {
+	const logger = options.logger.scope('express-server');
 
 	logger.start();
 
@@ -29,7 +25,7 @@ function runServer(options = { inspect: false, isVerbose: false }) {
 			const time = new Date().toTimeString();
 			const match = data.toString('utf8').match(RUNNING_REGEXP);
 
-			process.stdout.write('[' + chalk.magenta(timestamp('HH:mm:ss')) + '][' + chalk.magenta('server') + '] ' + data);
+			process.stdout.write('[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + '] ' + data);
 
 			if (match) {
 				server.host = match[1];
@@ -38,7 +34,7 @@ function runServer(options = { inspect: false, isVerbose: false }) {
 				pending = false;
 
 				logger.log('Local server running');
-				logger.done();
+				logger.success();
 
 				resolve(server);
 			}

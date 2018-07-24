@@ -11,13 +11,9 @@ const pMap = require('p-map');
 
 const config = require('../config');
 const fs = require('../lib/fs');
-const Logger = require('../lib/logger');
 
-async function imageminTask(options = { isVerbose: false }) {
-	const logger = new Logger({
-		name: 'imagemin',
-		isVerbose: options.isVerbose
-	});
+async function imageminTask(options) {
+	const logger = options.logger.scope('imagemin');
 
 	logger.start('minify images seamlessly');
 
@@ -55,10 +51,10 @@ async function imageminTask(options = { isVerbose: false }) {
 			}
 
 			fs.writeFile(file.replace(config.paths.imagesPath, config.paths.imagesOutputDest), optimizedBuf);
-			logger.log(file + chalk.gray(` (${msg})`));
+			logger.info(file + chalk.gray(` (${msg})`));
 		})
 		.catch((err) => {
-			logger.log(`${err} in file ${file}`);
+			logger.error(`${err} in file ${file}`);
 		});
 
 
@@ -70,7 +66,7 @@ async function imageminTask(options = { isVerbose: false }) {
 			msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
 		}
 
-		logger.done(msg);
+		logger.success(msg);
 	});
 }
 
