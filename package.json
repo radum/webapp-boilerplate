@@ -73,7 +73,6 @@
     "chokidar": "^2.0.4",
     "clean-css": "^4.1.11",
     "cross-env": "^5.2.0",
-    "debug": "^3.1.0",
     "directory-named-webpack-plugin": "^4.0.0",
     "emittery": "^0.4.1",
     "error-overlay-webpack-plugin": "^0.1.5",
