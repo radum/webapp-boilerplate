@@ -117,7 +117,7 @@ switch (cli.input[0]) {
 		startLint(cli.flags);
 		break;
 	case 'version':
-		console.log('{version.number}');
+		signale.log('{version.number}');
 		break;
 	default:
 		startBuild(cli.flags);
