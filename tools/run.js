@@ -1,6 +1,9 @@
 #!/usr/bin/env node
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
+const fs = require('fs');
+const path = require('path');
+const dotenv = require('dotenv');
 const cli = require('./cli');
 const clean = require('./tasks/clean');
 const {
@@ -18,6 +21,19 @@ const imagemin = require('./tasks/imagemin');
 const stylesLint = require('./tasks/styles-lint');
 const jsLint = require('./tasks/js-lint');
 const signale = require('./lib/signale');
+
+// Load .env files based on the rules defined in the docs
+// TODO: This env loading stuff should stay in a module
+dotenv.load({ path: path.resolve(process.cwd(), '.env') });
+dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+
+if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) {
+	dotenv.load({ path: '.env.local' });
+}
+
+if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) {
+	dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` });
+}
 
 signale.config({
 	displayTimestamp: true,
@@ -45,8 +61,11 @@ async function startDev(flags) {
 			compiler({ ...taskOpts, bsReload: bs.bsReload })
 		]);
 		await runServer({ ...taskOpts, inspect: flags.inspect });
-		// TODO: This should be behind a flag if BS doesn't work for both in the same time
-		await bs.init({ https: false });
+		await bs.init({
+			https: process.env.HTTPS_ENABLED,
+			key: `src/ssl/${process.env.SSL_KEY_FILE_NAME}`,
+			cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
+		});
 
 		watcher(['src/static/**/*.*'], taskOpts, () => copyStatic(taskOpts));
 		watcher(['src/styles/**/*.scss'], taskOpts, () => compileSass({ ...taskOpts, ...sassOpts }));

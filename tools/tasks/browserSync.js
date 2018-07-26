@@ -16,13 +16,15 @@ function bs(options) {
 		// Make BS faster a bit - https://browsersync.io/docs/options#option-online
 		online: false,
 		port: options.port || 3001,
-		https: false
+		https: options.https || false,
+		key: options.key || 'src/ssl/localhost.key',
+		cert: options.cert || 'src/ssl/localhost.crt'
 	};
 
-	if (options.https) {
+	if (settings.https) {
 		settings.https = {
-			key: 'src/ssl/localhost.key',
-			cert: 'src/ssl/localhost.crt'
+			key: settings.key,
+			cert: settings.cert
 		};
 	}
 
@@ -44,5 +46,3 @@ module.exports = {
 	init: bs,
 	bsReload
 };
-// TODO: Alternative to the above syntax
-// module.exports.bsReload = bsReload;

@@ -11,11 +11,11 @@ const chalk = require('chalk');
 dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
 
-if (path.resolve(process.cwd(), '.env.local')) {
+if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) {
 	dotenv.load({ path: '.env.local' });
 }
 
-if (path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`)) {
+if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) {
 	dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` });
 }
 
@@ -29,8 +29,8 @@ http.createServer(app).listen(app.get('http-port'), () => {
 
 if (process.env.HTTPS_ENABLED) {
 	http2.createServer({
-		cert: fs.readFileSync(path.resolve(__dirname, '../ssl/localhost.crt')),
-		key: fs.readFileSync(path.resolve(__dirname, '../ssl/localhost.key'))
+		cert: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_CERT_FILE_NAME}`)),
+		key: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_KEY_FILE_NAME}`))
 	}, app).listen(app.get('https-port'), () => {
 		// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
 		console.log('%s Server is running at https://localhost:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));

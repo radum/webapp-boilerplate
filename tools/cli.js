@@ -10,6 +10,7 @@ const cli = meow(`
 	Options
 	  --verbose, Verbose the logs
 	  --release, Build a release
+	  --analyze, Analyze the build
 
 	Examples
 	  $ npm run dev

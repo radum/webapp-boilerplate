@@ -47,7 +47,7 @@ function runServer(options = { inspect: false }) {
 		}
 
 		const appParams = [
-			...(options.inspect ? ['--inspect'] : []),
+			...(options.inspect ? ['--inspect-brk'] : []),
 			config.paths.serverEntryPoint
 		];
 
