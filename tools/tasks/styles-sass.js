@@ -3,6 +3,8 @@
 const path = require('path');
 // TODO: use dart Sass?
 const sass = require('node-sass');
+const humanizeMs = require('ms');
+const chalk = require('chalk');
 const fs = require('../lib/fs');
 const minifyCss = require('./minify-css');
 const config = require('../config');
@@ -59,20 +61,22 @@ async function compileSass(options) {
 					await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
 
 					if (opts.isDebug) {
-						// TODO: This exports more cool info that could be logged as verbose.
 						cssOutput = result.css;
 					} else {
 						const minifyResponse = await minifyCss(result.css, { verbose: true });
 
 						cssOutput = minifyResponse.cssOutput;
-						logger.log(minifyResponse.logMsg);
+
+						logger.info(minifyResponse.logMsg);
 					}
 
 					await fs.writeFile(path.resolve(config.paths.stylesOutputDest + '/main.css'), cssOutput);
 
 					resolve(cssOutput);
 
-					logger.success('styles compiled');
+					logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
+					logger.debug('included files', result.stats.includedFiles);
+					logger.success('styles compiled' + chalk.gray(` (${humanizeMs(result.stats.duration)})`));
 
 					// TODO: Explore if using an EventEmitter will be better
 					// The export will have to be an object with an init and the emitter also.
