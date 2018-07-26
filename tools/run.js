@@ -67,8 +67,8 @@ async function startDev(flags) {
 			cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
 		});
 
-		watcher(['src/static/**/*.*'], taskOpts, () => copyStatic(taskOpts));
-		watcher(['src/styles/**/*.scss'], taskOpts, () => compileSass({ ...taskOpts, ...sassOpts }));
+		watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
+		watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => compileSass({ ...taskOpts, ...sassOpts }));
 	} catch (error) {
 		// TODO: Standardise this for all plugins
 		signale.fatal(error);

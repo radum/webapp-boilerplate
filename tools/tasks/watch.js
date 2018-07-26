@@ -80,6 +80,7 @@ function watch(glob, options, cb) {
 
 		running = true;
 
+		logger.watch(`files changed (${options.label})`);
 		// asyncDone(cb, runComplete);
 		cb().then(runComplete);
 	}
@@ -96,9 +97,7 @@ function watch(glob, options, cb) {
 		});
 	}
 
-	logger.watch('watching files');
-	logger.info('');
-	logger.success();
+	logger.watch(options.label);
 
 	return watcher;
 }

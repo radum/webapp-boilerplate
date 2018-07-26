@@ -8,6 +8,7 @@
 # THANKS
 
   <name>
+  RaduM -- Boilerplate author -- @radumicu
 
 # TECHNOLOGY COLOPHON
 

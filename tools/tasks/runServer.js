@@ -23,7 +23,6 @@ function runServer(options = { inspect: false }) {
 
 	return new Promise((resolve) => {
 		function onStdOut(data) {
-			const time = new Date().toTimeString();
 			const match = data.toString('utf8').match(RUNNING_REGEXP);
 
 			process.stdout.write('[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + '] ' + data);
