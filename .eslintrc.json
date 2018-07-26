@@ -21,7 +21,7 @@
       }
     },
     {
-      "files": [ "src/server/**/*.js" ],
+      "files": [ "src/server/**/*.js", "tools/**/*.js" ],
       "env": {
         "node": true,
         "es6": true
