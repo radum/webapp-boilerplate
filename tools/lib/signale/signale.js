@@ -11,6 +11,7 @@ const defaultTypes = require('./types');
 let isPreviousLogInteractive = false;
 // const defaults = pkg.options.default;
 const defaults = {
+  "scopeColor": undefined,
   "coloredInterpolation": false,
   "displayScope": true,
   "displayBadge": true,
@@ -114,6 +115,10 @@ class Signale {
     this._config = Object.assign(this.packageConfiguration, configObj);
   }
 
+  set scopeColor(colorHex) {
+    this._config.scopeColor = colorHex;
+  }
+
   _mergeTypes(standard, custom) {
     const types = Object.assign({}, standard);
 
@@ -139,7 +144,8 @@ class Signale {
   _formatScopeName() {
     if (Array.isArray(this._scopeName)) {
       const scopes = this._scopeName.filter(x => x.length !== 0);
-      return `${scopes.map(x => `[${x.trim()}]`).join(' ')}`;
+      // return `${scopes.map(x => `[${x.trim()}]`).join(' ')}`;
+      return `${scopes.map(x => this._config.scopeColor ? chalk.hex(this._config.scopeColor)(`[${x.trim()}]`) : `[${x.trim()}]`).join(' ')}`;
     }
     return `[${this._scopeName}]`;
   }
@@ -281,6 +287,10 @@ class Signale {
 
   config(configObj) {
     this.configuration = configObj;
+  }
+
+  setScopeColor(colorHex) {
+    this.scopeColor = colorHex;
   }
 
   disable() {

@@ -16,6 +16,7 @@ const fs = require('../lib/fs');
 
 async function imageminTask(options) {
 	const logger = options.logger.scope('imagemin');
+	logger.setScopeColor(config.taskColor[4]);
 
 	logger.start('minify images seamlessly');
 

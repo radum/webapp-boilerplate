@@ -12,6 +12,7 @@ const pkg = require('../../package.json');
  */
 async function copyStatic(options = { isVerbose: false }) {
 	const logger = options.logger.scope('copy:static');
+	logger.setScopeColor(config.taskColor[1]);
 
 	logger.start();
 
@@ -26,6 +27,7 @@ async function copyStatic(options = { isVerbose: false }) {
 
 async function copyServer(options = { isVerbose: false }) {
 	const logger = options.logger.scope('copy:server');
+	logger.setScopeColor(config.taskColor[1]);
 
 	logger.start();
 
@@ -42,6 +44,7 @@ async function copyServer(options = { isVerbose: false }) {
 
 async function copySSL(options = { isVerbose: false }) {
 	const logger = options.logger.scope('copy:ssl');
+	logger.setScopeColor(config.taskColor[1]);
 
 	logger.start();
 	logger.info('copy ssl files ' + config.paths.sslFilesPath);
@@ -53,6 +56,7 @@ async function copySSL(options = { isVerbose: false }) {
 
 async function copyExtra(options = { isVerbose: false }) {
 	const logger = options.logger.scope('copy:extra');
+	logger.setScopeColor(config.taskColor[1]);
 
 	logger.start();
 	logger.info('copy extra files (package.json, .env)');

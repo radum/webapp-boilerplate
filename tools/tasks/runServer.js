@@ -17,6 +17,7 @@ const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
 function runServer(options = { inspect: false }) {
 	const logger = options.logger.scope('express-server');
+	logger.setScopeColor(config.taskColor[6]);
 
 	logger.start();
 

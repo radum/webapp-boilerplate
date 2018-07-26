@@ -10,6 +10,7 @@ const fs = require('../lib/fs');
  */
 function clean(options) {
 	const logger = options.logger.scope('clean');
+	logger.setScopeColor(config.taskColor[2]);
 
 	logger.start('cleaning temp folders');
 	logger.info('cleaning path: ' + config.paths.buildPath);

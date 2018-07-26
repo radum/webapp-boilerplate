@@ -3,6 +3,7 @@
 const chokidar = require('chokidar');
 const _ = require('lodash');
 // const asyncDone = require('async-done');
+const config = require('../config');
 
 const defaultOpts = {
 	isVerbose: false,
@@ -47,6 +48,7 @@ function watch(glob, options, cb) {
 	const opts = { ...defaultOpts, ...options };
 
 	const logger = opts.logger.scope('watch');
+	logger.setScopeColor(config.taskColor[5]);
 
 	let queued = false;
 	let running = false;

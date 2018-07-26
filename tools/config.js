@@ -44,7 +44,9 @@ const config = {
 		images: 'src/static/images/**/*',
 		imagesPath: 'src/static/images',
 		imagesOutputDest: 'build/static/images'
-	}
+	},
+
+	taskColor: ['#00a8e8', '#B2DBBF', '#F3FFBD', '#FFD166', '#fe938c', '#88d498', '#9c89b8']
 };
 
 module.exports = config;

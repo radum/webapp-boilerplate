@@ -40,6 +40,7 @@ async function compileSass(options) {
 	const opts = { ...defaultOpts, ...options };
 
 	const logger = options.logger.scope('compile-sass');
+	logger.setScopeColor(config.taskColor[3]);
 
 	let cssOutput;
 

@@ -4,6 +4,7 @@ const webpack = require('webpack');
 const chalk = require('chalk');
 const webpackConfig = require('../webpack.config');
 const prettifyTime = require('../lib/prettifyTime');
+const config = require('../config');
 
 let logger;
 
@@ -37,6 +38,7 @@ function compiler(options = { bsReload: undefined }) {
 	let instance;
 
 	logger = options.logger.scope('js-compiler');
+	logger.setScopeColor(config.taskColor[0]);
 
 	logger.start('bundle js with webpack');
 
