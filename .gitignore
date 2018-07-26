@@ -23,5 +23,6 @@ coverage
 # Editors
 .vscode
 
-# Env settings
-.env
+# Env settings / local env files
+.env.local
+.env.*.local

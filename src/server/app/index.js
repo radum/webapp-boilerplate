@@ -73,7 +73,7 @@ app.use(session({
 // -----------------------------------------------------------------------------
 // Morgan logger for express
 logger.token('timestamp', () => {
-	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '][' + chalk.magenta('server') + ']';
+	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + ']';
 });
 app.use(logger(config.server.morganLogLevel));
 

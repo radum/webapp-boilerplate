@@ -7,10 +7,19 @@ const http2 = require('spdy');
 const http = require('http');
 const chalk = require('chalk');
 
-dotenv.config({
-	path: process.env.NODE_ENV === 'production' ? path.resolve(process.cwd(), '.env') : '.env.dev'
-});
+// Load .env files based on the rules defined in the docs
+dotenv.load({ path: path.resolve(process.cwd(), '.env') });
+dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
 
+if (path.resolve(process.cwd(), '.env.local')) {
+	dotenv.load({ path: '.env.local' });
+}
+
+if (path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`)) {
+	dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` });
+}
+
+// Express app
 const app = require('./app');
 
 http.createServer(app).listen(app.get('http-port'), () => {

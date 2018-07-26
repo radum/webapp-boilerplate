@@ -69,7 +69,7 @@ Node.js server and [Browsersync](https://browsersync.io/).
 > [http://localhost:3000/](http://localhost:3000/) — Node.js server with Browsersync and HMR enabled<br>
 > [http://localhost:3001/](http://localhost:3002/) — Browsersync control panel (UI)
 
-*NOTE: Port number are subject to change based on the .env.dev file in the root folder*
+*NOTE: Port number are subject to change based on the .env / .env.[mode].local files in the root folder*
 
 Now you can open your web app in a browser, on mobile devices and start
 hacking. Whenever you modify any of the source files inside the `/src` folder,
