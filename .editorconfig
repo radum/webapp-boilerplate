@@ -27,6 +27,6 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-[{.browserslistrc,.babelrc,.eslintrc.json,.stylelintrc,.prettierrc}]
+[{.browserslistrc,.babelrc,.eslintrc.json,.stylelintrc.json,.prettierrc}]
 indent_style = space
 indent_size = 2

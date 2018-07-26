@@ -35,7 +35,7 @@
     "color-no-invalid-hex": true,
     "comment-empty-line-before": [ "always", {
       "except": ["first-nested"],
-      "ignore": ["stylelint-commands"],
+      "ignore": ["stylelint-commands"]
     } ],
     "comment-whitespace-inside": "always",
     "declaration-bang-space-after": "never",
