@@ -20,6 +20,7 @@ const config = {
 		styles: 'src/styles/**/*.scss',
 		stylesEntryPoint: 'src/styles/main.scss',
 		stylesOutputDest: 'build/static/styles',
+		stylesOutputFile: 'main.css',
 
 		scriptsPath: 'src/client',
 		scriptsFiles: 'src/client/**/*.js',

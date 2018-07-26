@@ -70,7 +70,7 @@ async function compileSass(options) {
 						logger.info(minifyResponse.logMsg);
 					}
 
-					await fs.writeFile(path.resolve(config.paths.stylesOutputDest + '/main.css'), cssOutput);
+					await fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}`), cssOutput);
 
 					resolve(cssOutput);
 
