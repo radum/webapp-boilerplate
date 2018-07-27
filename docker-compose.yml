@@ -17,3 +17,5 @@ services:
 # If works to destroy:
 # eval $(docker-machine env -u)
 # docker-machine rm sample
+# To clear everything
+# docker system prune -a
