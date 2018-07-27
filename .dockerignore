@@ -7,9 +7,12 @@
 .hg
 .svn
 .DS_Store
+build
 README.md
 Dockerfile*
+docker-compose*
 node_modules
+npm-debug.log
 
 .env.local
 .env.*.local
