@@ -15,7 +15,10 @@ function jsLint(options = { isVerbose: false }) {
 	logger.start('linting js with eslint');
 
 	const cli = new CLIEngine(eslintOptions);
-	const report = cli.executeOnFiles([config.paths.scriptsFiles]);
+	const report = cli.executeOnFiles([
+		config.paths.scriptsFiles,
+		config.paths.serverJsFiles
+	]);
 
 	// TODO: Use `codeframe` option when we are in verbose
 	const formatter = cli.getFormatter('pretty');

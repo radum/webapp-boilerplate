@@ -15,6 +15,7 @@ dist
 .sass-cache
 .esm-cache
 .cache
+.eslintcache
 
 # Code coverage
 coverage

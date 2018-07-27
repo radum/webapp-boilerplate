@@ -1,21 +1,47 @@
 {
   "root": true,
-  "extends": "airbnb-base",
-	"plugins": ["compat"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "kentcdodds/possible-errors",
+    "kentcdodds/best-practices",
+    "kentcdodds/es6/best-practices",
+    "kentcdodds/es6/possible-errors",
+    "kentcdodds/import",
+    "plugin:promise/recommended",
+    "plugin:unicorn/recommended"
+  ],
+	"plugins": [
+    "unicorn",
+    "import",
+    "eslint-comments",
+    "promise"
+  ],
 	"rules": {
 		"comma-dangle": "off",
 		"prefer-template": "off",
 		"no-tabs": "off",
 		"indent": [2, "tab", { "SwitchCase": 1, "VariableDeclarator": 1 }],
 		"arrow-body-style": [1, "as-needed"],
-		"max-len": [2, 156, 2, { "ignoreUrls": true, "ignoreComments": true }]
+    "max-len": [2, 156, 2, { "ignoreUrls": true, "ignoreComments": true }],
+    "eslint-comments/disable-enable-pair": "error",
+    "eslint-comments/no-duplicate-disable": "error",
+    "eslint-comments/no-unlimited-disable": "error",
+    "eslint-comments/no-unused-disable": "error",
+    "eslint-comments/no-unused-enable": "error"
   },
   "overrides": [
     {
       "files": [ "src/client/**/*.js" ],
       "env": {
-        "browser": true
+        "browser": true,
+        "es6": true,
+        "node": false
       },
+      "plugins": [
+        "compat"
+      ],
       "rules": {
         "compat/compat": "warn"
       }
@@ -23,11 +49,13 @@
     {
       "files": [ "src/server/**/*.js", "tools/**/*.js" ],
       "env": {
-        "node": true,
-        "es6": true
+        "browser": false,
+        "es6": true,
+        "node": true
       },
       "plugins": ["node"],
       "rules": {
+        "no-console": "off"
       }
     }
   ]

@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
-const dotenv = require('dotenv');
+const http = require('http');
 // Using `spdy` module until this lands into Express 5.x
 // https://github.com/expressjs/express/pull/3390
 const http2 = require('spdy');
-const http = require('http');
+const dotenv = require('dotenv');
 const chalk = require('chalk');
 
 // Load .env files based on the rules defined in the docs

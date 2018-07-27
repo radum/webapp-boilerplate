@@ -29,6 +29,7 @@ const config = {
 		scriptsPublicPath: '/scripts/',
 
 		serverPath: 'src/server',
+		serverJsFiles: 'src/server/**/*.js',
 		serverEntryPoint: 'src/server/server.js',
 		serverHtmlPath: 'src/html',
 		serverFiles: '{src/server/**/*.js,src/html/**/*.marko}',
