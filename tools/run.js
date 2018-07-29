@@ -44,6 +44,8 @@ const taskOpts = {
 	logger: signale
 };
 
+const catchErrors = fn => (...args) => fn(...args).catch(error => signale.fatal(error));
+
 async function startDev(flags) {
 	const sassOpts = {
 		isDebug: !flags.release,
@@ -53,26 +55,21 @@ async function startDev(flags) {
 
 	signale.log('starting dev');
 
-	try {
-		await clean(taskOpts);
-		await copyStatic(taskOpts);
-		await Promise.all([
-			compileSass({ ...taskOpts, ...sassOpts }),
-			compiler({ ...taskOpts, bsReload: bs.bsReload })
-		]);
-		await runServer({ ...taskOpts, inspect: flags.inspect });
-		await bs.init({
-			https: process.env.HTTPS_ENABLED,
-			key: `src/ssl/${process.env.SSL_KEY_FILE_NAME}`,
-			cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
-		});
+	await clean(taskOpts);
+	await copyStatic(taskOpts);
+	await Promise.all([
+		compileSass({ ...taskOpts, ...sassOpts }),
+		compiler({ ...taskOpts, bsReload: bs.bsReload })
+	]);
+	await runServer({ ...taskOpts, inspect: flags.inspect });
+	await bs.init({
+		https: process.env.HTTPS_ENABLED,
+		key: `src/ssl/${process.env.SSL_KEY_FILE_NAME}`,
+		cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
+	});
 
-		watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
-		watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => compileSass({ ...taskOpts, ...sassOpts }));
-	} catch (error) {
-		// TODO: Standardise this for all plugins
-		signale.fatal(error);
-	}
+	watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
+	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => compileSass({ ...taskOpts, ...sassOpts }));
 }
 
 async function startBuild(flags) {
@@ -108,18 +105,18 @@ async function startLint() {
  */
 switch (cli.input[0]) {
 	case 'dev':
-		startDev(cli.flags);
+		catchErrors(startDev)(cli.flags);
 		break;
 	case 'build':
-		startBuild(cli.flags);
+		catchErrors(startBuild)(cli.flags);
 		break;
 	case 'lint':
-		startLint(cli.flags);
+		catchErrors(startLint)(cli.flags);
 		break;
 	case 'version':
 		signale.log('{version.number}');
 		break;
 	default:
-		startBuild(cli.flags);
+		catchErrors(startBuild)(cli.flags);
 		break;
 }
