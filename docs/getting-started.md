@@ -33,7 +33,7 @@ Before you start, take a moment to see how the project structure looks like:
 │   	├── /gulpfile.js        # Main gulp entry file where all tasks are defined
 │   	├── /minify-css.js      # Task to minify the CSS output using CleanCSS
 │   	├── /postcss.config.js  # Configuration for transforming styles with PostCSS plugins
-│   	├── /runServer.js       # Launches (or restarts) Node.js server
+│   	├── /run-server.js      # Launches (or restarts) Node.js server
 │   ├── /config.js              # Config file used by all tasks
 │  	├── /postcss.config.js      # Configuration for transforming styles with PostCSS plugins
 │   └── /webpack.config.js      # Configurations for client-side bundles

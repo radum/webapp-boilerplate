@@ -6,6 +6,7 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const responseTime = require('response-time');
 // TODO: I think Marko is alredy doing this
 // const minifyHTML = require('express-minify-html');
 const lusca = require('lusca');
@@ -43,6 +44,10 @@ app.set('trust proxy', true);
 // Express http/s ports
 app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
+
+// Records the response time for requests in HTTP servers by adding `X-Response-Time` header to responses.
+// Defined as the elapsed time from when a request enters this middleware to when the headers are written out.
+app.use(responseTime());
 
 // Parse Cookie header and populate req.cookies with an object keyed by the cookie names.
 app.use(cookieParser());

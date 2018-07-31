@@ -15,7 +15,7 @@ const {
 const compileSass = require('./tasks/styles-sass');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
-const runServer = require('./tasks/runServer');
+const runServer = require('./tasks/run-server');
 const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
 const stylesLint = require('./tasks/styles-lint');
@@ -70,6 +70,8 @@ async function startDev(flags) {
 
 	watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
 	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => compileSass({ ...taskOpts, ...sassOpts }));
+	watcher(['src/html/**/*.*'], { ...taskOpts, label: 'html files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
+	watcher(['src/server/**/*.js'], { ...taskOpts, label: 'server files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
 }
 
 async function startBuild(flags) {

@@ -1,46 +1,66 @@
-import now from 'lodash/now';
-import $ from 'jquery';
+import { render } from 'lit-html';
+import PostList from './components/post-list';
 
-import logger from './lib/logger';
-import Controller from './controller';
-import { $on } from './helpers';
-import Template from './template';
-import Store from './store';
-import View from './view';
+import * as util from './util';
 
 class App {
 	constructor() {
-		const store = new Store('todos-vanilla-es6');
+		this.postsListContainer = document.querySelector('.c-posts');
+	}
 
-		const template = new Template();
-		const view = new View(template);
+	async init() {
+		const PRE_RENDERED = this.postsListContainer.querySelector('.c-posts-list.is-ssr');
+		const params = new URL(location.href).searchParams;
+		const year = params.get('year') || util.currentYear;
+		const includeTweets = params.has('tweets');
 
-		/**
-		 * @type {Controller}
-		 */
-		const controller = new Controller(store, view);
+		const posts = await this.getPosts(year, includeTweets);
 
-		const setView = () => controller.setView(document.location.hash);
-		$on(window, 'load', setView);
-		$on(window, 'hashchange', setView);
+		if (!PRE_RENDERED) {
+			this.renderPosts(posts, this.postsListContainer);
+		}
+	}
 
-		$('body').append('jQuery fire to test webpack vendors split');
-		// import(
-		// 	/* webpackChunkName: "jquery" */
-		// 	/* webpackMode: "lazy" */
-		// 	'jquery'
-		// ).then($ => {
-		// 	$.default('body').append('jQuery fire to test webpack vendors split');
-		// }).catch(
-		// 	error => {
-		// 		console.log(err);
-		// 	}
-		// );
+	async getPosts(forYear, includeTweets = false) {
+		const url = new URL(`/api/posts/${forYear}`, location);
+		const thisYearsPosts = await this.fetchPosts(url.href);
+		const posts = thisYearsPosts;
 
-		const testBabelNeedForRuntimeOrPolyfil = [6, -5, 8].find(x => x < 0);
-		console.log(`Babel runtime or polyfil added and works: ${testBabelNeedForRuntimeOrPolyfil}`);
+		if (includeTweets) {
+			const tweets = await this.fetchPosts(`/tweets/ChromiumDev`);
 
-		logger.log(`App module a initialized! ${now()}`);
+			posts.push(...tweets);
+		}
+
+		// Ensure list of rendered posts is unique based on URL.
+		return util.uniquePosts(posts);
+	}
+
+	async fetchPosts(url, maxResults = null) {
+		try {
+			url = new URL(url, location);
+
+			if (maxResults) {
+				url.searchParams.set('maxresults', maxResults);
+			}
+
+			const resp = await fetch(url.href);
+			const json = await resp.json();
+
+			if (!resp.ok || json.error) {
+				throw Error(json.error);
+			}
+
+			return json;
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	renderPosts(posts, container) {
+		posts = util.groupBySubmittedDate(util.sortPostsByDate(posts));
+
+		render(PostList(posts), container);
 	}
 }
 

@@ -132,6 +132,11 @@ Documents your database design and schemas, relations etc...
 
 ## TODO
 
+- [ ] Check component ideas:
+	  - [ ] https://github.com/Polymer/lit-html
+	  - [ ] https://github.com/WebReflection/hyperHTML
+	  - [ ] https://github.com/cristianbote/hnpwa-vanilla
+	  - [ ] https://github.com/ebidel/devwebfeed
 - [ ]  Add missing tasks:
       - [ ]  Lint task
       - [ ]  Test using some framework

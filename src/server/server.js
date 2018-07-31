@@ -7,6 +7,8 @@ const http2 = require('spdy');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 
+const apiRoutes = require('./api');
+
 // Load .env files based on the rules defined in the docs
 dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
@@ -22,8 +24,11 @@ if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.loca
 // Express app
 const app = require('./app');
 
+// Express routes
+app.use(apiRoutes);
+
 http.createServer(app).listen(app.get('http-port'), () => {
-	// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
+	// If you update the text here update the ./tools/run-server.js RUNNING_REGEXP var also
 	console.log('%s Server is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('http-port'), app.get('env'));
 });
 
@@ -32,7 +37,7 @@ if (process.env.HTTPS_ENABLED) {
 		cert: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_CERT_FILE_NAME}`)),
 		key: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_KEY_FILE_NAME}`))
 	}, app).listen(app.get('https-port'), () => {
-		// If you update the text here update the ./tools/runServer.js RUNNING_REGEXP var also
+		// If you update the text here update the ./tools/run-server.js RUNNING_REGEXP var also
 		console.log('%s Server is running at https://localhost:%d in %s mode', chalk.green('✓'), app.get('https-port'), app.get('env'));
 	});
 }

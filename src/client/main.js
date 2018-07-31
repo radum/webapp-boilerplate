@@ -5,7 +5,6 @@
 // import 'whatwg-fetch';
 // import fastClick from 'fastclick';
 import Raven from 'raven-js';
-import now from 'lodash/now';
 import App from './app';
 
 // Eliminates the 300ms delay between a physical tap
@@ -21,7 +20,11 @@ if (__SENTRY_DSN_URL__) {
 	// TODO: Not sure I actually need this from Sentry
 	Raven.context(() => {
 		const app = new App();
+
+		app.init();
 	});
 } else {
 	const app = new App();
+
+	app.init();
 }
