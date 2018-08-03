@@ -1,4 +1,6 @@
 const express = require('express');
+// TODO: Use JOI to validate JSON
+// const Joi = require('joi');
 
 const apiRouter = express.Router();
 

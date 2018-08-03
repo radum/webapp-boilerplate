@@ -10,11 +10,14 @@ const responseTime = require('response-time');
 // TODO: I think Marko is alredy doing this
 // const minifyHTML = require('express-minify-html');
 const lusca = require('lusca');
+const helmet = require('helmet');
 const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
 const logger = require('morgan');
 const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
+// TODO: https://www.npmjs.com/package/express-brute
+const rateLimit = require('express-rate-limit');
 
 const config = require('../config');
 
@@ -44,6 +47,14 @@ app.set('trust proxy', true);
 // Express http/s ports
 app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
+
+// Express Rate Limit
+const limiter = new rateLimit({
+	windowMs: 15*60*1000, // 15 minutes
+	max: 100, // limit each IP to 100 requests per windowMs
+	delayMs: 0 // disable delaying - full speed until the max limit is reached
+});
+app.use(limiter);
 
 // Records the response time for requests in HTTP servers by adding `X-Response-Time` header to responses.
 // Defined as the elapsed time from when a request enters this middleware to when the headers are written out.
@@ -90,6 +101,7 @@ app.use(expressStatusMonitor());
 // Application security
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
+app.use(helmet());
 
 // View engine via Marko
 app.use(markoExpress()); // enable res.marko(template, data)
