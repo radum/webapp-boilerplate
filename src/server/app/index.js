@@ -21,6 +21,7 @@ const rateLimit = require('express-rate-limit');
 
 const logger = require('../logger');
 const config = require('../config');
+const findEncoding = require('../util/encoding-selection').findEncoding;
 
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
 
@@ -115,9 +116,7 @@ app.use(markoExpress()); // enable res.marko(template, data)
 // This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
 
-// Register Node.js middleware
-app.use('/', express.static(config.server.paths.staticAssets));
-
+// Redirect to HTTPS automatically if options is set
 if (process.env.HTTPS_REDIRECT === 'true') {
 	console.info(`Redirecting HTTP requests to HTTPS.`);
 
@@ -152,6 +151,7 @@ if (webpackStaticAssetsObj['vendors.js']) tplData.assets.scripts.push(webpackSta
 tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
 
 // TODO: Fix this, doesn't work. I think the `express.static()` above breaks it.
+// On a second thought I think the regex is broken
 app.get(/\.js\.map/, (req, res, next) => {
 	if (req.headers['X-Sentry-Token'] !== process.env.X_SENTRY_TOKEN) {
 		res
@@ -164,6 +164,26 @@ app.get(/\.js\.map/, (req, res, next) => {
 	next();
 });
 
+// Respond with Brotli files is the browser accepts it
+if (false && config.isProd) {
+	app.get(/\.js/, (req, res, next) => {
+		// Get browser's' supported encodings
+		const acceptEncoding = req.header('accept-encoding');
+
+		const compressionType = findEncoding(acceptEncoding, [{ encodingName: 'br' }]);
+
+		if (compressionType === 'br') {
+			req.url = req.url + '.br';
+			res.setHeader('Content-Encoding', 'br');
+			res.setHeader('Content-Type', 'application/javascript; charset="utf-8"');
+		}
+	});
+}
+
+// Register express static for all files within the static folder
+app.use('/', express.static(config.server.paths.staticAssets));
+
+// If the request is via HTTPS, change the browserSync host to HTTPS
 app.get('/', (req, res) => {
 	if (req.isSpdy) {
 		tplData.browserSync.HOST = req.headers.host;
