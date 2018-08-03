@@ -1,4 +1,9 @@
-<!-- <include('../includes/picture-element.marko') image="/images/test"/> -->
+<!-- http://www.responsivebreakpoints.com/  -->
+<!-- Resolution:		200 - 2048 -->
+<!-- size step:			32 -->
+<!-- Maximum images:	8 -->
+<!-- Retina resolution:	true -->
+<!-- <include('../partials/_picture.marko') image="/images/test" alt=""/> -->
 <picture>
 	<source
 		sizes="(max-width: 2048px) 100vw, 2048px"
@@ -24,5 +29,5 @@
 			${input.image}_w_1987.jpg 1987w,
 			${input.image}_w_2048.jpg 2048w"
 		src="${input.image}.jpg"
-		alt="">
+		alt="${input.alt}">
 </picture>
