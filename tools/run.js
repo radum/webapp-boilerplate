@@ -18,6 +18,7 @@ const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/run-server');
 const watcher = require('./tasks/watch');
 const imagemin = require('./tasks/imagemin');
+const imageResize = require('./tasks/image-resize');
 const stylesLint = require('./tasks/styles-lint');
 const jsLint = require('./tasks/js-lint');
 const signale = require('./lib/signale');
@@ -91,6 +92,7 @@ async function startBuild(flags) {
 		compiler(taskOpts),
 		imagemin(taskOpts)
 	]);
+	await imageResize(taskOpts);
 }
 
 async function startLint() {
