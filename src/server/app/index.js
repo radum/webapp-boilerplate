@@ -13,12 +13,13 @@ const lusca = require('lusca');
 const helmet = require('helmet');
 const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
-const logger = require('morgan');
+const expressRoutesLogger = require('morgan');
 const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
 // TODO: https://www.npmjs.com/package/express-brute
 const rateLimit = require('express-rate-limit');
 
+const logger = require('../logger');
 const config = require('../config');
 
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
@@ -48,13 +49,18 @@ app.set('trust proxy', true);
 app.set('http-port', config.server.port || 3000);
 app.set('https-port', config.server.https_port || 3443);
 
-// Express Rate Limit
-const limiter = new rateLimit({
-	windowMs: 15*60*1000, // 15 minutes
-	max: 100, // limit each IP to 100 requests per windowMs
-	delayMs: 0 // disable delaying - full speed until the max limit is reached
-});
-app.use(limiter);
+if (config.isProd) {
+	// Express Rate Limit
+	const limiter = new rateLimit({
+		windowMs: 15*60*1000, // 15 minutes
+		max: 250, // limit each IP to 100 requests per windowMs
+		delayMs: 0, // disable delaying - full speed until the max limit is reached,
+		onLimitReached: () => {
+			logger.log('warn', 'Express Rate Limit reached');
+		}
+	});
+	app.use(limiter);
+}
 
 // Records the response time for requests in HTTP servers by adding `X-Response-Time` header to responses.
 // Defined as the elapsed time from when a request enters this middleware to when the headers are written out.
@@ -88,10 +94,10 @@ app.use(session({
 // Extra
 // -----------------------------------------------------------------------------
 // Morgan logger for express
-logger.token('timestamp', () => {
+expressRoutesLogger.token('timestamp', () => {
 	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + ']';
 });
-app.use(logger(config.server.morganLogLevel));
+app.use(expressRoutesLogger(config.server.morganLogLevel));
 
 // Simple, self-hosted module to report realtime server metrics for Express-based node servers.
 // Link: http://localhost:{PORT}/status/

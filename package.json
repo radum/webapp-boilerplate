@@ -63,7 +63,8 @@
     "response-time": "^2.3.2",
     "server-timing": "^2.1.0",
     "spdy": "^3.4.7",
-    "time-stamp": "^2.0.1"
+    "time-stamp": "^2.0.1",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
