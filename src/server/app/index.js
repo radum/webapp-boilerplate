@@ -7,8 +7,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const responseTime = require('response-time');
-// TODO: I think Marko is alredy doing this
-// const minifyHTML = require('express-minify-html');
 const lusca = require('lusca');
 const helmet = require('helmet');
 const PrettyError = require('pretty-error');
@@ -165,18 +163,23 @@ app.get(/\.js\.map/, (req, res, next) => {
 });
 
 // Respond with Brotli files is the browser accepts it
-if (false && config.isProd) {
+if (process.env.USE_BROTLI === 'true' && config.isProd) {
 	app.get(/\.js/, (req, res, next) => {
 		// Get browser's' supported encodings
 		const acceptEncoding = req.header('accept-encoding');
 
 		const compressionType = findEncoding(acceptEncoding, [{ encodingName: 'br' }]);
 
-		if (compressionType === 'br') {
+		// As long as there is any compression available for this file, add the Vary Header (used for caching proxies)
+		res.setHeader('Vary', 'Accept-Encoding');
+
+		if (compressionType.encodingName === 'br') {
 			req.url = req.url + '.br';
 			res.setHeader('Content-Encoding', 'br');
-			res.setHeader('Content-Type', 'application/javascript; charset="utf-8"');
+			res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
 		}
+
+		next();
 	});
 }
 
