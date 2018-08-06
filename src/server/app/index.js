@@ -164,7 +164,7 @@ app.get(/\.js\.map/, (req, res, next) => {
 
 // Respond with Brotli files is the browser accepts it
 if (process.env.USE_BROTLI === 'true' && config.isProd) {
-	app.get(/\.js/, (req, res, next) => {
+	app.get(/\.js|css/, (req, res, next) => {
 		// Get browser's' supported encodings
 		const acceptEncoding = req.header('accept-encoding');
 

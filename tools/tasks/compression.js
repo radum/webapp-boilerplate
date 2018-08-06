@@ -6,22 +6,27 @@ const brotliCompress = require('iltorb').compress;
 const config = require('../config');
 const fs = require('../lib/fs');
 
-async function compression(options) {
+function compression(options) {
 	const logger = options.logger.scope('compression');
 	logger.setScopeColor(config.taskColor[0]);
 
 	logger.start('compressing asstes (js, css)');
 
-	const files = globby.sync(config.paths.scriptsOutputDest + '/**/*.js');
+	const files = globby.sync([
+		config.paths.scriptsOutputDest + '/**/*.js',
+		config.paths.stylesOutputDest + '/**/*.css'
+	]);
 	let totalFiles = 0;
 
-	const compress = (file) => fs.readFile(file, { encoding: null }).then((fileBuffer) => {
+	const compress = (file) => fs.readFile(file, { encoding: null }).then(async (fileBuffer) => {
 		totalFiles += 1;
 
 		try {
 			const output = await brotliCompress(fileBuffer);
 
 			fs.writeFile(`${file}.br`, output);
+
+			logger.info(`compressed ${file}.br`);
 		} catch(err) {
 			logger.error(err);
 		}
