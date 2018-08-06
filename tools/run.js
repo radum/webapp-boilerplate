@@ -1,128 +1,49 @@
 #!/usr/bin/env node
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
 const fs = require('fs');
 const path = require('path');
 const dotenv = require('dotenv');
 const cli = require('./cli');
-const clean = require('./tasks/clean');
-const {
-	copyStatic,
-	copyServer,
-	copySSL,
-	copyExtra
-} = require('./tasks/copy');
-const compileSass = require('./tasks/styles-sass');
-const compiler = require('./tasks/compiler');
-const bs = require('./tasks/browserSync');
-const runServer = require('./tasks/run-server');
-const watcher = require('./tasks/watch');
-const imagemin = require('./tasks/imagemin');
-const imageResize = require('./tasks/image-resize');
-const compression = require('./tasks/compression');
-const stylesLint = require('./tasks/styles-lint');
-const jsLint = require('./tasks/js-lint');
 const signale = require('./lib/signale');
+const startDev = require('./run-dev');
+const startBuild = require('./run-build');
+const startLint = require('./run-lint');
 
 // Load .env files based on the rules defined in the docs
 // TODO: This env loading stuff should stay in a module
 dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
-
-if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) {
-	dotenv.load({ path: '.env.local' });
-}
-
-if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) {
-	dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` });
-}
+if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
+if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) { dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` }); }
 
 signale.config({
 	displayTimestamp: true,
 	logLevel: cli.flags.verbose ? 3 : 8
 });
 
-const taskOpts = {
+const opts = {
 	logger: signale
 };
 
 const catchErrors = fn => (...args) => fn(...args).catch(error => signale.fatal(error));
-
-async function startDev(flags) {
-	const sassOpts = {
-		isDebug: !flags.release,
-		sourceMapEmbed: !flags.release,
-		bsReload: bs.bsReload
-	};
-
-	signale.log('starting dev');
-
-	await clean(taskOpts);
-	await copyStatic(taskOpts);
-	await Promise.all([
-		compileSass({ ...taskOpts, ...sassOpts }),
-		compiler({ ...taskOpts, bsReload: bs.bsReload })
-	]);
-	await runServer({ ...taskOpts, inspect: flags.inspect });
-	await bs.init({
-		https: process.env.HTTPS_ENABLED,
-		key: `src/ssl/${process.env.SSL_KEY_FILE_NAME}`,
-		cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
-	});
-
-	watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
-	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => compileSass({ ...taskOpts, ...sassOpts }));
-	watcher(['src/html/**/*.*'], { ...taskOpts, label: 'html files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
-	watcher(['src/server/**/*.js'], { ...taskOpts, label: 'server files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
-}
-
-async function startBuild(flags) {
-	signale.log('starting build');
-
-	await clean(taskOpts);
-	await copyStatic(taskOpts);
-	await copyServer(taskOpts);
-	await copySSL(taskOpts);
-	await copyExtra(taskOpts);
-	await Promise.all([
-		compileSass({
-			...taskOpts,
-			isDebug: !flags.release,
-			sourceMapEmbed: !flags.release
-		}),
-		compiler(taskOpts),
-		imagemin(taskOpts)
-	]);
-	await compression(taskOpts);
-	await imageResize(taskOpts);
-}
-
-async function startLint() {
-	signale.log('starting lint');
-
-	await Promise.all([
-		stylesLint(taskOpts),
-		jsLint(taskOpts)
-	]);
-}
 
 /**
  * CLI commands switchboard
  */
 switch (cli.input[0]) {
 	case 'dev':
-		catchErrors(startDev)(cli.flags);
+		catchErrors(startDev)(opts, signale, cli.flags);
 		break;
 	case 'build':
-		catchErrors(startBuild)(cli.flags);
+		catchErrors(startBuild)(opts, signale, cli.flags);
 		break;
 	case 'lint':
-		catchErrors(startLint)(cli.flags);
+		catchErrors(startLint)(opts, signale);
 		break;
 	case 'version':
 		signale.log('{version.number}');
 		break;
 	default:
-		catchErrors(startBuild)(cli.flags);
+		catchErrors(startBuild)(opts, signale, cli.flags);
 		break;
 }

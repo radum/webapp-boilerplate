@@ -1,5 +1,3 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-
 const meow = require('meow');
 
 const cli = meow(`

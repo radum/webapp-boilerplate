@@ -1,4 +1,3 @@
-/* eslint-env node */
 /* eslint prefer-destructuring: 0 */
 
 const path = require('path');

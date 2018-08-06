@@ -1,5 +1,3 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
-
 module.exports = {
 	// The list of plugins for PostCSS
 	// https://github.com/postcss/postcss

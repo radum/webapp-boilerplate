@@ -30,7 +30,10 @@ function imageResizeTask(options) {
 
 	logger.start('generating responsive images');
 
-	const files = globby.sync(config.paths.imagesOutputDest + '/**/*.{jpg,jpeg,png,webp}');
+	const files = globby.sync([
+		config.paths.imagesOutputDest + '/**/*.{jpg,jpeg,png,webp}',
+		`!${config.paths.imagesOutputDest}/touch`
+	]);
 	let totalFiles = 0;
 
 	const resize = (file) => fs.readFile(file, { encoding: null }).then((imgBuf) => {
