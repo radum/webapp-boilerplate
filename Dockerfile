@@ -11,6 +11,8 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # Native dependencies, you'll need extra tools
 RUN apk add --no-cache make gcc g++ python file libpng-dev autoconf automake build-base libtool nasm
+# Used by node module `sharp`
+RUN apk add --no-cache vips-dev fftw-dev vips-tools --repository https://dl-3.alpinelinux.org/alpine/edge/testing/
 
 # Install and cache app dependencies
 COPY package.json /app/package.json
