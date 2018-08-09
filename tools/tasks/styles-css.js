@@ -95,6 +95,7 @@ async function buildCSS(options) {
 		logger
 	};
 	let cssOutput;
+	let postCSSOutput;
 
 	logger.start('running css build steps');
 
@@ -103,7 +104,7 @@ async function buildCSS(options) {
 
 	// Compile CSS steps
 	cssOutput = await compileSass({ ...sassDefaultOpts, ...options.sass });
-	cssOutput = await postCSSTransform(cssOutput, {
+	postCSSOutput = await postCSSTransform(cssOutput, {
 		plugins: [
 			postcssCustomProperties,
 			// postcssFlexbugsFixes,
@@ -122,7 +123,7 @@ async function buildCSS(options) {
 	});
 
 	if (!options.isDebug) {
-		const minifyResponse = await minifyCss(cssOutput, { verbose: true });
+		const minifyResponse = await minifyCss(postCSSOutput.css, { verbose: true });
 		cssOutput = minifyResponse.cssOutput;
 		logger.info(minifyResponse.logMsg);
 	}
