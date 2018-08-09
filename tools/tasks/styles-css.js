@@ -111,11 +111,11 @@ async function buildCSS(options) {
 			postcssReporter
 		],
 		settings: {
+			// Without `from` option PostCSS could generate wrong source map and will not find Browserslist config.
+			// Set it to CSS file path or to `undefined` to prevent this warning. So far works OK.
+			from: undefined,
 			map: {
 				inline: options.sass.sourceMapEmbed,
-				// Without `from` option PostCSS could generate wrong source map and will not find Browserslist config.
-				// Set it to CSS file path or to `undefined` to prevent this warning.
-				from: undefined
 			}
 		},
 		logger

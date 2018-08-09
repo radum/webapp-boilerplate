@@ -10,6 +10,7 @@ const chalk = require('chalk');
 const apiRoutes = require('./api');
 
 // Load .env files based on the rules defined in the docs
+// TODO: This doesn't work because dotenv doesn't override existing ones
 dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
 

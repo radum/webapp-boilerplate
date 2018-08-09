@@ -3,6 +3,7 @@
 Either use `src/ssl/localhost.{crt | key}` files or generate new ones using:
 
 ```shell
+# https://github.com/FiloSottile/mkcert
 brew install mkcert
 
 cd src/ssl
