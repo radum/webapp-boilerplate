@@ -14,32 +14,34 @@ const compression = require('./tasks/compression');
 /**
  * Run the build task, building a production ready app
  *
- * @param {*} opts Task options object
- * @param {*} logger Signale logger used to announce
+ * @param {*} options Task options object
+ * @param {*} options.logger Task global logger
  * @param {*} flags	CLI flags passed
  */
-async function startBuild(opts, logger, flags) {
-	logger.log('starting build');
+async function startBuild(options, flags) {
+	const taskOpts = { logger: options.logger };
 
-	await clean(opts);
+	options.logger.log('starting build');
 
-	await copyStatic(opts);
-	await copyServer(opts);
-	await copySSL(opts);
-	await copyExtra(opts);
+	await clean(taskOpts);
+
+	await copyStatic(taskOpts);
+	await copyServer(taskOpts);
+	await copySSL(taskOpts);
+	await copyExtra(taskOpts);
 
 	await Promise.all([
 		stylesCSS({
-			...opts,
+			...taskOpts,
 			isDebug: !flags.release,
 			sass: { sourceMapEmbed: !flags.release }
 		}),
-		compiler(opts),
-		imagemin(opts)
+		compiler(taskOpts),
+		imagemin(taskOpts)
 	]);
 
-	await compression(opts);
-	await imageResize(opts);
+	await compression(taskOpts);
+	await imageResize(taskOpts);
 }
 
 module.exports = startBuild;

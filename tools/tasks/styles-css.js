@@ -123,6 +123,7 @@ async function buildCSS(options) {
 	if (!options.isDebug) {
 		const minifyResponse = await minifyCss(postCSSOutput.css, { verbose: true });
 		cssOutput = minifyResponse.cssOutput;
+
 		logger.info(minifyResponse.logMsg);
 	}
 

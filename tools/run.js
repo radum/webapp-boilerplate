@@ -21,7 +21,7 @@ signale.config({
 	logLevel: cli.flags.verbose ? 3 : 8
 });
 
-const opts = {
+const options = {
 	logger: signale
 };
 
@@ -32,18 +32,18 @@ const catchErrors = fn => (...args) => fn(...args).catch(error => signale.fatal(
  */
 switch (cli.input[0]) {
 	case 'dev':
-		catchErrors(startDev)(opts, signale, cli.flags);
+		catchErrors(startDev)(options, signale, cli.flags);
 		break;
 	case 'build':
-		catchErrors(startBuild)(opts, signale, cli.flags);
+		catchErrors(startBuild)(options, cli.flags);
 		break;
 	case 'lint':
-		catchErrors(startLint)(opts, signale);
+		catchErrors(startLint)(options, signale);
 		break;
 	case 'version':
 		signale.log('{version.number}');
 		break;
 	default:
-		catchErrors(startBuild)(opts, signale, cli.flags);
+		catchErrors(startBuild)(options, cli.flags);
 		break;
 }
