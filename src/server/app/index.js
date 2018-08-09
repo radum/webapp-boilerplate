@@ -16,6 +16,7 @@ const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
 // TODO: https://www.npmjs.com/package/express-brute
 const rateLimit = require('express-rate-limit');
+const mime = require('mime');
 
 const logger = require('../logger');
 const config = require('../config');
@@ -24,10 +25,6 @@ const findEncoding = require('../util/encoding-selection').findEncoding;
 const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
 
 // View engine via Marko
-// TODO: Explore using https://github.com/tj/consolidate.js
-// TODO: Explore using Dust instead of marko. Both of them are streaming engines.
-// Other resources:
-// * https://github.com/marko-js/templating-benchmarks
 require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
 require('marko/node-require'); // Allow Node.js to require and load `.marko` files
 const markoExpress = require('marko/express');
@@ -77,7 +74,6 @@ app.use(compression());
 
 // Session settings
 const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
-
 app.use(session({
 	name: 'sid',
 	resave: true,
@@ -114,9 +110,11 @@ app.use(markoExpress()); // enable res.marko(template, data)
 // This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
 
+// Routes
+// -----------------------------------------------------------------------------
 // Redirect to HTTPS automatically if options is set
 if (process.env.HTTPS_REDIRECT === 'true') {
-	console.info(`Redirecting HTTP requests to HTTPS.`);
+	logger.log('info', 'Redirecting HTTP requests to HTTPS');
 
 	app.use((req, res, next) => {
 		if (req.secure) {
@@ -128,8 +126,6 @@ if (process.env.HTTPS_REDIRECT === 'true') {
 	});
 }
 
-// Routes
-// -----------------------------------------------------------------------------
 const tplData = {
 	isProd: config.isProd,
 	// TODO: Removed for now because not sure how Webpack 4 works and I removed
@@ -148,8 +144,8 @@ if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackSta
 if (webpackStaticAssetsObj['vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['vendors.js']);
 tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
 
-// TODO: Fix this, doesn't work. I think the `express.static()` above breaks it.
-// On a second thought I think the regex is broken
+// Return source maps in production only to Sentry via the set token
+// TODO: Test to see if it works
 app.get(/\.js\.map/, (req, res, next) => {
 	if (req.headers['X-Sentry-Token'] !== process.env.X_SENTRY_TOKEN) {
 		res
@@ -164,7 +160,11 @@ app.get(/\.js\.map/, (req, res, next) => {
 
 // Respond with Brotli files is the browser accepts it
 if (process.env.USE_BROTLI === 'true' && config.isProd) {
+	logger.log('info', 'Using brotli redirects for JS and CSS files');
+
 	app.get(/\.js|css/, (req, res, next) => {
+		logger.log('debug', `Brotli redirect for: ${req.url}`);
+
 		// Get browser's' supported encodings
 		const acceptEncoding = req.header('accept-encoding');
 
@@ -174,9 +174,16 @@ if (process.env.USE_BROTLI === 'true' && config.isProd) {
 		res.setHeader('Vary', 'Accept-Encoding');
 
 		if (compressionType.encodingName === 'br') {
+			const type = mime.getType(req.path);
+			let search = req.url.split('?').splice(1).join('?');
+
+			if (search !== '') {
+				search = '?' + search;
+			}
+
 			req.url = req.url + '.br';
 			res.setHeader('Content-Encoding', 'br');
-			res.setHeader('Content-Type', 'application/javascript; charset=UTF-8');
+			res.setHeader('Content-Type', `${type}; charset=UTF-8`);
 		}
 
 		next();
