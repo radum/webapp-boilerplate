@@ -111,7 +111,6 @@
     "p-map": "^1.2.0",
     "postcss": "^7.0.2",
     "postcss-custom-properties": "^7.0.0",
-    "postcss-flexbugs-fixes": "^4.1.0",
     "postcss-reporter": "^5.0.0",
     "prettier": "^1.14.2",
     "pretty-bytes": "^5.1.0",

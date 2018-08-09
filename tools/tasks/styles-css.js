@@ -3,7 +3,6 @@ const sass = require('node-sass'); // TODO: use dart Sass?
 const postcss = require('postcss');
 const autoprefixer = require('autoprefixer');
 const postcssCustomProperties = require('postcss-custom-properties');
-const postcssFlexbugsFixes = require('postcss-flexbugs-fixes');
 const postcssReporter = require('postcss-reporter');
 const humanizeMs = require('ms');
 const chalk = require('chalk');
@@ -107,7 +106,6 @@ async function buildCSS(options) {
 	postCSSOutput = await postCSSTransform(cssOutput, {
 		plugins: [
 			postcssCustomProperties,
-			// postcssFlexbugsFixes,
 			autoprefixer,
 			postcssReporter
 		],
