@@ -1,6 +1,6 @@
 const clean = require('./tasks/clean');
 const { copyStatic } = require('./tasks/copy');
-const compileSass = require('./tasks/styles-sass');
+const stylesCSS = require('./tasks/styles-css');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/run-server');
@@ -14,10 +14,12 @@ const watcher = require('./tasks/watch');
  * @param {*} flags	CLI flags passed
  */
 async function startDev(opts, logger, flags) {
-	const sassOpts = {
+	const cssSettings = {
 		isDebug: !flags.release,
-		sourceMapEmbed: !flags.release,
-		bsReload: bs.bsReload
+		sass: {
+			sourceMapEmbed: !flags.release,
+			bsReload: bs.bsReload
+		}
 	};
 
 	logger.log('starting dev');
@@ -26,7 +28,7 @@ async function startDev(opts, logger, flags) {
 	await copyStatic(opts);
 
 	await Promise.all([
-		compileSass({ ...opts, ...sassOpts }),
+		stylesCSS({ ...opts, ...cssSettings }),
 		compiler({ ...opts, bsReload: bs.bsReload })
 	]);
 
@@ -42,7 +44,7 @@ async function startDev(opts, logger, flags) {
 	});
 
 	watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
-	watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => compileSass({ ...opts, ...sassOpts }));
+	watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => stylesCSS({ ...opts, ...cssSettings }));
 	watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: flags.inspect }));
 	watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: flags.inspect }));
 }

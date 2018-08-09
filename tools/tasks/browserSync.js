@@ -1,5 +1,3 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
-
 const browserSyncInstance = require('browser-sync').create('browserSyncInstance');
 
 /**
@@ -44,5 +42,5 @@ function bsReload(done) {
 module.exports = {
 	browserSyncInstance,
 	init: bs,
-	bsReload
+	bsReload // TODO: Explore if using an EventEmitter will be better
 };

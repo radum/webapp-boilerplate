@@ -31,7 +31,7 @@ Before you start, take a moment to see how the project structure looks like:
 │   	├── /compiler.js        # Compiles js code using webpack
 │   	├── /copy.js            # Copies static files and various extra to output (build) folder
 │   	├── /gulpfile.js        # Main gulp entry file where all tasks are defined
-│   	├── /minify-css.js      # Task to minify the CSS output using CleanCSS
+│   	├── /styles-minify.js   # Task to minify the CSS output using CleanCSS
 │   	├── /postcss.config.js  # Configuration for transforming styles with PostCSS plugins
 │   	├── /run-server.js      # Launches (or restarts) Node.js server
 │   ├── /config.js              # Config file used by all tasks

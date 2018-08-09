@@ -5,7 +5,7 @@ const {
 	copySSL,
 	copyExtra
 } = require('./tasks/copy');
-const compileSass = require('./tasks/styles-sass');
+const compileSass = require('./tasks/styles-css');
 const compiler = require('./tasks/compiler');
 const imagemin = require('./tasks/imagemin');
 const imageResize = require('./tasks/image-resize');
