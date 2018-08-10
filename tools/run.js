@@ -10,11 +10,10 @@ const startBuild = require('./run-build');
 const startLint = require('./run-lint');
 
 // Load .env files based on the rules defined in the docs
-// TODO: This env loading stuff should stay in a module
-dotenv.load({ path: path.resolve(process.cwd(), '.env') });
-dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
-if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
 if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) { dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` }); }
+if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
+dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 
 signale.config({
 	displayTimestamp: true,
