@@ -73,10 +73,23 @@ function compileSass(options) {
 
 function postCSSTransform(cssInput, options) {
 	const logger = options.logger.scope('build-css', 'postcss');
+	const plugins = [
+		postcssCustomProperties,
+		autoprefixer,
+		postcssReporter
+	];
+	const settings = {
+		// Without `from` option PostCSS could generate wrong source map and will not find Browserslist config.
+		// Set it to CSS file path or to `undefined` to prevent this warning. So far works OK.
+		from: undefined,
+		map: {
+			inline: options.sourceMapEmbed,
+		}
+	};
 
-	logger.info('running postcss');
+	logger.start('running postcss');
 
-	return postcss(options.plugins || []).process(cssInput, options.settings);
+	return postcss(plugins).process(cssInput, settings);
 }
 
 function writeFileToDisk(cssOutput) {
@@ -94,7 +107,6 @@ async function buildCSS(options) {
 		logger
 	};
 	let cssOutput;
-	let postCSSOutput;
 
 	logger.start('running css build steps');
 
@@ -103,28 +115,12 @@ async function buildCSS(options) {
 
 	// Compile CSS steps
 	cssOutput = await compileSass({ ...sassDefaultOpts, ...options.sass });
-	postCSSOutput = await postCSSTransform(cssOutput, {
-		plugins: [
-			postcssCustomProperties,
-			autoprefixer,
-			postcssReporter
-		],
-		settings: {
-			// Without `from` option PostCSS could generate wrong source map and will not find Browserslist config.
-			// Set it to CSS file path or to `undefined` to prevent this warning. So far works OK.
-			from: undefined,
-			map: {
-				inline: options.sass.sourceMapEmbed,
-			}
-		},
-		logger
-	});
+	const postCSSOutput = await postCSSTransform(cssOutput, { sourceMapEmbed: options.sass.sourceMapEmbed, logger });
+	cssOutput = postCSSOutput.css;
 
 	if (!options.isDebug) {
-		const minifyResponse = await minifyCss(postCSSOutput.css, { verbose: true });
+		const minifyResponse = await minifyCss(cssOutput, { verbose: true, logger });
 		cssOutput = minifyResponse.cssOutput;
-
-		logger.info(minifyResponse.logMsg);
 	}
 
 	// Write the output to disk

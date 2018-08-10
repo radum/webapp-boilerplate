@@ -4,17 +4,22 @@ const CleanCSS = require('clean-css');
 const prettyBytes = require('pretty-bytes');
 
 /**
- * Minify css files.
+ * CSS minifier va CleanCSS
  *
- * @returns Promise
+ * @param {String} source CSS Source
+ * @param {Object} options Options object
+ * @returns {Promise} The return promise with the minified code and the log msg
  */
-function minifyCSS(source) {
+function minifyCSS(source, options) {
 	return new Promise((resolve, reject) => {
+		const logger = options.logger.scope('build-css', 'minify-css');
 		const cleanTask = new CleanCSS({
 			level: 2,
 			returnPromise: true,
 			sourceMap: false
 		});
+
+		logger.start('running cleancss minifier');
 
 		cleanTask
 			.minify(source)
@@ -24,9 +29,11 @@ function minifyCSS(source) {
 				const efficiency = output.stats.efficiency.toFixed(1).replace(/\.0$/, '');
 				const timeSpent = output.stats.timeSpent;
 
+				logger.info(`Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`);
+				logger.success('css code minified');
+
 				resolve({
-					cssOutput: output.styles,
-					logMsg: `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`
+					cssOutput: output.styles
 				});
 			})
 			.catch((error) => {

@@ -9,11 +9,12 @@ const watcher = require('./tasks/watch');
 /**
  * Run the dev task, compile css and js and run the local server
  *
- * @param {*} opts Task options object
- * @param {*} logger Signale logger used to announce
- * @param {*} flags	CLI flags passed
+ * @param {Object} options Task options object
+ * @param {Function} options.logger Signale logger used to announce
+ * @param {Object} flags CLI flags passed
  */
-async function startDev(opts, logger, flags) {
+async function startDev(options, flags) {
+	const taskOpts = { logger: options.logger };
 	const cssSettings = {
 		isDebug: !flags.release,
 		sass: {
@@ -22,18 +23,18 @@ async function startDev(opts, logger, flags) {
 		}
 	};
 
-	logger.log('starting dev');
+	options.logger.log('starting dev');
 
-	await clean(opts);
-	await copyStatic(opts);
+	await clean(taskOpts);
+	await copyStatic(taskOpts);
 
 	await Promise.all([
-		stylesCSS({ ...opts, ...cssSettings }),
-		compiler({ ...opts, bsReload: bs.bsReload })
+		stylesCSS({ ...taskOpts, ...cssSettings }),
+		compiler({ ...taskOpts, bsReload: bs.bsReload })
 	]);
 
 	await runServer({
-		...opts,
+		...taskOpts,
 		inspect: flags.inspect
 	});
 
@@ -43,10 +44,10 @@ async function startDev(opts, logger, flags) {
 		cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
 	});
 
-	watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
-	watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => stylesCSS({ ...opts, ...cssSettings }));
-	watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: flags.inspect }));
-	watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: flags.inspect }));
+	watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
+	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => stylesCSS({ ...taskOpts, ...cssSettings }));
+	watcher(['src/html/**/*.*'], { ...taskOpts, label: 'html files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
+	watcher(['src/server/**/*.js'], { ...taskOpts, label: 'server files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
 }
 
 module.exports = startDev;

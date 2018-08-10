@@ -55,7 +55,7 @@ function imageResizeTask(options) {
 	};
 
 	return pMap(files, mapper, { concurrency: os.cpus().length }).then(() => {
-		let msg = `minified ${totalFiles} images`;
+		let msg = `generated ${totalFiles} new images`;
 
 		logger.success(msg);
 	});

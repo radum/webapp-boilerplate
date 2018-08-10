@@ -14,9 +14,9 @@ const compression = require('./tasks/compression');
 /**
  * Run the build task, building a production ready app
  *
- * @param {*} options Task options object
- * @param {*} options.logger Task global logger
- * @param {*} flags	CLI flags passed
+ * @param {Object} options Task options object
+ * @param {Function} options.logger Task global logger
+ * @param {Object} flags CLI flags passed
  */
 async function startBuild(options, flags) {
 	const taskOpts = { logger: options.logger };

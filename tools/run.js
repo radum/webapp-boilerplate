@@ -32,13 +32,13 @@ const catchErrors = fn => (...args) => fn(...args).catch(error => signale.fatal(
  */
 switch (cli.input[0]) {
 	case 'dev':
-		catchErrors(startDev)(options, signale, cli.flags);
+		catchErrors(startDev)(options, cli.flags);
 		break;
 	case 'build':
 		catchErrors(startBuild)(options, cli.flags);
 		break;
 	case 'lint':
-		catchErrors(startLint)(options, signale);
+		catchErrors(startLint)(options);
 		break;
 	case 'version':
 		signale.log('{version.number}');
