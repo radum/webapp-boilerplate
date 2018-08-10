@@ -5,7 +5,7 @@ const {
 	copySSL,
 	copyExtra
 } = require('./tasks/copy');
-const stylesCSS = require('./tasks/styles-css');
+const buildCSS = require('./tasks/styles-css');
 const compiler = require('./tasks/compiler');
 const imagemin = require('./tasks/imagemin');
 const imageResize = require('./tasks/image-resize');
@@ -31,7 +31,7 @@ async function startBuild(options, flags) {
 	await copyExtra(taskOpts);
 
 	await Promise.all([
-		stylesCSS({
+		buildCSS({
 			...taskOpts,
 			isDebug: !flags.release,
 			sass: { sourceMapEmbed: !flags.release }

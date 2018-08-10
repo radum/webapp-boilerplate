@@ -1,4 +1,5 @@
 const path = require('path');
+const { promisify } = require('util');
 const sass = require('node-sass'); // TODO: use dart Sass?
 const postcss = require('postcss');
 const autoprefixer = require('autoprefixer');
@@ -37,6 +38,8 @@ function compileSass(options) {
 
 	logger.start('compiling sass files');
 
+	// const sassRender = promisify(sass.render);
+
 	return new Promise((resolve, reject) => {
 		sass.render({
 			file: config.paths.stylesEntryPoint,
@@ -47,25 +50,19 @@ function compileSass(options) {
 			sourceMapEmbed: options.sourceMapEmbed || false
 		}, (err, result) => {
 			if (err) {
-				reject(sassFormatError(err));
+				reject(new Error(sassFormatError(err)));
 			} else {
-				try {
-					logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
-					logger.debug('included files', result.stats.includedFiles);
+				logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
+				logger.debug('included files', result.stats.includedFiles);
 
-					if (options.bsReload) {
-						logger.info('BS reloaded');
-						options.bsReload();
-					}
-
-					logger.success('styles compiled' + chalk.gray(` (${humanizeMs(result.stats.duration)})`));
-
-					resolve(result.css);
-				} catch (error) {
-					reject(sassFormatError(error));
+				if (options.bsReload) {
+					logger.info('BS reloaded');
+					options.bsReload();
 				}
 
-				resolve(result);
+				logger.success('styles compiled' + chalk.gray(` (${humanizeMs(result.stats.duration)})`));
+
+				resolve(result.css);
 			}
 		});
 	});

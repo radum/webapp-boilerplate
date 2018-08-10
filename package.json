@@ -25,7 +25,7 @@
   ],
   "scripts": {
     "taskrunner": "cross-env NODE_ENV=development node tools/run.js",
-    "dev": "cross-env NODE_ENV=development node tools/run.js dev",
+    "dev": "cross-env NODE_ENV=development npx ndb tools/run.js dev",
     "dev:inspect": "cross-env NODE_ENV=development node tools/run.js dev --inspect",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
@@ -39,7 +39,7 @@
     "test": "ava --verbose"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.56",
+    "@babel/runtime": "^7.0.0-rc.1",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
     "compression": "^1.7.3",
@@ -67,10 +67,10 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.56",
-    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.56",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.56",
-    "@babel/preset-env": "^7.0.0-beta.56",
+    "@babel/core": "^7.0.0-rc.1",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-rc.1",
+    "@babel/plugin-transform-runtime": "^7.0.0-rc.1",
+    "@babel/preset-env": "^7.0.0-rc.1",
     "autoprefixer": "^9.1.0",
     "ava": "1.0.0-beta.6",
     "babel-loader": "^8.0.0-beta.4",

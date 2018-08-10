@@ -1,6 +1,6 @@
 const clean = require('./tasks/clean');
 const { copyStatic } = require('./tasks/copy');
-const stylesCSS = require('./tasks/styles-css');
+const buildCSS = require('./tasks/styles-css');
 const compiler = require('./tasks/compiler');
 const bs = require('./tasks/browserSync');
 const runServer = require('./tasks/run-server');
@@ -29,7 +29,7 @@ async function startDev(options, flags) {
 	await copyStatic(taskOpts);
 
 	await Promise.all([
-		stylesCSS({ ...taskOpts, ...cssSettings }),
+		buildCSS({ ...taskOpts, ...cssSettings }),
 		compiler({ ...taskOpts, bsReload: bs.bsReload })
 	]);
 
@@ -45,7 +45,7 @@ async function startDev(options, flags) {
 	});
 
 	watcher(['src/static/**/*.*'], { ...taskOpts, label: 'static assets' }, () => copyStatic(taskOpts));
-	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => stylesCSS({ ...taskOpts, ...cssSettings }));
+	watcher(['src/styles/**/*.scss'], { ...taskOpts, label: 'sass files' }, () => buildCSS({ ...taskOpts, ...cssSettings }));
 	watcher(['src/html/**/*.*'], { ...taskOpts, label: 'html files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
 	watcher(['src/server/**/*.js'], { ...taskOpts, label: 'server files' }, () => runServer({ ...taskOpts, inspect: flags.inspect }));
 }
