@@ -14,6 +14,7 @@ function compression(options) {
 
 	const files = globby.sync([
 		config.paths.scriptsOutputDest + '/**/*.js',
+		config.paths.staticAssetsOutput + '/sw.js',
 		config.paths.stylesOutputDest + '/**/*.css'
 	]);
 	let totalFiles = 0;

@@ -28,4 +28,7 @@ heroku open -a {heroku app name}
 
 # And to destroy it
 heroku apps:destroy --app={heroku app name}
+
+# And to check out the logs
+heroku logs --tail --app {heroku app name}
 ```

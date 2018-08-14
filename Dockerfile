@@ -19,7 +19,7 @@ COPY package.json /app/package.json
 COPY package-lock.json /app/package-lock.json
 
 # RUN npm install --silent
-RUN npm install
+RUN npm ci
 
 # Copy the app and build it
 COPY . /app
@@ -32,7 +32,7 @@ ENV NODE_ENV production
 RUN mkdir /app
 WORKDIR /app
 COPY --from=builder /app/build /app
-RUN npm install
+RUN npm ci
 RUN ls
 RUN echo $NODE_ENV
 EXPOSE 3000
