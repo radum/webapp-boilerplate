@@ -29,7 +29,7 @@ require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
 require('marko/node-require'); // Allow Node.js to require and load `.marko` files
 const markoExpress = require('marko/express');
 
-const appTpl = require(`${config.server.paths.htmlTemplates}/app.marko`);
+const appTemplate = require(`${config.server.paths.htmlTemplates}/app.marko`);
 
 const app = express();
 
@@ -110,22 +110,8 @@ app.use(markoExpress()); // enable res.marko(template, data)
 // This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
 
-// Routes
+// Template data
 // -----------------------------------------------------------------------------
-// Redirect to HTTPS automatically if options is set
-if (process.env.HTTPS_REDIRECT === 'true') {
-	logger.log('info', 'Redirecting HTTP requests to HTTPS');
-
-	app.use((req, res, next) => {
-		if (req.secure) {
-			next();
-			return;
-		}
-
-		res.redirect(301, `https://${req.hostname}${req.url}`);
-	});
-}
-
 const tplData = {
 	isProd: config.isProd,
 	// TODO: Removed for now because not sure how Webpack 4 works and I removed
@@ -141,8 +127,24 @@ const tplData = {
 };
 
 if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['runtime.js']);
-if (webpackStaticAssetsObj['vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['vendors.js']);
+if (webpackStaticAssetsObj['chunk-vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['chunk-vendors.js']);
 tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
+
+// Routes
+// -----------------------------------------------------------------------------
+// Redirect to HTTPS automatically if options is set
+if (process.env.HTTPS_REDIRECT === 'true') {
+	logger.log('info', 'Redirecting HTTP requests to HTTPS');
+
+	app.use((req, res, next) => {
+		if (req.secure) {
+			next();
+			return;
+		}
+
+		res.redirect(301, `https://${req.hostname}${req.url}`);
+	});
+}
 
 // Return source maps in production only to Sentry via the set token
 // TODO: Test to see if it works
@@ -199,7 +201,7 @@ app.get('/', (req, res) => {
 		tplData.browserSync.HOST = req.headers.host;
 	}
 
-	res.marko(appTpl, tplData);
+	res.marko(appTemplate, tplData);
 });
 
 //

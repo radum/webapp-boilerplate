@@ -1,4 +1,4 @@
-# Local testin using HTTPS / SSL
+# Local testing using HTTPS / SSL
 
 Either use `src/ssl/localhost.{crt | key}` files or generate new ones using:
 

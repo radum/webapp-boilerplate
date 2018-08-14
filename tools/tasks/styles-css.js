@@ -1,17 +1,22 @@
 const path = require('path');
-const { promisify } = require('util');
 const sass = require('node-sass'); // TODO: use dart Sass?
 const postcss = require('postcss');
 const autoprefixer = require('autoprefixer');
 const postcssCustomProperties = require('postcss-custom-properties');
 const postcssReporter = require('postcss-reporter');
+const indentString = require('indent-string');
 const humanizeMs = require('ms');
 const chalk = require('chalk');
 const fs = require('../lib/fs');
 const config = require('../config');
 const minifyCss = require('./styles-minify');
 
-// TODO: Standardise this for all plugins
+/**
+ * Formats a Sass error object and returns an new Error object
+ *
+ * @param {Object} error Sass object error
+ * @returns {Error} New formated Error object
+ */
 function sassFormatError(error) {
 	let relativePath = '';
 	const filePath = error.file;
@@ -20,16 +25,14 @@ function sassFormatError(error) {
 
 	relativePath = path.relative(process.cwd(), filePath);
 
-	message += (relativePath) + '\n';
-	message += error.formatted;
+	message += [chalk.underline(relativePath), error.formatted].join('\n');
 
-	error.messageFormatted = message;
+	error.messageFormatted = indentString(chalk.redBright(message), 11);
 	error.messageOriginal = error.message;
-	error.message = message;
 
 	error.relativePath = relativePath;
 
-	return error.messageFormatted;
+	return error;
 }
 
 function compileSass(options) {
@@ -37,8 +40,6 @@ function compileSass(options) {
 	logger.setScopeColor(config.taskColor[3]);
 
 	logger.start('compiling sass files');
-
-	// const sassRender = promisify(sass.render);
 
 	return new Promise((resolve, reject) => {
 		sass.render({
@@ -50,7 +51,9 @@ function compileSass(options) {
 			sourceMapEmbed: options.sourceMapEmbed || false
 		}, (err, result) => {
 			if (err) {
-				reject(new Error(sassFormatError(err)));
+				const errorObj = sassFormatError(err);
+
+				reject(new Error(errorObj.messageFormatted));
 			} else {
 				logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
 				logger.debug('included files', result.stats.includedFiles);

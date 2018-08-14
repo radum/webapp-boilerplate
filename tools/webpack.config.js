@@ -163,11 +163,19 @@ const webpackConfig = {
 		splitChunks: {
 			chunks: 'all',
 			cacheGroups: {
-				commons: {
+				vendors: {
+					name: 'chunk-vendors',
 					test: /[\\/]node_modules[\\/]/,
-					name: 'vendors',
-					chunks: 'initial',
+					priority: -10,
+					chunks: 'initial'
 				},
+				common: {
+					name: 'chunk-common',
+					minChunks: 2,
+					priority: -20,
+					chunks: 'initial',
+					reuseExistingChunk: true
+				}
 			},
 		},
 	},

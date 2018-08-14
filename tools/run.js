@@ -24,7 +24,7 @@ const options = {
 	logger: signale
 };
 
-const catchErrors = fn => (...args) => fn(...args).catch(error => signale.fatal(error));
+const catchErrors = fn => (...args) => fn(...args).catch(error => signale.error(error));
 
 /**
  * CLI commands switchboard
