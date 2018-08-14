@@ -264,7 +264,7 @@ const webpackConfig = {
 				new webpack.HashedModuleIdsPlugin(),
 
 				// TODO: Document this
-				// TODO: Maybe find a way to refresh the workers on DEV also
+				// TODO: Find a way to refresh the workers on DEV also
 				new GenerateSW({
 					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
 					globPatterns: ['**/*.{html,js,css}'],
