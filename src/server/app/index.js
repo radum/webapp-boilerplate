@@ -22,18 +22,19 @@ const logger = require('../logger');
 const config = require('../config');
 const findEncoding = require('../util/encoding-selection').findEncoding;
 
-const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
+// Express App with view engine via Marko
+// -----------------------------------------------------------------------------
 
-// View engine via Marko
 require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
 require('marko/node-require'); // Allow Node.js to require and load `.marko` files
 const markoExpress = require('marko/express');
 
-const appTemplate = require(`${config.server.paths.htmlTemplates}/app.marko`);
-
 const app = express();
 
+app.use(markoExpress()); // enable res.marko(template, data)
+
 // Express configuration.
+// -----------------------------------------------------------------------------
 
 // Trust X-Forwarded-* headers so that when we are behind a reverse proxy,
 // our connection information is that of the original client (according to
@@ -86,8 +87,9 @@ app.use(session({
 	} // Configure when sessions expires
 }));
 
-// Extra
+// Extra (loggers, security)
 // -----------------------------------------------------------------------------
+
 // Morgan logger for express
 expressRoutesLogger.token('timestamp', () => {
 	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + ']';
@@ -104,34 +106,12 @@ app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use(helmet());
 
-// View engine via Marko
-app.use(markoExpress()); // enable res.marko(template, data)
-
-// This module adds [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
+// Add [Server-Timing](https://www.w3.org/TR/server-timing/) to response headers.
 app.use(serverTiming());
-
-// Template data
-// -----------------------------------------------------------------------------
-const tplData = {
-	isProd: config.isProd,
-	// TODO: Removed for now because not sure how Webpack 4 works and I removed
-	// soundcloud/chunk-manifest-webpack-plugin as it was to old, alternative should be found if
-	// is really needed now with Webpack 4
-	webpackChunkManifestContent: false, // fs.readFileSync(config.server.paths.XXX),
-	assets: {
-		scripts: [],
-	},
-	browserSync: {
-		HOST: '',
-	}
-};
-
-if (webpackStaticAssetsObj['runtime.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['runtime.js']);
-if (webpackStaticAssetsObj['chunk-vendors.js']) tplData.assets.scripts.push(webpackStaticAssetsObj['chunk-vendors.js']);
-tplData.assets.scripts.push(webpackStaticAssetsObj['main.js']);
 
 // Routes
 // -----------------------------------------------------------------------------
+
 // Redirect to HTTPS automatically if options is set
 if (process.env.HTTPS_REDIRECT === 'true') {
 	logger.log('info', 'Redirecting HTTP requests to HTTPS');
@@ -160,7 +140,7 @@ app.get(/\.js\.map/, (req, res, next) => {
 	next();
 });
 
-// Respond with Brotli files is the browser accepts it
+// Respond with Brotli files is the browser accepts it (js, css only)
 if (process.env.USE_BROTLI === 'true' && config.isProd) {
 	logger.log('info', 'Using brotli redirects for JS and CSS files');
 
@@ -195,18 +175,9 @@ if (process.env.USE_BROTLI === 'true' && config.isProd) {
 // Register express static for all files within the static folder
 app.use('/', express.static(config.server.paths.staticAssets));
 
-// If the request is via HTTPS, change the browserSync host to HTTPS
-app.get('/', (req, res) => {
-	if (req.isSpdy) {
-		tplData.browserSync.HOST = req.headers.host;
-	}
-
-	res.marko(appTemplate, tplData);
-});
-
-//
 // Error handling
 // -----------------------------------------------------------------------------
+
 const pe = new PrettyError();
 pe.skipNodeFiles();
 pe.skipPackage('express');

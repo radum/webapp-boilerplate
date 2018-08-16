@@ -1,4 +1,4 @@
-/* global document */
+/* global document, __SENTRY_DSN_URL__ */
 
 // Global imports
 // import 'babel-polyfill';

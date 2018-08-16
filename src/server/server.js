@@ -7,8 +7,6 @@ const http2 = require('spdy');
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 
-const apiRoutes = require('./api');
-
 // Load .env files based on the rules defined in the docs
 if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) { dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` }); }
 if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
@@ -19,7 +17,13 @@ dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 const app = require('./app');
 
 // Express routes
+const apiRoutes = require('./api');
+const homePage = require('./pages/home');
+const aboutPage = require('./pages/about');
+
 app.use(apiRoutes);
+app.use(homePage);
+app.use(aboutPage);
 
 http.createServer(app).listen(app.get('http-port'), () => {
 	// If you update the text here update the ./tools/run-server.js RUNNING_REGEXP var also

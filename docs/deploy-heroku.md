@@ -16,8 +16,13 @@ heroku container:login
 # Create a new Heroku app
 heroku create {heroku app name} --region eu
 
+# Set some useful ENV vars (for more options check .env.development)
+heroku config:set NODE_ENV=production APP_DOMAIN_NAME=example.com --app={heroku app name}
+heroku config:set HTTPS_REDIRECT=true USE_BROTLI=true SESSION_SECRET={session_secret} --app={heroku app name}
+
 # Build the image and push to Container Registry (specific to our app)
 # This works if in the root folder of he project we have our `Dockerfile` and `docker-compose.yml`
+# To push changes repeat the steps from here onwards
 heroku container:push web --app={heroku app name}
 
 # Release the image to the app and run the container
@@ -26,7 +31,8 @@ heroku container:release web --app={heroku app name}
 # Open a browser page with the newly running app
 heroku open -a {heroku app name}
 
-# And to destroy it
+# Other useful commands
+# And to destroy it (deletes the app completely)
 heroku apps:destroy --app={heroku app name}
 
 # And to check out the logs

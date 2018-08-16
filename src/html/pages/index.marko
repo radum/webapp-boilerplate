@@ -1,14 +1,20 @@
-<include('../partials/_app-shell.marko')>
-<@body>
+<include('../app.marko', data.app)>
+<@page>
 
-<main id="app">
-	<header>
-		articles | tutorials | tweets | code snippets
-	</header>
-	<section class="c-posts">
-		Loading...
-	</section>
-</main>
+	<include('../partials/_app-shell.marko')>
+	<@body>
 
-</@body>
+	<main id="app">
+		<header>
+			articles | tutorials | tweets | code snippets
+		</header>
+		<section class="c-posts">
+			Loading...
+		</section>
+	</main>
+
+	</@body>
+	</include>
+
+</@page>
 </include>
