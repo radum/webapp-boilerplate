@@ -1,4 +1,13 @@
+const fs = require('fs');
+const path = require('path');
+const dotenv = require('dotenv');
 const cli = require('./cli');
+
+// Load .env files based on the rules defined in the docs
+if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) { dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` }); }
+if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
+dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
+dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDebug = !cli.flags.release;

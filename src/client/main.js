@@ -12,9 +12,14 @@ import App from './app';
 // https://github.com/ftlabs/fastclick
 // fastClick(document.body);
 
-if (__SENTRY_DSN_URL__) {
+// Make sure you set the `SENTRY_DSN_URL` env var via .env files
+// if you need this to work in the code, as the entire IF will be skiped on compile
+if (__SENTRY_DSN_URL__ && !__DEV__) {
 	Raven
-		.config(__SENTRY_DSN_URL__)
+		.config(__SENTRY_DSN_URL__, {
+			// TODO: Make this available from webpack as a defined var or something else
+			release: '0.0.1'
+		})
 		.install();
 
 	// TODO: Not sure I actually need this from Sentry

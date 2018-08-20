@@ -177,7 +177,7 @@ const webpackConfig = {
 			'process.env.BROWSER': true,
 			__BROWSER__: true,
 			__DEV__: config.isDebug,
-			__SENTRY_DSN_URL__: config.SENTRY_DSN_URL
+			__SENTRY_DSN_URL__: JSON.stringify(config.SENTRY_DSN_URL)
 		}),
 
 		// Forces webpack-dev-server program to write bundle files to the file system

@@ -127,20 +127,26 @@ if (process.env.HTTPS_REDIRECT === 'true') {
 	});
 }
 
-// Return source maps in production only to requests passint then `X-SOURCE-MAP-ACCESS-TOKEN` header token (Sentry for example)
+// Return source maps in production only to requests passint then `X-SOURCE-MAP-TOKEN` header token (Sentry for example)
 // TODO: Test to see if it works
 if (config.isProd) {
 	app.get(/\.js\.map/, (req, res, next) => {
-		const hedSourceMapToken = req.headers['X-SOURCE-MAP-ACCESS-TOKEN'];
-		const envSourceMapToken = process.env['X-SOURCE-MAP-ACCESS-TOKEN'];
+		const hedSourceMapToken = req.get('X-SOURCE-MAP-TOKEN');
+		const envSourceMapToken = process.env['X-SOURCE-MAP-TOKEN'];
+
+		logger.log('debug', `source map request from : ${req.ip} ${req.originalUrl}`);
 
 		if (hedSourceMapToken === undefined || (envSourceMapToken && envSourceMapToken !== hedSourceMapToken)) {
+			logger.log('debug', `source map request invalid using token: ${hedSourceMapToken}`);
+
 			res
 				.status(401)
 				.send('Authentication access token is required to access the source map.');
 
 			return;
 		}
+
+		logger.log('debug', `source map request valid using token: ${hedSourceMapToken}`);
 
 		next();
 	});
@@ -158,10 +164,11 @@ if (process.env.USE_BROTLI === 'true' && config.isProd) {
 
 		const compressionType = findEncoding(acceptEncoding, [{ encodingName: 'br' }]);
 
-		// As long as there is any compression available for this file, add the Vary Header (used for caching proxies)
-		res.setHeader('Vary', 'Accept-Encoding');
+		// Check for null first, becuase apps like Sentry for example don't add `accept-encoding` to the request
+		if (compressionType !== null && compressionType.encodingName === 'br') {
+			// As long as there is any compression available for this file, add the Vary Header (used for caching proxies)
+			res.setHeader('Vary', 'Accept-Encoding');
 
-		if (compressionType.encodingName === 'br') {
 			const type = mime.getType(req.path);
 			let search = req.url.split('?').splice(1).join('?');
 
@@ -172,6 +179,8 @@ if (process.env.USE_BROTLI === 'true' && config.isProd) {
 			req.url = req.url + '.br';
 			res.setHeader('Content-Encoding', 'br');
 			res.setHeader('Content-Type', `${type}; charset=UTF-8`);
+		} else {
+			logger.log('debug', `Brotli redirect failed: compressionType: ${JSON.stringify(compressionType)}`);
 		}
 
 		next();
