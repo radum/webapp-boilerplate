@@ -1,5 +1,5 @@
 import { html } from 'lit-html';
-import {repeat} from 'lit-html/lib/repeat';
+import { repeat } from 'lit-html/lib/repeat';
 
 import * as util from '../util';
 

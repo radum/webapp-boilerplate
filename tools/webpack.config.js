@@ -2,9 +2,6 @@
 
 const path = require('path');
 const webpack = require('webpack');
-
-const aliases = require('./aliases.config');
-
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -13,9 +10,7 @@ const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const Jarvis = require('webpack-jarvis');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin');
-// const WebpackBar = require('webpackbar');
-
+const aliases = require('./aliases.config');
 const config = require('./config');
 
 // Webpack configuration (main.js => main.build.js)
@@ -31,7 +26,7 @@ const webpackConfig = {
 		main: './' + config.paths.scriptsEntryPoint,
 		about: './src/client/pages/about.js',
 
-		// This is use to auto reload the browser when the code changes. We don't have a watch and webpack complile repeat task.
+		// This is used to auto reload the browser when the code changes. We don't have a watch and webpack complile repeat task.
 		// The hot middleware handles the browser reload for us.
 		// Only used in dev mode and reload automaticaly if webpack is stuck
 		// https://github.com/glenjamin/webpack-hot-middleware
@@ -57,7 +52,8 @@ const webpackConfig = {
 		// filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
 		filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 
-		// TODO: Understand what this does
+		// Name of non-entry chunk files
+		// https://webpack.js.org/configuration/output/#output-chunkfilename
 		chunkFilename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 
 		// Change the prefix for each line in the output bundles.
@@ -251,11 +247,6 @@ const webpackConfig = {
 				// a plugin that prints an error when you attempt to do this.
 				// See https://github.com/facebookincubator/create-react-app/issues/240
 				new CaseSensitivePathsPlugin(),
-
-				// TODO: This is cool but do I need it?
-				// Huge vendors file, and Express server needs to restart each time
-				// because new compiled files are added to the mix
-				// new ErrorOverlayPlugin(),
 			]
 			: [
 				// NamedModulesPlugin leaks path (suited for DEV)
@@ -269,10 +260,7 @@ const webpackConfig = {
 					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
 					globPatterns: ['**/*.{html,js,css}'],
 					swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-				}),
-
-				// // Elegant ProgressBar and Profiler for Webpack
-				// new WebpackBar()
+				})
 			]),
 
 		// Webpack Bundle Analyzer

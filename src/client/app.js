@@ -48,7 +48,7 @@ class App {
 			const json = await resp.json();
 
 			if (!resp.ok || json.error) {
-				throw Error(json.error);
+				throw new Error(json.error);
 			}
 
 			return json;
