@@ -14,7 +14,7 @@ const errorhandler = require('errorhandler');
 const expressRoutesLogger = require('morgan');
 const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
-// TODO: https://www.npmjs.com/package/express-brute
+// TODO: https://www.npmjs.com/package/express-brute, https://github.com/animir/node-rate-limiter-flexible
 const rateLimit = require('express-rate-limit');
 const mime = require('mime');
 
