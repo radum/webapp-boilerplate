@@ -145,7 +145,7 @@ app.get(/\.js\.map/, (req, res, next) => {
 if (process.env.USE_BROTLI === 'true' && config.isProd) {
 	logger.log('info', 'Using brotli redirects for JS and CSS files');
 
-	app.get(/\.js|css/, (req, res, next) => {
+	app.get(/\.js$|css$/, (req, res, next) => {
 		logger.log('debug', `Brotli redirect for: ${req.url}`);
 
 		// Get browser's' supported encodings

@@ -32,7 +32,7 @@ ENV NODE_ENV production
 RUN mkdir /app
 WORKDIR /app
 COPY --from=builder /app/build /app
-RUN npm ci
+RUN npm i
 RUN ls
 RUN echo $NODE_ENV
 EXPOSE 3000
