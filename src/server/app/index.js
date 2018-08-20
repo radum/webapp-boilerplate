@@ -21,6 +21,7 @@ const mime = require('mime');
 const logger = require('../logger');
 const config = require('../config');
 const findEncoding = require('../util/encoding-selection').findEncoding;
+const noopServiceWorkerMiddleware = require('../util/noop-service-worker-middleware');
 
 // Express App with view engine via Marko
 // -----------------------------------------------------------------------------
@@ -170,6 +171,15 @@ if (process.env.USE_BROTLI === 'true' && config.isProd) {
 
 		next();
 	});
+}
+
+// This service worker file is effectively a 'no-op' that will reset any
+// previous service worker registered for the same host:port combination.
+// We do this in development to avoid hitting the production cache if
+// it used the same host and port.
+// https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
+if (!config.isProd) {
+	app.use(noopServiceWorkerMiddleware());
 }
 
 // Register express static for all files within the static folder

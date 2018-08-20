@@ -6,7 +6,7 @@ class PageAbout {
 	}
 
 	init() {
-		console.log(`Page ${this.pageName} loaded`);
+		console.log(`Page ${this.pageName} loaded.`);
 	}
 }
 

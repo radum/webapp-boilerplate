@@ -152,11 +152,15 @@ const webpackConfig = {
 		],
 	},
 
-	// optimization.runtimeChunk: true adds an additonal chunk to each entrypoint containing only the runtime
-	// optimization.runtimeChunk: 'single' is to be used if there is only 1 entry file
+	// https://webpack.js.org/configuration/optimization/#optimization-runtimechunk
+	// optimization.runtimeChunk: true adds an additonal chunk to each entrypoint containing only the runtime (each entry file gets its own runtime file)
+	// optimization.runtimeChunk: 'single' is to be used if there is only 1 entry file or you want only one runtime (all entry files get one runtime file)
 	optimization: {
 		runtimeChunk: 'single',
 		splitChunks: {
+			// This option enables smart code splitting. With it, webpack would extract the vendor code if it gets larger than 30 kB
+			// (before minification and gzip). It would also extract the common code – this is useful if your build produces several bundles
+			// (e.g. if you split your app into routes).
 			chunks: 'all',
 			cacheGroups: {
 				vendors: {
@@ -167,7 +171,9 @@ const webpackConfig = {
 				},
 				common: {
 					name: 'chunk-common',
+					// Minimum number of chunks that must share a module before splitting.
 					minChunks: 2,
+					// The priority of the `common` groups are negative so any `vendors` cache group takes higher priority (default 0).
 					priority: -20,
 					chunks: 'initial',
 					reuseExistingChunk: true
@@ -217,23 +223,13 @@ const webpackConfig = {
 			},
 		}),
 
-		// Allows exporting a manifest that maps entry chunk names to their output files,
-		// instead of keeping the mapping inside the webpack bootstrap.
-		// The resulted content should then be inlined in a script tag like this:
-		//
-		// ```
-		// <script>
-		// window.webpackChunkManifest = {content of asset-manifest.json};
-		// </script>
-		// ```
-		//
-		// Basicaly in the runtime.js generated file the following line:
-		// script.src = __webpack_require__.p + "" + ({ "0": "main", "1": "commons" }[chunkId] || chunkId) + ".build." + { "0": "c6686ead68d4f2a08691", "1": "9ef5ea29296426d9e943" }[chunkId] + ".js";
-		// becomes this:
-		// script.src = __webpack_require__.p + window["webpackChunkManifest"][chunkId];
-		// Webpack can then read this mapping, assuming it is provided somehow on the client,
-		// instead of storing a mapping (with chunk asset hashes) in the bootstrap script, which allows to actually leverage long-term caching.
-		// [soundcloud/chunk-manifest-webpack-plugin used to do this here]
+		// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
+		// The GenerateSW plugin will create a service worker file for you and add it to the webpack asset pipeline.
+		new GenerateSW({
+			globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
+			globPatterns: ['**/*.{html,js,css}'],
+			swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
+		}),
 
 		...(config.isDebug
 			? [
@@ -252,15 +248,7 @@ const webpackConfig = {
 				// NamedModulesPlugin leaks path (suited for DEV)
 				// Will cause hashes to be based on the relative path of the module,
 				// generating a four character string as the module id
-				new webpack.HashedModuleIdsPlugin(),
-
-				// TODO: Document this
-				// TODO: Find a way to refresh the workers on DEV also
-				new GenerateSW({
-					globDirectory: path.resolve(__dirname, '..', config.paths.staticAssetsOutput),
-					globPatterns: ['**/*.{html,js,css}'],
-					swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
-				})
+				new webpack.HashedModuleIdsPlugin()
 			]),
 
 		// Webpack Bundle Analyzer

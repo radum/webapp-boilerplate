@@ -8,7 +8,7 @@
 		window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
 	);
 
-	if ('serviceWorker' in navigator && (window.location.protocol === 'https:' && !isLocalhost)) {
+	if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || isLocalhost)) {
 		navigator.serviceWorker.register('/sw.js').then(function(registration) {
 			console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
@@ -36,6 +36,6 @@
 			console.log('ready to use', event);
 		});
 	} else {
-		console.log('service worker is not supported or you are on localhost');
+		console.log('service worker is not supported');
 	}
 </script>
