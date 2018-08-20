@@ -127,19 +127,24 @@ if (process.env.HTTPS_REDIRECT === 'true') {
 	});
 }
 
-// Return source maps in production only to Sentry via the set token
+// Return source maps in production only to requests passint then `X-SOURCE-MAP-ACCESS-TOKEN` header token (Sentry for example)
 // TODO: Test to see if it works
-app.get(/\.js\.map/, (req, res, next) => {
-	if (req.headers['X-Sentry-Token'] !== process.env.X_SENTRY_TOKEN) {
-		res
-			.status(401)
-			.send('Authentication access token is required to access the source map.');
+if (config.isProd) {
+	app.get(/\.js\.map/, (req, res, next) => {
+		const hedSourceMapToken = req.headers['X-SOURCE-MAP-ACCESS-TOKEN'];
+		const envSourceMapToken = process.env['X-SOURCE-MAP-ACCESS-TOKEN'];
 
-		return;
-	}
+		if (hedSourceMapToken === undefined || (envSourceMapToken && envSourceMapToken !== hedSourceMapToken)) {
+			res
+				.status(401)
+				.send('Authentication access token is required to access the source map.');
 
-	next();
-});
+			return;
+		}
+
+		next();
+	});
+}
 
 // Respond with Brotli files is the browser accepts it (js, css only)
 if (process.env.USE_BROTLI === 'true' && config.isProd) {
