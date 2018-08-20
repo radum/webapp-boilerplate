@@ -14,9 +14,9 @@ function compilerLogger(err, stats) {
 	}
 
 	const jsonStats = stats.toJson();
-	const statColor = jsonStats.warnings.length < 1 ? chalk.green : chalk.yellow;
+	const statColor = jsonStats.warnings.length === 0 ? chalk.green : chalk.yellow;
 
-	if (jsonStats.errors.length > 0) {
+	if (stats.hasErrors()) {
 		const error = new Error(jsonStats.errors[0]);
 		error.errors = jsonStats.errors;
 		error.warnings = jsonStats.warnings;
@@ -26,13 +26,18 @@ function compilerLogger(err, stats) {
 	} else {
 		const compileTime = prettifyTime(stats.endTime - stats.startTime);
 
-		logger.log(statColor(stats));
+		// logger.log(statColor(stats));
+		logger.log(stats.toString({ colors: true }));
+
 		logger.log(`Compiled with ${chalk.cyan('webpack')} in ` + chalk.magenta(compileTime));
 	}
 }
 
 /**
  * Bundle JS files using webpack.
+ *
+ * @param {Object} [options={ bsReload: undefined }] Options object
+ * @returns {Promise} Compiler promise
  */
 function compiler(options = { bsReload: undefined }) {
 	let instance;

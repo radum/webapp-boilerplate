@@ -95,37 +95,9 @@ const webpackConfig = {
 	// https://webpack.js.org/configuration/other-options/#bail
 	bail: !config.isDebug,
 
-	// TODO: Check if verbose works
 	// Cache the generated webpack modules and chunks to improve build speed.
 	// https://webpack.js.org/configuration/other-options/#cache
 	cache: config.isDebug,
-
-	// Specify what bundle information gets displayed
-	// https://webpack.js.org/configuration/stats/
-	stats: {
-		// Add information about cached (not built) modules
-		cached: config.isVerbose,
-		// Show cached assets (setting this to `false` only shows emitted files)
-		cachedAssets: config.isVerbose,
-		// Add chunk information (setting this to `false` allows for a less verbose output)
-		chunks: config.isVerbose,
-		// Add built modules information to chunk information
-		chunkModules: config.isVerbose,
-		// `webpack --colors` equivalent
-		colors: true,
-		// Add --env information
-		env: config.isVerbose,
-		// Add the hash of the compilation
-		hash: config.isVerbose,
-		// Add built modules information
-		modules: config.isVerbose,
-		// Add information about the reasons why modules are included
-		reasons: config.isDebug,
-		// Add timing information
-		timings: true,
-		// Add webpack version information
-		version: config.isVerbose,
-	},
 
 	module: {
 		// Make missing exports an error instead of warning
