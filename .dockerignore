@@ -1,17 +1,21 @@
 .git
 .cache
+.eslintcache
+.github
 .vscode
 .webpack-monitor
-.gitignore
-.dockerignore
 .hg
 .svn
 .DS_Store
 build
+docs
+extra
+node_modules
+.gitignore
+.dockerignore
 README.md
 Dockerfile*
 docker-compose*
-node_modules
 npm-debug.log
 
 .env.local
