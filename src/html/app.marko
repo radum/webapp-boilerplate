@@ -8,12 +8,6 @@
 		<include(input.page)/>
 
 		<!-- <script src="https://cdn.jsdelivr.net/modernizr/3.3.1/modernizr.min.js" integrity="sha256-65rhSmwPSQGe83K1p6cudTQxfiMNutuHCIB0n8CqvF4=" crossorigin="anonymous"></script> -->
-		<if(data.webpackChunkManifestContent)>
-		<script>
-		window.webpackChunkManifest = ${data.webpackChunkManifestContent};
-		</script>
-		</if>
-
 		<for(file in data.assets.scripts)>
 		<script src="${file}"></script>
 		</for>

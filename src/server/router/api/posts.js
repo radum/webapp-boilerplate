@@ -1,10 +1,7 @@
-const express = require('express');
 // TODO: Use JOI to validate JSON
 // const Joi = require('joi');
 
-const apiRouter = express.Router();
-
-apiRouter.get('/api/posts/:year?/:month?/:day?', async (req, res) => {
+function getPosts (req, res) {
 	const posts = [
 		{
 			title: 'Page Lifecycle API - Philip Walton',
@@ -35,6 +32,8 @@ apiRouter.get('/api/posts/:year?/:month?/:day?', async (req, res) => {
 	]
 
 	res.status(200).send(posts);
-});
+}
 
-module.exports = apiRouter;
+module.exports = {
+	getPosts
+}

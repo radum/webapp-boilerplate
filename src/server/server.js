@@ -1,9 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
-// Using `spdy` module until this lands into Express 5.x
-// https://github.com/expressjs/express/pull/3390
-const http2 = require('spdy');
+const http2 = require('spdy'); // Using `spdy` until this lands https://github.com/expressjs/express/pull/3390
 const dotenv = require('dotenv');
 const chalk = require('chalk');
 
@@ -15,15 +13,10 @@ dotenv.load({ path: path.resolve(process.cwd(), '.env') });
 
 // Express app
 const app = require('./app');
+const router = require('./router');
 
 // Express routes
-const apiRoutes = require('./api');
-const homePage = require('./pages/home');
-const aboutPage = require('./pages/about');
-
-app.use(apiRoutes);
-app.use(homePage);
-app.use(aboutPage);
+app.use(router);
 
 http.createServer(app).listen(app.get('http-port'), () => {
 	// If you update the text here update the ./tools/run-server.js RUNNING_REGEXP var also

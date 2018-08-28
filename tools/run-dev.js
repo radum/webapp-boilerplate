@@ -2,7 +2,7 @@ const clean = require('./tasks/clean');
 const { copyStatic } = require('./tasks/copy');
 const buildCSS = require('./tasks/styles-css');
 const compiler = require('./tasks/compiler');
-const bs = require('./tasks/browserSync');
+const bs = require('./tasks/browser-sync');
 const runServer = require('./tasks/run-server');
 const watcher = require('./tasks/watch');
 

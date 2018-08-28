@@ -22,7 +22,7 @@ class App {
 	}
 
 	async getPosts(forYear, includeTweets = false) {
-		const url = new URL(`/api/posts/${forYear}`, location);
+		const url = new URL(`/api/v1/posts/${forYear}`, location);
 		const thisYearsPosts = await this.fetchPosts(url.href);
 		const posts = thisYearsPosts;
 
