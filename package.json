@@ -52,7 +52,7 @@
     "express-status-monitor": "^1.1.5",
     "helmet": "^3.13.0",
     "joi": "^13.6.0",
-    "lit-html": "^0.10.2",
+    "lit-html": "^0.11.0",
     "lodash": "^4.17.10",
     "lusca": "^1.6.1",
     "marko": "^4.13.0",
