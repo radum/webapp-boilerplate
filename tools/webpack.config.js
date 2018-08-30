@@ -8,6 +8,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const SizePlugin = require('size-plugin');
 const Jarvis = require('webpack-jarvis');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
@@ -202,6 +203,10 @@ const webpackConfig = {
 			globPatterns: ['**/*.{html,js,css}'],
 			swDest: path.join(path.resolve(__dirname, '..', config.paths.staticAssetsOutput), 'sw.js'),
 		}),
+
+		// Prints the gzipped sizes of your webpack assets and the changes since the last build.
+		// https://github.com/GoogleChromeLabs/size-plugin
+		new SizePlugin(),
 
 		...(config.isDebug
 			? [
