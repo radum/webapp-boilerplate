@@ -53,7 +53,7 @@ function compiler(options = { bsReload: undefined }) {
 		instance = webpack(webpackConfig, (err, stats) => {
 			compilerLogger(err, stats);
 
-			// TODO: Explore if using an EventEmitter will be better
+			// TODO: Explore if using an EventEmitter will be better (emittery)
 			// The export will have to be an object with an init and the emitter also.
 			if (options.bsReload) {
 				logger.info('BS reloaded');

@@ -42,5 +42,5 @@ function bsReload(done) {
 module.exports = {
 	browserSyncInstance,
 	init: bs,
-	bsReload // TODO: Explore if using an EventEmitter will be better
+	bsReload // TODO: Explore if using an EventEmitter will be better (emittery)
 };

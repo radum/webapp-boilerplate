@@ -1,6 +1,4 @@
-// TODO: Explore using https://github.com/sindresorhus/execa
 const cp = require('child_process');
-const execa = require('execa');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const config = require('../config');
@@ -55,14 +53,6 @@ function runServer(options = { inspect: false }) {
 			env: Object.assign({ FORCE_COLOR: true }, process.env),
 			silent: false
 		});
-
-		// TODO: Can I use execa maybe?
-		// execa('node', appParams, {
-		// 	env: Object.assign({ FORCE_COLOR: true }, process.env),
-		// 	silent: false
-		// }).then((result) => {
-		// 	console.log(result.stdout);
-		// }).catch(error => console.log(error));
 
 		if (pending) {
 			server.once('exit', (code, signal) => {
