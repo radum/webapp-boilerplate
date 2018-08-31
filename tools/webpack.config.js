@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -151,8 +152,19 @@ const webpackConfig = {
 					chunks: 'initial',
 					reuseExistingChunk: true
 				}
-			},
+			}
 		},
+		minimizer: [new TerserPlugin({
+			sourceMap: true,
+			cache: true,
+			parallel: true,
+			terserOptions: {
+				output: {
+					comments: /@license/i
+				}
+			},
+			extractComments: true
+		})]
 	},
 
 	resolve: {
