@@ -132,7 +132,7 @@ Documents your database design and schemas, relations etc...
 
 ## FAQ
 
-### Example: `import for from './foo.js';` If you use dev tools debugger you cannot watch or execute foo because it is not defined.
+### Example: `import foo from './foo.js';` If you use dev tools debugger you cannot watch or execute foo because it is not defined.
 
 This is because Webpack renames variable bindings in ES6 imports when it replaces them. More info here https://github.com/webpack/webpack/issues/3957
 
