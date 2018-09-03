@@ -1,14 +1,14 @@
 {
-	"version": "1.3.1",
-	"name": "ES6 Web app boilerplate",
+	"version": "1.0.0",
+	"name": "WABRM",
 	"launch_path": "/index.html",
-	"description": "ES6 Web app boilerplate using Gulp + Browserify",
+	"description": "ES6 Web app boilerplate / web starter kit made by RaduM",
 	"icons": {
 		"128": "/images/touch/icon-128x128.png"
 	},
 	"developer": {
-		"name": "",
-		"url": ""
+		"name": "RaduM",
+		"url": "https://twitter.com/radumicu"
 	},
 	"installs_allowed_from": [
 		"*"

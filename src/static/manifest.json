@@ -1,6 +1,6 @@
 {
-	"short_name": "WSK",
-	"name": "ES6 Web app boilerplate / web starter kit using Gulp + Webpack",
+	"short_name": "WABRM",
+	"name": "ES6 Web app boilerplate / web starter kit made by RaduM",
 	"icons": [
 		{
 			"src": "images/touch/icon-128x128.png",

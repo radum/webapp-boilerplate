@@ -154,6 +154,7 @@ const webpackConfig = {
 				}
 			}
 		},
+		// https://github.com/webpack-contrib/uglifyjs-webpack-plugin/issues/349
 		minimizer: [new TerserPlugin({
 			sourceMap: true,
 			cache: true,
@@ -266,8 +267,8 @@ const webpackConfig = {
 	// splitting or minification in interest of speed. These warnings become
 	// cumbersome.
 	performance: {
-		hints: !config.isProd && config.isDebug ? 'warning' : false,
-	},
+		hints: !config.isProd && config.isDebug ? false : 'warning'
+	}
 };
 
 // Export the webpack config
