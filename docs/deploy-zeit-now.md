@@ -27,5 +27,5 @@ And a `Dockerfile` with the app running.
 After you install Now, you can just type `now` in the root and the deploy process starts
 
 ```shell
-now -e APP_DOMAIN_NAME=webapp-boilerplate-rlimisbnmi.now.sh
+now -e NODE_ENV="production" -e APP_DOMAIN_NAME="example.com" -e HTTPS_REDIRECT=true -e USE_BROTLI=true -e SESSION_SECRET="{session_secret}"
 ```

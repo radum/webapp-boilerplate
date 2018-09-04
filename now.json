@@ -1,4 +1,6 @@
 {
+  "name": "radum-webapp-boilerplate",
+  "alias": "radum-webapp-boilerplate",
   "type": "docker",
   "public": true,
   "features": {

@@ -14,7 +14,7 @@ function bs(options) {
 		// Make BS faster a bit - https://browsersync.io/docs/options#option-online
 		online: false,
 		port: options.port || 3001,
-		https: options.https || false,
+		https: options.https !== undefined ? options.https === 'true' : false,
 		key: options.key || 'src/ssl/localhost.key',
 		cert: options.cert || 'src/ssl/localhost.crt'
 	};
