@@ -10,7 +10,6 @@ const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const SizePlugin = require('size-plugin');
-const Jarvis = require('webpack-jarvis');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
 
@@ -247,10 +246,7 @@ module.exports = function (config) {
 			...(!config.isAnalyze
 				? []
 				: [
-					new BundleAnalyzerPlugin(),
-					new Jarvis({
-						port: 1337,
-					}),
+					new BundleAnalyzerPlugin()
 				]),
 		],
 
