@@ -128,7 +128,6 @@ if (process.env.HTTPS_REDIRECT === 'true') {
 }
 
 // Return source maps in production only to requests passint then `X-SOURCE-MAP-TOKEN` header token (Sentry for example)
-// TODO: Test to see if it works
 if (config.isProd) {
 	app.get(/\.js\.map/, (req, res, next) => {
 		const hedSourceMapToken = req.get('X-SOURCE-MAP-TOKEN');

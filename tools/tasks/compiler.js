@@ -2,9 +2,8 @@
 
 const webpack = require('webpack');
 const chalk = require('chalk');
-const webpackConfig = require('../webpack.config');
-const prettifyTime = require('../lib/prettifyTime');
-const config = require('../config');
+const prettifyTime = require('../lib/prettify-time');
+const { config, webpackConfig } = require('../config');
 
 let logger;
 

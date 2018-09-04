@@ -3,7 +3,7 @@ const globby = require('globby');
 const pMap = require('p-map');
 const brotliCompress = require('iltorb').compress;
 
-const config = require('../config');
+const { config } = require('../config');
 const fs = require('../lib/fs');
 
 function compression(options) {

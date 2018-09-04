@@ -1,4 +1,3 @@
-// TODO: Use JOI to validate JSON
 // const Joi = require('joi');
 
 function getPosts (req, res) {

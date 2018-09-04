@@ -3,7 +3,7 @@
 const path = require('path');
 const stylelint = require('stylelint');
 const stylelintFormatter = require('stylelint-formatter-pretty');
-const config = require('../config');
+const { config } = require('../config');
 
 function stylesLint(options) {
 	const logger = options.logger.scope('styles-lint');

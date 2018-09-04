@@ -1,7 +1,7 @@
 const cp = require('child_process');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
-const config = require('../config');
+const { config } = require('../config');
 
 let server;
 let pending = true;

@@ -8,7 +8,7 @@ const indentString = require('indent-string');
 const humanizeMs = require('ms');
 const chalk = require('chalk');
 const fs = require('../lib/fs');
-const config = require('../config');
+const { config } = require('../config');
 const minifyCss = require('./styles-minify');
 
 /**

@@ -2,8 +2,7 @@
 
 const chokidar = require('chokidar');
 const _ = require('lodash');
-// const asyncDone = require('async-done');
-const config = require('../config');
+const { config } = require('../config');
 
 const defaultOpts = {
 	isVerbose: false,
@@ -81,7 +80,7 @@ function watch(glob, options, cb) {
 		running = true;
 
 		logger.watch(`files changed (${options.label})`);
-		// asyncDone(cb, runComplete);
+
 		cb().then(runComplete);
 	}
 

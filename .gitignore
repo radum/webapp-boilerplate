@@ -9,13 +9,12 @@ npm-debug.log
 # Build, cache
 build
 build-tmp
-dist
-.webpack-monitor
-.tmp
-.sass-cache
-.esm-cache
 .cache
+.esm-cache
 .eslintcache
+.sass-cache
+.tmp
+.webpack-monitor
 
 # Code coverage
 coverage

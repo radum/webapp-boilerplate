@@ -2,7 +2,7 @@
 
 const path = require('path');
 const { CLIEngine } = require('eslint');
-const config = require('../config');
+const { config } = require('../config');
 
 function jsLint(options = { isVerbose: false }) {
 	const logger = options.logger.scope('js-lint');

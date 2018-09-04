@@ -1,6 +1,6 @@
 /* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
 
-const config = require('../config');
+const { config } = require('../config');
 const fs = require('../lib/fs');
 const pkg = require('../../package.json');
 

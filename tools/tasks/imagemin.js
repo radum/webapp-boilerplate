@@ -11,7 +11,7 @@ const pMap = require('p-map');
 const replaceExt = require('replace-ext');
 const chalk = require('chalk');
 
-const config = require('../config');
+const { config } = require('../config');
 const fs = require('../lib/fs');
 
 async function imageminTask(options) {

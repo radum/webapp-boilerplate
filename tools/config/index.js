@@ -1,13 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const dotenv = require('dotenv');
-const cli = require('./cli');
+const loadEnv = require('./../lib/load-env');
+const cli = require('./../cli');
+const webpackConfig = require('./webpack.config');
 
 // Load .env files based on the rules defined in the docs
-if (fs.existsSync(path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}.local`))) { dotenv.load({ path: `.env.${process.env.NODE_ENV}.local` }); }
-if (fs.existsSync(path.resolve(process.cwd(), '.env.local'))) { dotenv.load({ path: '.env.local' }); }
-dotenv.load({ path: path.resolve(process.cwd(), `.env.${process.env.NODE_ENV}`) });
-dotenv.load({ path: path.resolve(process.cwd(), '.env') });
+loadEnv(process.env.NODE_ENV);
 
 const isProd = process.env.NODE_ENV === 'production';
 const isDebug = !cli.flags.release;
@@ -59,4 +55,5 @@ const config = {
 	taskColor: ['#00a8e8', '#B2DBBF', '#F3FFBD', '#FFD166', '#fe938c', '#88d498', '#9c89b8']
 };
 
-module.exports = config;
+exports.config = config;
+exports.webpackConfig = webpackConfig(config);
