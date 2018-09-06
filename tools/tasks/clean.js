@@ -1,12 +1,12 @@
 const { config } = require('../config');
 const fs = require('../lib/fs');
+const pe = require('./../lib/youch');
 
 /**
  * Cleans up the output (build) directory.
  *
- * @param {Array} input - Array of paths to be cleared
  * @param {Object} options - Options object
- * @returns Promise
+ * @returns {Promise} Task promise
  */
 function clean(options) {
 	const logger = options.logger.scope('clean');
@@ -20,14 +20,13 @@ function clean(options) {
 			nosort: true,
 			dot: true,
 			ignore: [config.paths.buildPath + '/.git'],
-		}),
+		})
 	]);
 
-	task.then(() => {
-		logger.success();
-	}).catch((err) => {
-		logger.error(err);
-	});
+	task.then(() => logger.success())
+		.catch((error) => {
+			logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+		});
 
 	return task;
 }

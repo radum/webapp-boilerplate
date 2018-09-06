@@ -1,26 +1,24 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"devDependencies": true}] */
-
 const fs = require('fs');
 const path = require('path');
 const globby = require('globby');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
+const CLIError = require('./cli-error').createCLIError;
 
 /**
  * Check synchronously if a file exists or not
- * @param {Path} file path
- * @param {Object} opts object
- * @returns Boolean
+ * @param {Path} file - Path to file
+ * @returns {Boolean} Boolean value
  */
-const fileExists = (file, opts) => {
+const fileExists = (file) => {
 	return fs.existsSync(file);
 };
 
 /**
  * Read the content of a file and return a Promise
- *
  * @param {String} file - File name / path to read
- * @returns Promise
+ * @param {Object} opts - Options object
+ * @returns {Promise} Promise object
  */
 const readFile = (file, opts) => new Promise((resolve, reject) => {
 	fs.readFile(
@@ -28,34 +26,34 @@ const readFile = (file, opts) => new Promise((resolve, reject) => {
 		{
 			encoding: (opts.encoding === undefined) ? 'utf8' : opts.encoding
 		},
-		(err, data) => (err ? reject(err) : resolve(data))
+		(error, data) => (error ? reject(CLIError(error)) : resolve(data))
 	);
 });
 
 /**
  * Write content to a file
- *
  * @param {String} file - File name / path to read
  * @param {String} contents - File content
- * @returns Promise
+ * @returns {Promise} Promise obkecy
  */
 const writeFile = (file, contents) => new Promise((resolve, reject) => {
-	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, err => (err ? reject(err) : resolve()));
+	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, error => (error ? reject(CLIError(error)) : resolve()));
 });
 
 /**
  * Copy file from source to target location
- * @param {String} source Source location of the file
- * @param {String} target Target location of the copied file
+ * @param {String} source - Source location of the file
+ * @param {String} target - Target location of the copied file
+ * @returns {Promise} Execution promise
  */
 const copyFile = (source, target) => new Promise((resolve, reject) => {
 	let cbCalled = false;
 
-	function done(err) {
+	function done(error) {
 		if (!cbCalled) {
 			cbCalled = true;
-			if (err) {
-				reject(err);
+			if (error) {
+				reject(CLIError(error));
 			} else {
 				resolve();
 			}
@@ -64,35 +62,48 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
 
 	const rd = fs.createReadStream(source);
 
-	rd.on('error', err => done(err));
+	rd.on('error', error => done(error));
 
 	const wr = fs.createWriteStream(target);
 
-	wr.on('error', err => done(err));
-	wr.on('close', err => done(err));
+	wr.on('error', error => done(error));
+	wr.on('close', error => done(error));
 
 	rd.pipe(wr);
 });
 
 /**
  * Rename a file
- * @param {String} source
- * @param {String} target
+ * @param {String} source - File source path
+ * @param {String} target - File target path
+ * @returns {Promise} Promise object
  */
 const renameFile = (source, target) => new Promise((resolve, reject) => {
-	fs.rename(source, target, err => (err ? reject(err) : resolve()));
+	fs.rename(source, target, error => (error ? reject(CLIError(error)) : resolve()));
 });
 
 /**
  * Create a new folder
- * @param {String} name Folder name
+ * @param {String} name - Folder name
+ * @returns {Promise} Promise object
  */
 const makeDir = name => new Promise((resolve, reject) => {
-	mkdirp(name, err => (err ? reject(err) : resolve()));
+	mkdirp(name, error => (error ? reject(CLIError(error)) : resolve()));
 });
 
+/**
+ * Read directory as a glob promise
+ * @param {(String|Array)} pattern - Globby pattern
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
 const readDir = (pattern, options) => globby(pattern, options);
 
+/**
+ * Move direcotry from source to target location
+ * @param {String} source - Source directory
+ * @param {String} target - Target location
+ */
 const moveDir = async (source, target) => {
 	const dirs = await readDir('**/*.*', {
 		cwd: source,
@@ -108,6 +119,11 @@ const moveDir = async (source, target) => {
 	}));
 };
 
+/**
+ * Copy directory from source to target path
+ * @param {String} source Path of the source directory
+ * @param {String} target Path to the destination directory
+ */
 const copyDir = async (source, target) => {
 	const dirs = await readDir('**/*.*', {
 		cwd: source,
@@ -118,13 +134,20 @@ const copyDir = async (source, target) => {
 	await Promise.all(dirs.map(async (dir) => {
 		const from = path.resolve(source, dir);
 		const to = path.resolve(target, dir);
+
 		await makeDir(path.dirname(to));
 		await copyFile(from, to);
 	}));
 };
 
+/**
+ * Clean a directory
+ * @param {String} pattern to be used by rimraf to remove them from the fs
+ * @param {Object} options object
+ * @returns {Promise} Promise object
+ */
 const cleanDir = (pattern, options) => new Promise((resolve, reject) => {
-	rimraf(pattern, { glob: options }, (err, result) => (err ? reject(err) : resolve(result)));
+	rimraf(pattern, { glob: options }, (error) => (error ? reject(CLIError(error)) : resolve()));
 });
 
 module.exports = {

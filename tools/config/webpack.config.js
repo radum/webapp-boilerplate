@@ -219,7 +219,7 @@ module.exports = function (config) {
 
 			// Prints the gzipped sizes of your webpack assets and the changes since the last build.
 			// https://github.com/GoogleChromeLabs/size-plugin
-			new SizePlugin(),
+			// new SizePlugin(),
 
 			...(config.isDebug
 				? [

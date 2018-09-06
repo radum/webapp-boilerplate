@@ -119,6 +119,7 @@
     "sass-mq": "^5.0.0",
     "sharp": "^0.20.8",
     "size-plugin": "^1.0.1",
+    "stack-trace": "0.0.10",
     "stylelint": "^9.5.0",
     "stylelint-formatter-pretty": "^1.0.3",
     "stylelint-no-unsupported-browser-features": "^3.0.1",

@@ -18,7 +18,11 @@ const options = {
 	logger: signale
 };
 
-const catchErrors = fn => (...args) => fn(...args).catch(error => signale.error(error));
+const catchErrors = fn => (...args) => fn(...args).catch(error => {
+	if (!error.isAppError) {
+		signale.error(error);
+	}
+});
 
 /**
  * CLI commands switchboard

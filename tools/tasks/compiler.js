@@ -9,6 +9,9 @@ let logger;
 
 function compilerLogger(err, stats) {
 	if (err) {
+		logger.fatal(err.name);
+		logger.log(err.details);
+
 		throw new Error('webpack', err);
 	}
 
