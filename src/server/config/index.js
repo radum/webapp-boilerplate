@@ -13,8 +13,10 @@ const config = {
 		paths: {
 			staticAssets: isProd ? path.resolve(__dirname, '../../static') : path.resolve(__dirname, '../../../build/static'),
 			htmlTemplates: isProd ? path.resolve(__dirname, '../../html') : path.resolve(__dirname, '../../html'),
-			assetsWebpackJsonFile: isProd ?
-				path.resolve(__dirname, '../../asset-manifest.json') : path.resolve(__dirname, '../../../build/asset-manifest.json')
+			assetsWebpackJSONFile: isProd ?
+				path.resolve(__dirname, '../../asset-manifest-script.json') : path.resolve(__dirname, '../../../build/asset-manifest-script.json'),
+			assetsStylesJSONFile: isProd ?
+				path.resolve(__dirname, '../../asset-manifest-style.json') : path.resolve(__dirname, '../../../build/asset-manifest-style.json')
 		}
 	}
 };

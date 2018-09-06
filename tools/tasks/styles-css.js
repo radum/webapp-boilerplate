@@ -7,6 +7,7 @@ const postcssReporter = require('postcss-reporter');
 const indentString = require('indent-string');
 const humanizeMs = require('ms');
 const chalk = require('chalk');
+const revHash = require('rev-hash');
 const fs = require('../lib/fs');
 const { config } = require('../config');
 const minifyCss = require('./styles-minify');
@@ -92,8 +93,15 @@ function postCSSTransform(cssInput, options) {
 	return postcss(plugins).process(cssInput, settings);
 }
 
-function writeFileToDisk(cssOutput) {
-	return fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}`), cssOutput);
+async function writeFileToDisk(cssOutput, opts) {
+	const outputHash = opts.isDebug ? 'dev' : revHash(cssOutput);
+	const manifestContent = `{
+	"${config.paths.stylesEntryPoint}": "/styles/${config.paths.stylesOutputFile}.${outputHash}.css"
+}`;
+
+	await fs.writeFile(path.resolve(config.paths.buildPath + `/asset-manifest-style.json`), manifestContent);
+
+	return fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}.${outputHash}.css`), cssOutput);
 }
 
 async function buildCSS(options) {
@@ -124,7 +132,7 @@ async function buildCSS(options) {
 	}
 
 	// Write the output to disk
-	await writeFileToDisk(cssOutput);
+	await writeFileToDisk(cssOutput, { isDebug: sassDefaultOpts.isDebug });
 
 	logger.success('css build done');
 }

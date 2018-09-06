@@ -27,7 +27,6 @@ sharp.simd(true);
 function imageResizeTask(options) {
 	const logger = options.logger.scope('image-resize');
 	logger.setScopeColor(config.taskColor[4]);
-
 	logger.start('generating responsive images');
 
 	const files = globby.sync([
@@ -55,9 +54,11 @@ function imageResizeTask(options) {
 	};
 
 	return pMap(files, mapper, { concurrency: os.cpus().length }).then(() => {
-		let msg = `generated ${totalFiles} new images`;
+		const msg = `generated ${totalFiles} new images`;
 
 		logger.success(msg);
+
+		return(msg);
 	});
 }
 

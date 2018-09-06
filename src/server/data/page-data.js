@@ -3,7 +3,7 @@ const config = require('../config');
 
 const dataSchema = joi.object({
 	isProd: joi.boolean().required(),
-	domainName: joi.string().required()
+	domainName: joi.string()
 }).unknown().required();
 
 const data = {

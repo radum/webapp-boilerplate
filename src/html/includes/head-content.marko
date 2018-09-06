@@ -44,4 +44,7 @@
 <link rel="canonical" href=`http://www.${data.domainName}/`>
 -->
 
-<link rel="stylesheet" href="/styles/main.css">
+
+<for(file in data.assets.styles)>
+<link rel="stylesheet" href="${file}">
+</for>

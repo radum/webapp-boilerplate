@@ -25,7 +25,7 @@ const config = {
 		styles: 'src/styles/**/*.scss',
 		stylesEntryPoint: 'src/styles/main.scss',
 		stylesOutputDest: 'build/static/styles',
-		stylesOutputFile: 'main.css',
+		stylesOutputFile: 'main.build', // `.css` extension will be appended automatically
 
 		scriptsPath: 'src/client',
 		scriptsFiles: 'src/client/**/*.js',

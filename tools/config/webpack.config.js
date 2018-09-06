@@ -203,7 +203,7 @@ module.exports = function (config) {
 			// Generate a manifest file which contains a mapping of all asset filenames
 			// to their corresponding output file so that tools can pick it up.
 			new ManifestPlugin({
-				fileName: '../../asset-manifest.json', // Save the file outside of `static/scripts` folder as it is relative to the compiler output path
+				fileName: '../../asset-manifest-script.json', // Save the file outside of `static/scripts` folder as it is relative to the compiler output path
 				filter: (file) => {
 					return file.name.indexOf('.map') < 0;
 				},

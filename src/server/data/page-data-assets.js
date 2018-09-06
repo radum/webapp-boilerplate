@@ -4,7 +4,8 @@ const joi = require('joi');
 const config = require('../config');
 
 // Webpack assets file
-const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJsonFile);
+const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJSONFile);
+const stylesAssetsObj = require(config.server.paths.assetsStylesJSONFile);
 let runtimeContent;
 
 if (webpackStaticAssetsObj['runtime.js']) {
@@ -13,6 +14,7 @@ if (webpackStaticAssetsObj['runtime.js']) {
 
 const dataSchema = joi.object({
 	assets: joi.object({
+		styles: joi.array().min(1).required(),
 		scripts: joi.array().min(2).required(),
 		runtimeContent: joi.string().default(false)
 	})
@@ -21,9 +23,12 @@ const dataSchema = joi.object({
 module.exports = (script) => {
 	const data = {
 		assets: {
+			styles: [],
 			scripts: []
 		}
 	};
+
+	Object.keys(stylesAssetsObj).map((style) => data.assets.styles.push(stylesAssetsObj[style]));
 
 	if (webpackStaticAssetsObj['chunk-vendors.js']) data.assets.scripts.push(webpackStaticAssetsObj['chunk-vendors.js']);
 
