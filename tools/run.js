@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+const Emittery = require('emittery');
+const figures = require('figures');
+const chalk = require('chalk');
 const loadEnv = require('./lib/load-env');
 const cli = require('./cli');
 const signale = require('./lib/signale');
@@ -14,13 +17,22 @@ signale.config({
 	logLevel: cli.flags.verbose ? 3 : 8
 });
 
+const eventBus = new Emittery();
+
 const options = {
-	logger: signale
+	logger: signale,
+	eventBus
 };
 
 const catchErrors = fn => (...args) => fn(...args).catch(error => {
-	if (!error.isAppError) {
+	if (error && error.isAppError) {
 		signale.error(error);
+	}
+
+	console.error(`\n${chalk.red(figures.cross)} ${chalk.bgRedBright(`Some tasks didn't complete successfully`)}\n${error}`);
+
+	if (cli.flags.release) {
+		process.exitCode = 1;
 	}
 });
 

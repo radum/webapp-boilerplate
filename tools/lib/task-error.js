@@ -1,6 +1,6 @@
-class CLIError extends Error {
+class TaskError extends Error {
 	/**
-	 * Creates an instance of CLIError extending the native Error.
+	 * Creates an instance of TaskError extending the native Error.
 	 * @param {String} message Error message
 	 * @param {String} type Error type
 	 * @param {Object} implementationContext Implementation context
@@ -20,22 +20,22 @@ class CLIError extends Error {
 		Error.captureStackTrace(this, (implementationContext || this.constructor));
 
 		// Type of error
-		// default: CLI
+		// default: Task
 		// Other possible values used in the project:
 		//  - task
-		this.errorType = type || 'CLI';
+		this.errorType = type || 'TaskError';
 	}
 }
 
-function createCLIError(message, type) {
-	// NOTE: We are overriding the "implementationContext" so that the createCLIError()
+function createTaskError(message, type) {
+	// NOTE: We are overriding the "implementationContext" so that the createTaskError()
 	// function is not part of the resulting stacktrace.
-	return(new CLIError(message, type, createCLIError));
+	return(new TaskError(message, type, createTaskError));
 }
 
 // Export the constructor function.
-exports.CLIError = CLIError;
+exports.TaskError = TaskError;
 
 // Export the factory function for the custom error object. The factory function lets
 // the calling context create new CLIError instances without calling the [new] keyword.
-exports.createCLIError = createCLIError;
+exports.createTaskError = createTaskError;

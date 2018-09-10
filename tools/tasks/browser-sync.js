@@ -2,10 +2,10 @@ const browserSyncInstance = require('browser-sync').create('browserSyncInstance'
 
 /**
  * Init Browser Sync
- *
  * @param {object} options - options object
  * @param {object} options.port - BS port, default 3000
  * @param {object} options.https - BS https enabled, default false
+ * @returns {Promise} Promise object
  */
 function bs(options) {
 	const settings = {
@@ -27,20 +27,28 @@ function bs(options) {
 	}
 
 	return new Promise((resolve) => {
-		browserSyncInstance.init(settings, resolve);
+		browserSyncInstance.init(settings, () => {
+			initEvents(options.eventBus);
+			resolve()
+		});
 	});
 }
 
-function bsReload(done) {
-	browserSyncInstance.reload();
+function initEvents(eventBus) {
+	eventBus.on('bs:reload', () => {
+		browserSyncInstance.reload();
+	});
 
-	if (done) {
-		done();
-	}
+	eventBus.on('fullscreen:message', (title, body) => {
+		browserSyncInstance.sockets.emit('fullscreen:message', {
+			title,
+			body,
+			timeout: 50000
+		});
+	});
 }
 
 module.exports = {
 	browserSyncInstance,
-	init: bs,
-	bsReload // TODO: Explore if using an EventEmitter will be better (emittery)
+	init: bs
 };

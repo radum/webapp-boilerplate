@@ -9,6 +9,7 @@ const humanizeMs = require('ms');
 const chalk = require('chalk');
 const revHash = require('rev-hash');
 const fs = require('../lib/fs');
+const pe = require('./../lib/youch');
 const { config } = require('../config');
 const minifyCss = require('./styles-minify');
 
@@ -28,7 +29,7 @@ function sassFormatError(error) {
 
 	message += [chalk.underline(relativePath), error.formatted].join('\n');
 
-	error.messageFormatted = indentString(chalk.redBright(message), 11);
+	error.messageFormatted = indentString(chalk.redBright(message), 0);
 	error.messageOriginal = error.message;
 
 	error.relativePath = relativePath;
@@ -59,9 +60,8 @@ function compileSass(options) {
 				logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
 				logger.debug('included files', result.stats.includedFiles);
 
-				if (options.bsReload) {
-					logger.info('BS reloaded');
-					options.bsReload();
+				if (options.eventBus) {
+					options.eventBus.emit('bs:reload');
 				}
 
 				logger.success('styles compiled' + chalk.gray(` (${humanizeMs(result.stats.duration)})`));
@@ -93,48 +93,48 @@ function postCSSTransform(cssInput, options) {
 	return postcss(plugins).process(cssInput, settings);
 }
 
-async function writeFileToDisk(cssOutput, opts) {
+function writeFileToDisk(cssOutput, opts) {
 	const outputHash = opts.isDebug ? 'dev' : revHash(cssOutput);
 	const manifestContent = `{
 	"${config.paths.stylesEntryPoint}": "/styles/${config.paths.stylesOutputFile}.${outputHash}.css"
 }`;
 
-	await fs.writeFile(path.resolve(config.paths.buildPath + `/asset-manifest-style.json`), manifestContent);
-
-	return fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}.${outputHash}.css`), cssOutput);
+	return Promise.all([
+		fs.writeFile(path.resolve(config.paths.buildPath + `/asset-manifest-style.json`), manifestContent),
+		fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}.${outputHash}.css`), cssOutput)
+	]);
 }
 
 async function buildCSS(options) {
 	const logger = options.logger.scope('build-css');
-	logger.setScopeColor(config.taskColor[3]);
-
 	const sassDefaultOpts = {
-		isVerbose: false,
 		isDebug: true,
-		bsReload: undefined,
+		eventBus: options.eventBus,
 		logger
 	};
-	let cssOutput;
-
+	logger.setScopeColor(config.taskColor[3]);
 	logger.start('running css build steps');
 
-	// Create output folder if missing
-	await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
+	try {
+		// Compile CSS steps
+		let cssOutput = await compileSass({ ...sassDefaultOpts, ...options.sass });
+		const postCSSOutput = await postCSSTransform(cssOutput, { sourceMapEmbed: options.sass.sourceMapEmbed, logger });
+		cssOutput = postCSSOutput.css;
 
-	// Compile CSS steps
-	cssOutput = await compileSass({ ...sassDefaultOpts, ...options.sass });
-	const postCSSOutput = await postCSSTransform(cssOutput, { sourceMapEmbed: options.sass.sourceMapEmbed, logger });
-	cssOutput = postCSSOutput.css;
+		if (!options.isDebug) {
+			const minifyResponse = await minifyCss(cssOutput, { verbose: true, logger });
+			cssOutput = minifyResponse.cssOutput;
+		}
 
-	if (!options.isDebug) {
-		const minifyResponse = await minifyCss(cssOutput, { verbose: true, logger });
-		cssOutput = minifyResponse.cssOutput;
+		await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
+		await writeFileToDisk(cssOutput, { isDebug: sassDefaultOpts.isDebug });
+
+		logger.success('css build done');
+	} catch (error) {
+		logger.error(`¯\\_(ツ)_/¯ there was an error\n${error}`);
+
+		throw new Error(`Task error → ${error.message}`);
 	}
-
-	// Write the output to disk
-	await writeFileToDisk(cssOutput, { isDebug: sassDefaultOpts.isDebug });
-
-	logger.success('css build done');
 }
 
 module.exports = buildCSS;

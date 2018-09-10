@@ -24,12 +24,10 @@ async function startBuild(options, flags) {
 	options.logger.log('starting build');
 
 	await clean(taskOpts);
-
 	await copyStatic(taskOpts);
 	await copyServer(taskOpts);
 	await copySSL(taskOpts);
 	await copyExtra(taskOpts);
-
 	await Promise.all([
 		buildCSS({
 			...taskOpts,
@@ -39,7 +37,6 @@ async function startBuild(options, flags) {
 		compiler(taskOpts),
 		imagemin(taskOpts)
 	]);
-
 	await compression(taskOpts);
 	await imageResize(taskOpts);
 }

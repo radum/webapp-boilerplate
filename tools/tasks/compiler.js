@@ -38,10 +38,10 @@ function compilerLogger(err, stats) {
 /**
  * Bundle JS files using webpack.
  *
- * @param {Object} [options={ bsReload: undefined }] Options object
+ * @param {Object} options object
  * @returns {Promise} Compiler promise
  */
-function compiler(options = { bsReload: undefined }) {
+function compiler(options) {
 	let instance;
 
 	logger = options.logger.scope('js-compiler');
@@ -55,12 +55,8 @@ function compiler(options = { bsReload: undefined }) {
 		instance = webpack(webpackConfig, (err, stats) => {
 			compilerLogger(err, stats);
 
-			// TODO: Explore if using an EventEmitter will be better (emittery)
-			// The export will have to be an object with an init and the emitter also.
-			if (options.bsReload) {
-				logger.info('BS reloaded');
-
-				options.bsReload();
+			if (options.eventBus) {
+				options.eventBus.emit('bs:reload');
 			}
 
 			logger.success();

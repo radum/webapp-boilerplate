@@ -1,20 +1,19 @@
 const test = require('ava');
-const CLIError = require('./../tools/lib/cli-error').CLIError
-const CLIErrorFactory = require('./../tools/lib/cli-error').createCLIError;
+const TaskError = require('./../tools/lib/task-error').TaskError;
 
-function doSomethingBadFactory() {
-	throw CLIErrorFactory('It went bad! factory', 'task');
+function doSomethingBadConstructor() {
+	throw new TaskError('It went bad! constructor', 'task');
 }
 
 try {
-	doSomethingBadFactory();
+	doSomethingBadConstructor();
 } catch (error) {
 	test('The name property should be set to the error\'s name', (t) => {
-		t.true(error.name === 'CLIError');
+		t.true(error.name === 'TaskError');
 	});
 
 	test('The error should be an instance of its class', (t) => {
-		t.true(error instanceof CLIError);
+		t.true(error instanceof TaskError);
 	});
 
 	test('The error should be an instance of builtin Error', (t) => {
@@ -30,15 +29,15 @@ try {
 	});
 
 	test('toString should return the default error message formatting', (t) => {
-		t.deepEqual(error.toString(), 'CLIError: It went bad! factory');
+		t.deepEqual(error.toString(), 'TaskError: It went bad! constructor');
 	});
 
 	test('The stack should start with the default error message formatting', (t) => {
-		t.deepEqual(error.stack.split('\n')[0], 'CLIError: It went bad! factory');
+		t.deepEqual(error.stack.split('\n')[0], 'TaskError: It went bad! constructor');
 	});
 
 	test('The first stack frame should be the function where the error was thrown.', (t) => {
-		t.deepEqual(error.stack.split('\n')[1].indexOf('doSomethingBadFactory'), 7);
+		t.deepEqual(error.stack.split('\n')[1].indexOf('doSomethingBadConstructor'), 7);
 	});
 
 	test('The errorType property should have been set', (t) => {

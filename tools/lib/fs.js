@@ -3,7 +3,6 @@ const path = require('path');
 const globby = require('globby');
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
-const CLIError = require('./cli-error').createCLIError;
 
 /**
  * Check synchronously if a file exists or not
@@ -26,7 +25,7 @@ const readFile = (file, opts) => new Promise((resolve, reject) => {
 		{
 			encoding: (opts.encoding === undefined) ? 'utf8' : opts.encoding
 		},
-		(error, data) => (error ? reject(CLIError(error)) : resolve(data))
+		(error, data) => (error ? reject(new Error(error)) : resolve(data))
 	);
 });
 
@@ -37,7 +36,7 @@ const readFile = (file, opts) => new Promise((resolve, reject) => {
  * @returns {Promise} Promise obkecy
  */
 const writeFile = (file, contents) => new Promise((resolve, reject) => {
-	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, error => (error ? reject(CLIError(error)) : resolve()));
+	fs.writeFile(file, contents, { encoding: Buffer.isBuffer(contents) ? null : 'utf8' }, error => (error ? reject(new Error(error)) : resolve()));
 });
 
 /**
@@ -53,7 +52,7 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
 		if (!cbCalled) {
 			cbCalled = true;
 			if (error) {
-				reject(CLIError(error));
+				reject(new Error(error));
 			} else {
 				resolve();
 			}
@@ -79,7 +78,7 @@ const copyFile = (source, target) => new Promise((resolve, reject) => {
  * @returns {Promise} Promise object
  */
 const renameFile = (source, target) => new Promise((resolve, reject) => {
-	fs.rename(source, target, error => (error ? reject(CLIError(error)) : resolve()));
+	fs.rename(source, target, error => (error ? reject(new Error(error)) : resolve()));
 });
 
 /**
@@ -88,7 +87,7 @@ const renameFile = (source, target) => new Promise((resolve, reject) => {
  * @returns {Promise} Promise object
  */
 const makeDir = name => new Promise((resolve, reject) => {
-	mkdirp(name, error => (error ? reject(CLIError(error)) : resolve()));
+	mkdirp(name, error => (error ? reject(new Error(error)) : resolve()));
 });
 
 /**
@@ -147,7 +146,7 @@ const copyDir = async (source, target) => {
  * @returns {Promise} Promise object
  */
 const cleanDir = (pattern, options) => new Promise((resolve, reject) => {
-	rimraf(pattern, { glob: options }, (error) => (error ? reject(CLIError(error)) : resolve()));
+	rimraf(pattern, { glob: options }, (error) => (error ? reject(new Error(error)) : resolve()));
 });
 
 module.exports = {

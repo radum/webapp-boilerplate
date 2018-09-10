@@ -24,6 +24,8 @@ async function copyStatic(options) {
 		logger.success();
 	} catch (error) {
 		logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+
+		throw new Error(`Task error → ${error.message}`); // Throwing here because we want the upper function (higher level `catchErrors` func) to catch and set the exit code properly
 	}
 }
 
@@ -47,6 +49,8 @@ async function copyServer(options) {
 		.then(() => logger.success())
 		.catch((error) => {
 			logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+
+			throw new Error(`Task error → ${error.message}`);
 		});
 }
 
@@ -67,6 +71,8 @@ async function copySSL(options) {
 		logger.success();
 	} catch (error) {
 		logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+
+		throw new Error(`Task error → ${error.message}`);
 	}
 }
 
@@ -95,6 +101,8 @@ async function copyExtra(options) {
 		.then(() => logger.success())
 		.catch((error) => {
 			logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+
+			throw new Error(`Task error → ${error.message}`);
 		});
 }
 
