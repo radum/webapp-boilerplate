@@ -7,7 +7,7 @@ const pMap = require('p-map');
 const { config } = require('../config');
 const fs = require('../lib/fs');
 
-const sizes = [
+const defaultSizes = [
 	{ w: 200, h: 119 },
 	{ w: 721, h: 430 },
 	{ w: 1062, h: 633 },
@@ -29,6 +29,10 @@ function imageResizeTask(options) {
 	logger.setScopeColor(config.taskColor[4]);
 	logger.start('generating responsive images');
 
+	const sizes = [
+		...defaultSizes,
+		...(options.sizes ? options.sizes : [])
+	];
 	const files = globby.sync([
 		config.paths.imagesOutputDest + '/**/*.{jpg,jpeg,png,webp}',
 		`!${config.paths.imagesOutputDest}/touch`

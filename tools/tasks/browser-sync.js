@@ -28,22 +28,29 @@ function bs(options) {
 
 	return new Promise((resolve) => {
 		browserSyncInstance.init(settings, () => {
-			initEvents(options.eventBus);
+			listenEvents(options.eventBus);
 			resolve()
 		});
 	});
 }
 
-function initEvents(eventBus) {
+/**
+ * Listen to events fired by other tasks and reload the browser or show a message on screen
+ * @param {EventEmitter} eventBus - EventEmitter instace
+ */
+function listenEvents(eventBus) {
 	eventBus.on('bs:reload', () => {
 		browserSyncInstance.reload();
 	});
 
-	eventBus.on('fullscreen:message', (title, body) => {
+	eventBus.on('bs:fullscreen:message', (data) => {
+		// TODO: This needs to be added to client side also.
+		// Using something like https://github.com/CodeSeven/toastr could show errors on screen.
+		// To get access to the BS socket we need `window.___browserSync___.socket` and then `socket.on({MSG_EVENT}, (data) => {})`
 		browserSyncInstance.sockets.emit('fullscreen:message', {
-			title,
-			body,
-			timeout: 50000
+			title: data.title,
+			body: data.body,
+			timeout: data.timeout || 3000
 		});
 	});
 }

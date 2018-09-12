@@ -6,6 +6,7 @@ const brotliCompress = require('iltorb').compress;
 const { config } = require('../config');
 const fs = require('../lib/fs');
 
+// TODO: https://github.com/Alorel/shrink-ray
 function compression(options) {
 	const logger = options.logger.scope('compression');
 	logger.setScopeColor(config.taskColor[0]);

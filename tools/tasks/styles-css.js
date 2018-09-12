@@ -9,7 +9,6 @@ const humanizeMs = require('ms');
 const chalk = require('chalk');
 const revHash = require('rev-hash');
 const fs = require('../lib/fs');
-const pe = require('./../lib/youch');
 const { config } = require('../config');
 const minifyCss = require('./styles-minify');
 
