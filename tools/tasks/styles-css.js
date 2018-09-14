@@ -107,7 +107,7 @@ function writeFileToDisk(cssOutput, opts) {
 async function buildCSS(options) {
 	const logger = options.logger.scope('build-css');
 	const sassDefaultOpts = {
-		isDebug: true,
+		isDebug: options.isDebug,
 		eventBus: options.eventBus,
 		logger
 	};
