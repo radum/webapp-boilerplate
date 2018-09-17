@@ -1,35 +1,30 @@
 #!/usr/bin/env node
 
-const Emittery = require('emittery');
 const figures = require('figures');
 const chalk = require('chalk');
+const StackUtils = require('stack-utils');
 const loadEnv = require('./lib/load-env');
 const cli = require('./cli');
-const signale = require('./lib/signale');
 const startDev = require('./run-dev');
 const startBuild = require('./run-build');
 const startLint = require('./run-lint');
 
 loadEnv(process.env.NODE_ENV);
 
-signale.config({
-	displayTimestamp: true,
-	logLevel: cli.flags.verbose ? 3 : 8
-});
-
-const eventBus = new Emittery();
-
-const options = {
-	logger: signale,
-	eventBus
-};
-
 const catchErrors = fn => (...args) => fn(...args).catch(error => {
-	if (error && error.isAppError) {
-		signale.error(error);
-	}
+	const stackUtils = new StackUtils({
+		cwd: process.cwd(),
+		internals: StackUtils.nodeInternals()
+	})
+	const stack = stackUtils.clean(error.stack)
 
-	console.error(`\n${chalk.red(figures.cross)} ${chalk.bgRedBright(`Some tasks didn't complete successfully`)}\n${error}`);
+	if (error.isAppError && error.errorType === 'task') {
+		console.error(`\n${chalk.red(figures.cross)} ${chalk.bgRedBright(`Some tasks didn't complete successfully`)}`);
+	} else {
+		console.error(`\n${chalk.red(figures.cross)} ${chalk.bgRedBright(`There was an error`)}`);
+		console.error(error);
+		console.error(`\n${chalk.red(stack)}`);
+	}
 
 	if (cli.flags.release) {
 		process.exitCode = 1;
@@ -41,18 +36,23 @@ const catchErrors = fn => (...args) => fn(...args).catch(error => {
  */
 switch (cli.input[0]) {
 	case 'dev':
-		catchErrors(startDev)(options, cli.flags);
+		catchErrors(startDev)({
+			isDebug: !cli.flags.release,
+			nodeInspect: cli.flags.inspect
+		});
 		break;
 	case 'build':
-		catchErrors(startBuild)(options, cli.flags);
+		catchErrors(startBuild)({
+			isDebug: !cli.flags.release
+		});
 		break;
 	case 'lint':
-		catchErrors(startLint)(options);
+		catchErrors(startLint)();
 		break;
 	case 'version':
-		signale.log('{version.number}');
+		console.log('{version.number}');
 		break;
 	default:
-		catchErrors(startBuild)(options, cli.flags);
+		catchErrors(startBuild)();
 		break;
 }

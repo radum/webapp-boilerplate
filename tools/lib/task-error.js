@@ -23,7 +23,7 @@ class TaskError extends Error {
 		// default: Task
 		// Other possible values used in the project:
 		//  - task
-		this.errorType = type || 'TaskError';
+		this.errorType = type || 'task';
 	}
 }
 

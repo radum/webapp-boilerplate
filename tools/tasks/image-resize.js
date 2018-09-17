@@ -4,6 +4,7 @@ const sharp = require('sharp');
 const globby = require('globby');
 const pMap = require('p-map');
 
+const TaskError = require('../lib/task-error').TaskError
 const { config } = require('../config');
 const fs = require('../lib/fs');
 
@@ -24,10 +25,14 @@ const defaultSizes = [
 // adventurous and see what happens with it on.
 sharp.simd(true);
 
+/**
+ * Resize responsive images task
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
 function imageResizeTask(options) {
-	const logger = options.logger.scope('image-resize');
-	logger.setScopeColor(config.taskColor[4]);
-	logger.start('generating responsive images');
+	const reporter = options.reporter('image-image', { color: config.taskColor[4] });
+	reporter.emit('start', 'generating responsive images');
 
 	const sizes = [
 		...defaultSizes,
@@ -60,7 +65,7 @@ function imageResizeTask(options) {
 	return pMap(files, mapper, { concurrency: os.cpus().length }).then(() => {
 		const msg = `generated ${totalFiles} new images`;
 
-		logger.success(msg);
+		reporter.emit('done', msg);
 
 		return(msg);
 	});

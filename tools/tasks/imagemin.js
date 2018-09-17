@@ -1,9 +1,9 @@
+const os = require('os');
 const imagemin = require('imagemin');
 const imageminMozjpeg = require('imagemin-mozjpeg');
 const imageminOptipng = require('imagemin-optipng');
 const imageminWebp = require('imagemin-webp');
 const globby = require('globby');
-const os = require('os');
 const prettyBytes = require('pretty-bytes');
 const pMap = require('p-map');
 const replaceExt = require('replace-ext');
@@ -13,10 +13,9 @@ const { config } = require('../config');
 const fs = require('../lib/fs');
 
 async function imageminTask(options) {
-	const logger = options.logger.scope('imagemin');
-	logger.setScopeColor(config.taskColor[4]);
+	const reporter = options.reporter('imagemin', { color: config.taskColor[4] });
 
-	logger.start('minify images seamlessly');
+	reporter.emit('start', 'minify images seamlessly');
 
 	const files = globby.sync(config.paths.imagesPath + '/**/*.{jpg,jpeg,png}');
 
@@ -64,10 +63,10 @@ async function imageminTask(options) {
 
 			fs.writeFile(destFile, optimizedBuf);
 
-			logger.info(destFile + chalk.gray(` (${msg})`));
+			reporter.emit('info', destFile + chalk.gray(` (${msg})`));
 		})
 		.catch((err) => {
-			logger.error(`${err} in file ${file}`);
+			reporter.emit('error', `${err} in file ${file}`);
 		});
 
 	const mapper = (file) => {
@@ -85,7 +84,7 @@ async function imageminTask(options) {
 			msg += chalk.gray(` (saved ${prettyBytes(totalSavedBytes)} - ${percent.toFixed(1).replace(/\.0$/, '')}%)`);
 		}
 
-		logger.success(msg);
+		reporter.emit('done', msg);
 	});
 }
 

@@ -9,6 +9,7 @@ const humanizeMs = require('ms');
 const chalk = require('chalk');
 const revHash = require('rev-hash');
 const fs = require('../lib/fs');
+const TaskError = require('../lib/task-error').TaskError
 const { config } = require('../config');
 const minifyCss = require('./styles-minify');
 
@@ -36,11 +37,15 @@ function sassFormatError(error) {
 	return error;
 }
 
+/**
+ * Compile SASS to CSS using `node-sass`
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
 function compileSass(options) {
-	const logger = options.logger.scope('build-css', 'compile-sass');
-	logger.setScopeColor(config.taskColor[3]);
+	const reporter = options.reporter('build-css', { subTask: 'compile-sass', color: config.taskColor[3] });
 
-	logger.start('compiling sass files');
+	reporter.emit('start', 'compiling sass files');
 
 	return new Promise((resolve, reject) => {
 		sass.render({
@@ -49,21 +54,23 @@ function compileSass(options) {
 			precision: 10,
 			includePaths: ['.'],
 			sourceMapContents: true,
-			sourceMapEmbed: options.sourceMapEmbed || false
+			sourceMapEmbed: options.sass.sourceMapEmbed || false
 		}, (err, result) => {
 			if (err) {
 				const errorObj = sassFormatError(err);
 
 				reject(new Error(errorObj.messageFormatted));
 			} else {
-				logger.info('styles entry point ' + result.stats.entry.split(process.cwd())[1]);
-				logger.debug('included files', result.stats.includedFiles);
-
 				if (options.eventBus) {
 					options.eventBus.emit('bs:reload');
 				}
 
-				logger.success('styles compiled' + chalk.gray(` (${humanizeMs(result.stats.duration)})`));
+				reporter.emit('info', 'styles entry point ' + result.stats.entry.split(process.cwd())[1]);
+				reporter.emit('debug', {
+					message: 'included files',
+					data: result.stats.includedFiles
+				});
+				reporter.emit('done', `styles compiled ${chalk.gray(humanizeMs(result.stats.duration))}`);
 
 				resolve(result.css);
 			}
@@ -71,8 +78,14 @@ function compileSass(options) {
 	});
 }
 
+/**
+ * Run PostCSS transform on the CSS output
+ * @param {String} cssInput - CSS string input
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
 function postCSSTransform(cssInput, options) {
-	const logger = options.logger.scope('build-css', 'postcss');
+	const reporter = options.reporter('build-css', { subTask: 'postcss', color: config.taskColor[3] });
 	const plugins = [
 		postcssCustomProperties,
 		autoprefixer,
@@ -83,20 +96,28 @@ function postCSSTransform(cssInput, options) {
 		// Set it to CSS file path or to `undefined` to prevent this warning. So far works OK.
 		from: undefined,
 		map: {
-			inline: options.sourceMapEmbed,
+			inline: false
 		}
 	};
 
-	logger.start('running postcss');
+	reporter.emit('start', 'running postcss');
 
-	return postcss(plugins).process(cssInput, settings);
+	return postcss(plugins).process(cssInput, { ...settings, ...options.postcss });
 }
 
-function writeFileToDisk(cssOutput, opts) {
-	const outputHash = opts.isDebug ? 'dev' : revHash(cssOutput);
+/**
+ * Write file to disk with the CSS output and revision the filename
+ * @param {String} cssOutput - CSS output
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
+function writeFileToDisk(cssOutput, options) {
+	const outputHash = options.isDebug ? 'dev' : revHash(cssOutput);
 	const manifestContent = `{
 	"${config.paths.stylesEntryPoint}": "/styles/${config.paths.stylesOutputFile}.${outputHash}.css"
 }`;
+
+	options.reporter.emit('info', `writing ${options.isDebug ? 'dev' : 'production'} files to disk`)
 
 	return Promise.all([
 		fs.writeFile(path.resolve(config.paths.buildPath + `/asset-manifest-style.json`), manifestContent),
@@ -104,35 +125,55 @@ function writeFileToDisk(cssOutput, opts) {
 	]);
 }
 
+/**
+ * Run all CSS transformation tasks. SASS, PostCSS, etc, and the write and revsion the output to disk
+ * @param {Object} options - Options object
+ * @returns {Promise} Promise object
+ */
 async function buildCSS(options) {
-	const logger = options.logger.scope('build-css');
-	const sassDefaultOpts = {
-		isDebug: options.isDebug,
-		eventBus: options.eventBus,
-		logger
-	};
-	logger.setScopeColor(config.taskColor[3]);
-	logger.start('running css build steps');
+	const reporter = options.reporter('build-css', { color: config.taskColor[3] });
+
+	reporter.emit('start', 'running css build steps');
 
 	try {
 		// Compile CSS steps
-		let cssOutput = await compileSass({ ...sassDefaultOpts, ...options.sass });
-		const postCSSOutput = await postCSSTransform(cssOutput, { sourceMapEmbed: options.sass.sourceMapEmbed, logger });
+		let cssOutput = await compileSass({
+			isDebug: options.isDebug,
+			eventBus: options.eventBus,
+			reporter: options.reporter,
+			sass: {
+				sourceMapEmbed: options.sass.sourceMapEmbed
+			}
+		});
+		// PostCSS transform SASS output
+		const postCSSOutput = await postCSSTransform(cssOutput, {
+			reporter: options.reporter,
+			postcss: {
+				map: {
+					inline: options.sourceMapEmbed,
+				}
+			}
+		});
 		cssOutput = postCSSOutput.css;
 
+		// Minify content if build is run with release flag
 		if (!options.isDebug) {
-			const minifyResponse = await minifyCss(cssOutput, { verbose: true, logger });
+			const minifyResponse = await minifyCss(cssOutput, { reporter: options.reporter });
 			cssOutput = minifyResponse.cssOutput;
 		}
 
+		// Create output folder and write results to output files
 		await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
-		await writeFileToDisk(cssOutput, { isDebug: sassDefaultOpts.isDebug });
+		await writeFileToDisk(cssOutput, {
+			isDebug: options.isDebug,
+			reporter
+		});
 
-		logger.success('css build done');
+		reporter.emit('done', 'css build done');
 	} catch (error) {
-		logger.error(`¯\\_(ツ)_/¯ there was an error\n${error}`);
+		reporter.emit('error', error);
 
-		throw new Error(`Task error → ${error.message}`);
+		throw new TaskError(error);
 	}
 }
 

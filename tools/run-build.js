@@ -1,3 +1,4 @@
+const reporter = require('./lib/reporter');
 const clean = require('./tasks/clean');
 const {
 	copyStatic,
@@ -13,32 +14,34 @@ const compression = require('./tasks/compression');
 
 /**
  * Run the build task, building a production ready app
- *
- * @param {Object} options Task options object
- * @param {Function} options.logger Task global logger
- * @param {Object} flags CLI flags passed
+ * @param {Object} options - Task options object
+ * @returns {Promise} - Promise object
  */
-async function startBuild(options, flags) {
-	const taskOpts = { logger: options.logger };
+async function startBuild(options) {
+	const opts = {
+		reporter
+	};
 
-	options.logger.log('starting build');
+	reporter('build').emit('log', 'starting build');
 
-	await clean(taskOpts);
-	await copyStatic(taskOpts);
-	await copyServer(taskOpts);
-	await copySSL(taskOpts);
-	await copyExtra(taskOpts);
+	await clean(opts);
+	await copyStatic(opts);
+	await copyServer(opts);
+	await copySSL(opts);
+	await copyExtra(opts);
 	await Promise.all([
 		buildCSS({
-			...taskOpts,
-			isDebug: !flags.release,
-			sass: { sourceMapEmbed: !flags.release }
+			...opts,
+			isDebug: options.isDebug,
+			sass: {
+				sourceMapEmbed:	options.isDebug
+			}
 		}),
-		compiler(taskOpts),
-		imagemin(taskOpts)
+		compiler(opts),
+		imagemin(opts)
 	]);
-	await compression(taskOpts);
-	await imageResize(taskOpts);
+	await compression(opts);
+	await imageResize(opts);
 }
 
 module.exports = startBuild;

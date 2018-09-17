@@ -1,3 +1,5 @@
+const Emittery = require('emittery');
+const reporter = require('./lib/reporter');
 const clean = require('./tasks/clean');
 const { copyStatic } = require('./tasks/copy');
 const buildCSS = require('./tasks/styles-css');
@@ -10,22 +12,22 @@ const watcher = require('./tasks/watcher');
 /**
  * Run the dev task, compile css and js and run the local server
  * @param {Object} options - Task options object
- * @param {Function} options.logger - Signale logger used to announce
- * @param {Object} flags - CLI flags passed
+ * @returns {Promise} - Promise object
  */
-async function startDev(options, flags) {
+async function startDev(options) {
+	const eventBus = new Emittery();
 	const opts = {
-		logger: options.logger,
-		eventBus: options.eventBus
+		reporter,
+		eventBus
 	};
 	const cssSettings = {
-		isDebug: !flags.release,
+		isDebug: options.isDebug,
 		sass: {
-			sourceMapEmbed: !flags.release
+			sourceMapEmbed: options.isDebug
 		}
 	};
 
-	options.logger.log('starting dev');
+	reporter('dev').emit('log', 'starting dev');
 
 	await clean(opts);
 	await copyStatic(opts);
@@ -39,7 +41,7 @@ async function startDev(options, flags) {
 	]);
 	await runServer({
 		...opts,
-		inspect: flags.inspect
+		inspect: options.nodeInspect
 	});
 	await bs.init({
 		eventBus: opts.eventBus,

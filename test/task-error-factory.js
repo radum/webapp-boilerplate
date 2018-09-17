@@ -3,7 +3,7 @@ const TaskError = require('./../tools/lib/task-error').TaskError
 const TaskErrorFactory = require('./../tools/lib/task-error').createTaskError;
 
 function doSomethingBadFactory() {
-	throw TaskErrorFactory('It went bad! factory', 'TaskError');
+	throw TaskErrorFactory('It went bad! factory', 'TaskErrorType');
 }
 
 try {
@@ -42,7 +42,7 @@ try {
 	});
 
 	test('The errorType property should have been set', (t) => {
-		t.deepEqual(error.errorType, 'TaskError');
+		t.deepEqual(error.errorType, 'TaskErrorType');
 	});
 
 	test('The isAppError property should be true', (t) => {

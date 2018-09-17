@@ -1,14 +1,11 @@
-/* eslint import/no-extraneous-dependencies: ["error", {"peerDependencies": true, "devDependencies": true}] */
-
 const path = require('path');
 const stylelint = require('stylelint');
 const stylelintFormatter = require('stylelint-formatter-pretty');
 const { config } = require('../config');
 
 function stylesLint(options) {
-	const logger = options.logger.scope('styles-lint');
-
-	logger.start('linting styles with stylelint');
+	const reporter = options.reporter('styles-lint', { color: config.taskColor[0] });
+	reporter.emit('start', 'linting styles with stylelint');
 
 	const task = stylelint.lint({
 		files: path.resolve(config.paths.styles),
@@ -21,15 +18,15 @@ function stylesLint(options) {
 	task
 		.then((data) => {
 			if (data.errored) {
-				logger.error('stylelint violations 💥' + data.output);
+				reporter.emit('error', 'stylelint violations 💥' + data.output);
 			} else {
-				logger.fav('no violations found 🎉');
+				reporter.emit('fav', 'no violations found 🎉');
 			}
 
-			logger.success();
+			reporter.emit('done');
 		})
 		.catch((err) => {
-			logger.error(err);
+			reporter.emit('error', err);
 		});
 
 	return task;

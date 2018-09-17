@@ -14,10 +14,9 @@ let pending = true;
 const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
 function runServer(options = { inspect: false }) {
-	const logger = options.logger.scope('express-server');
-	logger.setScopeColor(config.taskColor[6]);
+	const reporter = options.reporter('express-server', { color: config.taskColor[6] });
 
-	logger.start();
+	reporter.emit('start', 'starting node server (via expressjs)')
 
 	return new Promise((resolve) => {
 		function onStdOut(data) {
@@ -31,8 +30,7 @@ function runServer(options = { inspect: false }) {
 				server.stdout.on('data', x => process.stdout.write(x));
 				pending = false;
 
-				logger.log('Local server running');
-				logger.success();
+				reporter.emit('done', 'local node server started');
 
 				resolve(server);
 			}

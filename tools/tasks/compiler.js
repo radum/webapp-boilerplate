@@ -1,9 +1,10 @@
 const webpack = require('webpack');
 const chalk = require('chalk');
 const prettifyTime = require('../lib/prettify-time');
+const TaskError = require('../lib/task-error').TaskError
 const { config, webpackConfig } = require('../config');
 
-let logger;
+let reporter;
 
 /**
  * Compiler logger function that transforms the output into a readable stream of text
@@ -12,10 +13,10 @@ let logger;
  */
 function compilerLogger(err, stats) {
 	if (err) {
-		logger.fatal(err.name);
-		logger.log(err.details);
+		reporter.emit('fatal', err.name);
+		reporter.emit('log', err.details);
 
-		throw new Error('webpack', err);
+		throw new TaskError('webpack', err);
 	}
 
 	const jsonStats = stats.toJson();
@@ -25,31 +26,29 @@ function compilerLogger(err, stats) {
 		error.errors = jsonStats.errors;
 		error.warnings = jsonStats.warnings;
 
-		logger.log(chalk.red(error));
-		logger.log(chalk.red('Failed to build webpack'));
+		reporter.emit('log', chalk.red(error));
+		reporter.emit('log', chalk.red('Failed to build webpack'));
 	} else {
 		const compileTime = prettifyTime(stats.endTime - stats.startTime);
 
-		logger.log(stats.toString({ colors: true }));
-		logger.log(`Compiled with ${chalk.cyan('webpack')} in ` + chalk.magenta(compileTime));
+		reporter.emit('note', `compilation finished\n${stats.toString({ colors: true })}`);
+		reporter.emit('note', `compiled with ${chalk.cyan('webpack')} in ${chalk.magenta(compileTime)}`);
 	}
 }
 
 /**
  * Bundle JS files using webpack.
- *
  * @param {Object} options object
  * @returns {Promise} Compiler promise
  */
 function compiler(options) {
 	let instance;
 
-	logger = options.logger.scope('js-compiler');
-	logger.setScopeColor(config.taskColor[0]);
-	logger.start('bundle js with webpack');
+	reporter = options.reporter('js-compiler', { color: config.taskColor[0] });
+	reporter.emit('start', 'bundle js with webpack');
 
 	return new Promise((resolve) => {
-		logger.info('running webpack');
+		reporter.emit('info', 'running webpack');
 
 		instance = webpack(webpackConfig, (err, stats) => {
 			compilerLogger(err, stats);
@@ -59,9 +58,9 @@ function compiler(options) {
 			}
 
 			if (err === null && !stats.hasErrors()) {
-				logger.success();
+				reporter.emit('done', 'webpack compilation completed');
 			} else if (err !== null || stats.hasErrors()) {
-				logger.error();
+				reporter.emit('error', 'error while running webpack');
 			}
 
 			resolve(instance);

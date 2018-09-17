@@ -24,8 +24,7 @@ const defaultOpts = {
 async function watcherTask(glob, options, taskFn) {
 	const opts = { ...defaultOpts, ...options };
 
-	const logger = opts.logger.scope('watch');
-	logger.setScopeColor(config.taskColor[5]);
+	const reporter = options.reporter('watch', { color: config.taskColor[5] });
 
 	await new Promise((resolve, reject) => {
 		const watcher = chokidar.watch(glob, opts.chokidar);
@@ -36,7 +35,7 @@ async function watcherTask(glob, options, taskFn) {
 				opts.events.forEach((event) => {
 					watcher.once(event, async () => {
 						try {
-							logger.watch(`files changed (${opts.label})`);
+							reporter.emit('watch', `files changed (${opts.label})`);
 
 							await taskFn();
 						} finally {
@@ -47,7 +46,7 @@ async function watcherTask(glob, options, taskFn) {
 			};
 
 			watchForChanges();
-			logger.watch(`${opts.label} (press ctrl-c to exit)`);
+			reporter.emit('watch', `${opts.label} (press ctrl-c to exit)`);
 			resolve();
 		});
 	});

@@ -8,10 +8,9 @@ const fs = require('../lib/fs');
 
 // TODO: https://github.com/Alorel/shrink-ray
 function compression(options) {
-	const logger = options.logger.scope('compression');
-	logger.setScopeColor(config.taskColor[0]);
+	const reporter = options.reporter('compression', { color: config.taskColor[0] });
 
-	logger.start('compressing asstes (js, css)');
+	reporter.emit('start', 'compressing asstes (js, css)');
 
 	const files = globby.sync([
 		config.paths.scriptsOutputDest + '/**/*.js',
@@ -28,16 +27,16 @@ function compression(options) {
 
 			fs.writeFile(`${file}.br`, output);
 
-			logger.info(`compressed ${file}.br`);
-		} catch(err) {
-			logger.error(err);
+			reporter.emit('info', `compressed ${file}.br`);
+		} catch(error) {
+			reporter.emit('error', error);
 		}
 	});
 
 	return pMap(files, compress, { concurrency: os.cpus().length }).then(() => {
 		let msg = `compressed ${totalFiles} files`;
 
-		logger.success(msg);
+		reporter.emit('done', msg);
 	});
 }
 

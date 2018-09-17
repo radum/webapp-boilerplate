@@ -38,6 +38,12 @@ module.exports = {
     label: 'success',
     level: 8
   },
+  done: {
+    badge: figures.tick,
+    color: 'green',
+    label: 'done',
+    level: 8
+  },
   warn: {
     badge: figures.warning,
     color: 'yellow',

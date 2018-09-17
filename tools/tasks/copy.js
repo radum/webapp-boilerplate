@@ -1,7 +1,7 @@
 const { config } = require('../config');
 const fs = require('../lib/fs');
+const TaskError = require('../lib/task-error').TaskError
 const pkg = require('../../package.json');
-const pe = require('./../lib/youch');
 
 /**
  * Copies static files such as robots.txt, favicon.ico to the
@@ -10,22 +10,21 @@ const pe = require('./../lib/youch');
  * @returns {Promise} Task promise
  */
 async function copyStatic(options) {
-	const logger = options.logger.scope('copy:static');
-	logger.setScopeColor(config.taskColor[1]);
-	logger.start();
+	const reporter = options.reporter('copy:static', { color: config.taskColor[1] });
+	reporter.emit('start', 'copy static assets');
 
 	try {
-		logger.info('make dir → ' + config.paths.buildPath);
+		reporter.emit('info', 'make dir → ' + config.paths.buildPath);
 		await fs.makeDir(config.paths.buildPath);
 
-		logger.info('copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
+		reporter.emit('info', 'copy dir ' + config.paths.staticAssets + ' → ' + config.paths.staticAssetsOutput);
 		await fs.copyDir(config.paths.staticAssets, config.paths.staticAssetsOutput);
 
-		logger.success();
+		reporter.emit('done', 'static assets copied');
 	} catch (error) {
-		logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+		reporter.emit('error', error);
 
-		throw new Error(`Task error → ${error.message}`); // Throwing here because we want the upper function (higher level `catchErrors` func) to catch and set the exit code properly
+		throw new TaskError(error); // Throwing here because we want the upper function (higher level `catchErrors` func) to catch and set the exit code properly
 	}
 }
 
@@ -36,21 +35,20 @@ async function copyStatic(options) {
  * @returns {Promise} Task promise
  */
 async function copyServer(options) {
-	const logger = options.logger.scope('copy:server');
-	logger.setScopeColor(config.taskColor[1]);
-	logger.start();
-	logger.info('copy server files ' + config.paths.serverPath);
-	logger.info('copy server files ' + config.paths.serverHtmlPath);
+	const reporter = options.reporter('copy:server', { color: config.taskColor[1] });
+	reporter.emit('start', 'copy server assets');
+	reporter.emit('info', 'copy server files ' + config.paths.serverPath);
+	reporter.emit('info', 'copy server files ' + config.paths.serverHtmlPath);
 
 	await Promise.all([
 		fs.copyDir(config.paths.serverPath, config.paths.serverOutput),
 		fs.copyDir(config.paths.serverHtmlPath, config.paths.serverHtmlOutput)
 	])
-		.then(() => logger.success())
+		.then(() => reporter.emit('done', 'server assets copied'))
 		.catch((error) => {
-			logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+			reporter.emit('error', error);
 
-			throw new Error(`Task error → ${error.message}`);
+			throw new TaskError(error);
 		});
 }
 
@@ -60,19 +58,18 @@ async function copyServer(options) {
  * @returns {Promise} Task promise
  */
 async function copySSL(options) {
-	const logger = options.logger.scope('copy:ssl');
-	logger.setScopeColor(config.taskColor[1]);
-	logger.start();
-	logger.info('copy ssl files ' + config.paths.sslFilesPath);
+	const reporter = options.reporter('copy:ssl', { color: config.taskColor[1] });
+	reporter.emit('start', 'copy ssl certs');
+	reporter.emit('info', 'copy ssl files ' + config.paths.sslFilesPath);
 
 	try {
 		await fs.copyDir(config.paths.sslFilesPath, config.paths.sslFilesOutput);
 
-		logger.success();
+		reporter.emit('done', 'ssl cert files copied');
 	} catch (error) {
-		logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+		reporter.emit('error', error);
 
-		throw new Error(`Task error → ${error.message}`);
+		throw new TaskError(error);
 	}
 }
 
@@ -82,10 +79,9 @@ async function copySSL(options) {
  * @returns {Promise} Task promise
  */
 async function copyExtra(options) {
-	const logger = options.logger.scope('copy:extra');
-	logger.setScopeColor(config.taskColor[1]);
-	logger.start();
-	logger.info('copy extra files (package.json, .env)');
+	const reporter = options.reporter('copy:extra', { color: config.taskColor[1] });
+	reporter.emit('start', 'copy extra files');
+	reporter.emit('info', 'copy extra files (package.json, .env)');
 
 	await Promise.all([
 		fs.writeFile(config.paths.buildPath + '/package.json', JSON.stringify({
@@ -98,11 +94,11 @@ async function copyExtra(options) {
 		}, null, 2)),
 		...(fs.fileExists('.env') ? [fs.copyFile('.env', config.paths.buildPath + '/.env')] : [])
 	])
-		.then(() => logger.success())
+		.then(() => reporter.emit('done', 'all other files copied'))
 		.catch((error) => {
-			logger.error(`¯\\_(ツ)_/¯ there was an error ${pe.render(error)}`);
+			reporter.emit('error', error);
 
-			throw new Error(`Task error → ${error.message}`);
+			throw new TaskError(error);
 		});
 }
 
