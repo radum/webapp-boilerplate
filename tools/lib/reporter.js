@@ -34,6 +34,10 @@ module.exports = function (taskName, options = {}) {
 		logger.watch(message);
 	});
 
+	emitter.on('warn', (message = '') => {
+		logger.warn(message);
+	});
+
 	emitter.on('error', (error) => {
 		if (error instanceof Error) {
 			logger.error(`${errorMsgPrepend}\n${pe.render(error)}`);

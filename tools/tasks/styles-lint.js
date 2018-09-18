@@ -18,7 +18,7 @@ function stylesLint(options) {
 	task
 		.then((data) => {
 			if (data.errored) {
-				reporter.emit('error', 'stylelint violations 💥' + data.output);
+				reporter.emit('warn', 'stylelint violations 💥\n' + data.output);
 			} else {
 				reporter.emit('fav', 'no violations found 🎉');
 			}

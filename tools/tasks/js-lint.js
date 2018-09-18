@@ -5,14 +5,14 @@ const { CLIEngine } = require('eslint');
 const { config } = require('../config');
 
 function jsLint(options = { isVerbose: false }) {
-	const logger = options.logger.scope('js-lint');
+	const reporter = options.reporter('js-lint', { color: config.taskColor[0] });
 
 	const eslintOptions = {
 		cache: true,
 		cacheLocation: path.resolve(config.paths.cacheFolder + '/.eslintcache')
 	};
 
-	logger.start('linting js with eslint');
+	reporter.emit('start', 'linting JS files with eslint');
 
 	const cli = new CLIEngine(eslintOptions);
 	const report = cli.executeOnFiles([
@@ -24,14 +24,14 @@ function jsLint(options = { isVerbose: false }) {
 	const formatter = cli.getFormatter('pretty');
 
 	if (report.errorCount > 0 || report.warningCount > 0) {
-		logger.error('eslint violations 💥' + formatter(report.results));
+		reporter.emit('warn', 'eslint violations 💥' + formatter(report.results));
 	}
 
 	if (report.errorCount === 0 && report.warningCount === 0) {
-		logger.fav('no violations found ¯\\_(ツ)_/¯');
+		reporter.emit('fav', 'no violations found ¯\\_(ツ)_/¯');
 	}
 
-	logger.success();
+	reporter.emit('done', 'linting done');
 }
 
 module.exports = jsLint;
