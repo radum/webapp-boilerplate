@@ -52,8 +52,8 @@ async function startDev(options) {
 
 	await watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
 	await watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => buildCSS({ ...opts, ...cssSettings }));
-	await watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: flags.inspect }));
-	await watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: flags.inspect }));
+	await watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
+	await watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
 }
 
 module.exports = startDev;
