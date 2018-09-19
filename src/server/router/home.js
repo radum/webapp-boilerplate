@@ -3,7 +3,7 @@ const pageDataAssets = require('../data/page-data-assets');
 const pageData = require('../data/page-data');
 
 // App template
-const template = require(`${config.server.paths.htmlTemplates}/pages/index.marko`);
+const template = require(`${config.server.paths.htmlTemplates}/pages/home.marko`);
 
 // Template data
 const data = {
