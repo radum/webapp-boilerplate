@@ -50,10 +50,10 @@ async function startDev(options) {
 		cert: `src/ssl/${process.env.SSL_CERT_FILE_NAME}`
 	});
 
-	await watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
-	await watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => buildCSS({ ...opts, ...cssSettings }));
-	await watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
-	await watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
+	await new watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
+	await new watcher(['src/styles/**/*.scss'], { ...opts, label: 'sass files' }, () => buildCSS({ ...opts, ...cssSettings }));
+	await new watcher(['src/html/**/*.*'], { ...opts, label: 'html files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
+	await new watcher(['src/server/**/*.js'], { ...opts, label: 'server files' }, () => runServer({ ...opts, inspect: options.nodeInspect }));
 }
 
 module.exports = startDev;
