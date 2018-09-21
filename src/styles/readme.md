@@ -36,6 +36,17 @@ Folder/File structure follows ITCSS, and everything else its a mixture of BEM an
 | Utilities  | Mixins, functions used throught the entire project |
 | Trumps     | Utilities and helper classes with ability to override anything which goes before in the triangle, eg. hide helper class |
 
+## External dependencies
+
+### Reset
+
+Internally we use [Normalize](https://necolas.github.io/normalize.css/). But other options are there and can be used:
+
+- https://github.com/jgthms/minireset.css
+- https://github.com/csstools/sanitize.css
+- https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
+- https://github.com/csstools/postcss-normalize
+
 ## BEM & Suit CSS Naming Conventions
 
 ```css

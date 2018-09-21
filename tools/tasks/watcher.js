@@ -76,6 +76,7 @@ class Debouncer {
 
 /**
  * Class representing a watcher task
+ * Inspired by [AVA watcher](https://github.com/avajs/ava/blob/master/lib/watcher.js)
  * @class Watcher
  */
 class Watcher {

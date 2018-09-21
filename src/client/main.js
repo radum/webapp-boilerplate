@@ -1,16 +1,22 @@
 /* global document, __SENTRY_DSN_URL__ */
 
 // Global imports
-// import 'babel-polyfill';
+
+/**
+ * Polyfills are necessary for enabling features like Promise, Symbol in environments that do not have support for them.
+ * This is important when differentiating between what Babel does as a compiler (transforms syntax)
+ * vs. a polyfill (implements built-in functions/objects). https://babeljs.io/blog/2018/08/27/7.0.0#automatic-polyfilling-experimental
+ *
+ * 		import "@babel/polyfill"; // This loads all polyfills
+ *
+ * It includes the whole polyfill, and you may not need to import everything if browsers support it already.
+ * The option "useBuiltIns: "usage" (set in .babelrc) is Babel's first attempt at enabling something like that.
+ */
+
+// https://github.com/github/fetch
 // import 'whatwg-fetch';
-// import fastClick from 'fastclick';
 import Raven from 'raven-js';
 import App from './app';
-
-// Eliminates the 300ms delay between a physical tap
-// and the firing of a click event on mobile browsers
-// https://github.com/ftlabs/fastclick
-// fastClick(document.body);
 
 // Make sure you set the `SENTRY_DSN_URL` env var via .env files
 // if you need this to work in the code, as the entire IF will be skiped on compile

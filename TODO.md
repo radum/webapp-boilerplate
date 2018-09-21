@@ -69,3 +69,9 @@
 	  - [ ] https://github.com/lakshyaranganath/pwa
 	  - [ ] https://github.com/schleyfox/example-node-ops
 	  - [ ] https://medium.com/codyhouse/create-your-design-system-part-1-typography-7c630d9092bd
+- [ ] Tracing?
+	  - [ ] https://www.gatsbyjs.org/docs/performance-tracing/
+	  - [ ] https://www.jaegertracing.io/
+	  - [ ] https://github.com/gatsbyjs/gatsby/commit/d863bcb1ef555926e4ba5af313cb153cedad1291
+- [ ] Better CPU use?
+	  - [ ] https://github.com/gatsbyjs/gatsby/pull/6417/files
