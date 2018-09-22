@@ -6,58 +6,75 @@
 // underpin a lot of how the framework functions and should be modified and
 // preconfigured with caution.
 
+// Baseline grid lines height.
+// Every spacing metric should be based on this.
+
+$global-baseline: 8px !default;
+
+// How many grid lines should our spacing unit variants span?
+// Each value should be an unitless integer.
+
+$global-spacing-unit-factor-tiny: 1 !default; // 8px
+$global-spacing-unit-factor-small: 2 !default; // 16px
+$global-spacing-unit-factor: 4 !default; // 32px
+$global-spacing-unit-factor-large: 8 !default; // 64px
+$global-spacing-unit-factor-huge: 16 !default; // 128px
+
+// Spacing values are determined based on your project’s global baseline grid.
+// It is not recommended that you modify these following variables
+// (it can break your vertical rhythm), but if you need to, you can.
+
+$global-spacing-unit: $global-baseline * $global-spacing-unit-factor !default;
+$global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny !default;
+$global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small !default;
+$global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large !default;
+$global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge !default;
+
 // Base typographical styles and baseline grid. You need to define these values
 // in pixels: they will be converted to more appropriate units.
 
-$global-font-size:    16px !default;
-$global-line-height:  24px !default;
-
-// Spacing values are determined based on your project’s global line height (i.e
-// your baseline grid). It is not recommended that you modify these following
-// variables (it can break your vertical rhythm), but if you need to, you can.
-$global-spacing-unit: round($global-line-height) !default;
-
-// How many times larger/smaller than the default should our spacing unit
-// variants be?
-$global-spacing-unit-factor-tiny:   0.25 !default;
-$global-spacing-unit-factor-small:  0.5 !default;
-$global-spacing-unit-factor-large:  2 !default;
-$global-spacing-unit-factor-huge:   4 !default;
+$global-font-size: 16px !default;
+// $global-line-height:  24px !default;
+$global-line-height: $global-spacing-unit !default;
 
 // Check that the chosen font rules are pixel numbers.
-@each
-	$_font-globals in
-	$global-font-size
-	$global-line-height {
+@each $_font-globals in $global-font-size $global-line-height {
 	@if (type-of($_font-globals) == number) {
-		@if (unit($_font-globals) != "px") {
+		@if (unit($_font-globals) != 'px') {
 			@error "`#{$_font-globals}` needs to be a pixel value.";
 		}
-	}
-	@else {
+	} @else {
 		@error "`#{$_font-globals}` needs to be a number.";
 	}
 }
 
-// Check that the chosen size factors are unitless numbers.
-@each
-	$_spacing-unit in
+// Check that the chosen font rules are pixel numbers.
+@each $_font-globals in $global-font-size $global-line-height {
+	@if (type-of($_font-globals) == number) {
+		@if (unit($_font-globals) != 'px') {
+			@error "`#{$_font-globals}` needs to be a pixel value.";
+		}
+	} @else {
+		@error "`#{$_font-globals}` needs to be a number.";
+	}
+}
+
+// Check that the chosen size factors are unitless, integer numbers.
+@each $_spacing-unit in
 	$global-spacing-unit-factor-tiny
 	$global-spacing-unit-factor-small
 	$global-spacing-unit-factor-large
-	$global-spacing-unit-factor-huge {
+	$global-spacing-unit-factor-huge
+{
 	@if (type-of($_spacing-unit) == number) {
 		@if (unitless($_spacing-unit) == false) {
 			@error "`#{$_spacing-unit}` needs to be unitless.";
 		}
-	}
-	@else {
+
+		@if ($_spacing-unit != ceil($_spacing-unit)) {
+			@error "`#{$_spacing-unit}` needs to be an integer.";
+		}
+	} @else {
 		@error "`#{$_spacing-unit}` needs to be a number.";
 	}
 }
-
-// Private/framework-only reassignment. Do not alter anything below.
-$global-spacing-unit-tiny:  round($global-spacing-unit * $global-spacing-unit-factor-tiny);
-$global-spacing-unit-small: round($global-spacing-unit * $global-spacing-unit-factor-small);
-$global-spacing-unit-large: round($global-spacing-unit * $global-spacing-unit-factor-large);
-$global-spacing-unit-huge:  round($global-spacing-unit * $global-spacing-unit-factor-huge);

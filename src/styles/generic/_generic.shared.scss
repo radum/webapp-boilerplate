@@ -1,17 +1,17 @@
-/* ==========================================================================
-#SHARED
-========================================================================== */
-
-/**
-* Shared declarations for certain elements.
-*/
-
-/**
-* Always declare margins in the same direction:
-* csswizardry.com/2012/06/single-direction-margin-declarations
-*/
-
 /* stylelint-disable selector-list-comma-newline-after */
+
+/* ==========================================================================
+   #SHARED
+   ========================================================================== */
+
+/**
+ * Shared declarations for certain elements.
+ */
+
+/**
+ * Always declare margins in the same direction:
+ * csswizardry.com/2012/06/single-direction-margin-declarations
+ */
 
 address,
 h1, h2, h3, h4, h5, h6,
@@ -21,15 +21,15 @@ figure,
 hr,
 table,
 fieldset {
-	@include t-rem(margin-bottom, $global-spacing-unit);
+	margin-bottom: $global-spacing-unit;
 }
 
 /**
-* Consistent indentation for lists.
-*/
+ * Consistent indentation for lists.
+ */
 
 dd, ol, ul {
-	@include t-rem(margin-left, $global-spacing-unit);
+	margin-left: $global-spacing-unit;
 }
 
 /* stylelint-enable selector-list-comma-newline-after */

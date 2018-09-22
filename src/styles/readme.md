@@ -15,13 +15,13 @@ Folder/File structure follows ITCSS, and everything else its a mixture of BEM an
 ```
 .
 ├── /styles/
-│   ├── /settings/    # Preprocessor variables and methods (no actual CSS output)
-│   ├── /tools/       # Mixins and functions (no actual CSS output)
-│   ├── /generic/     # CSS resets which might include Normalize.css, or your own batch of code
-│   ├── /elements/    # Single HTML element selectors without classes
-│   ├── /objects/     # Classes for page structure typically following the OOCSS methodology
-│   ├── /components/  # Aesthetic classes for styling any & all page elements
-│   ├── /utilities/   # Mixins, functions used throught the entire project
+│   ├── /settings/    # Preprocessor variables and methods (no actual CSS output), global variables, site-wide settings, config switches, etc,
+│   ├── /tools/       # Mixins and functions (no actual CSS output),
+│   ├── /generic/     # CSS resets which might include Normalize.css, or your own batch of code, low-specificity, far-reaching rulesets,
+│   ├── /elements/    # Single HTML element selectors without classes, unclassed HTML elements (e.g. `a {}`, `blockquote {}`, `address {}`),
+│   ├── /objects/     # Classes for page structure (OOCSS methodology), objects, abstractions, and design patterns (e.g. `.o-list-bare {}`).
+│   ├── /components/  # Aesthetic classes for styling any & all page elements, complete chunks of UI (e.g. `.c-carousel {}`)
+│   ├── /utilities/   # High-specificity, very explicit selectors. Overrides and helper classes (e.g. `.u-hidden {}`)
 │   ├── /trumps/      # The most specific styles for overriding anything else in the triangle
 ```
 
@@ -47,22 +47,52 @@ Internally we use [Normalize](https://necolas.github.io/normalize.css/). But oth
 - https://github.com/twbs/bootstrap/blob/v4-dev/scss/_reboot.scss
 - https://github.com/csstools/postcss-normalize
 
+## Getting started
+
+There are a handful of things we need to do before we’re ready to go.
+
+### _settings.config.scss
+
+This is a configuration file that used to handle the state, location, or environment of your project. This handles very high-level settings that don’t necessarily affect the CSS itself, but can be used to manipulate things depending on where you are running things (e.g. turning a debugging mode on, or telling your CI sever that you’re compiling for production).
+
+### _settings.global.scss
+
+This is an example globals file; it contains any settings that are available to your entire project. These variables and settings could be font families, colours, border-radius values, etc.
+
+### _components.buttons.scss
+
+You don’t need to really do much with this file other than ensure you don’t let it into your final project!
+
+This file exists to show you how you might build components into the project.
+
+## Namespaces
+
+There are three different namespaces directly relevant:
+
+* .o-: Objects
+* .c-: Components
+* .u-: Utilities
+
+In short: Every class in either of these three directories gets the appropriate prefix in its classname. All classes in one of these three layers has this kind of prefix. Be sure to follow this convention in your own code as well to keep a consistent naming convention across your code base.
+
+If you want to dive deeper into namespacing classes and want to know why this is a great idea, have a look at this [article](http://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/).
+
 ## BEM & Suit CSS Naming Conventions
 
 ```css
 /* block */
-.Photo {}
+.c-photo {}
 
 /* element */
-.Photo__img {}
+.c-photo__img {}
 
 /* modifier */
-.Photo--large {}
+.c-photo--large {}
 ```
 
 ## Syntax & Formatting
 
-Most of these rules are blunt copies of [Sass Guidelines](https://sass-guidelin.es/) rules, so read those first. Bellow are just a few more important ones with some changes.
+Most of these rules are blunt copies of [Sass Guidelines](https://sass-guidelin.es/) or INUITCSS rules, so read those first. Bellow are just a few more important ones with some changes.
 
 Roughly, we want (shamelessly inspired by CSS Guidelines):
 
@@ -121,7 +151,7 @@ $length: 0;
 $length: 0em;
 ```
 
-####CALCULATIONS
+#### CALCULATIONS
 
 Top-level numeric calculations should always be wrapped in parentheses. Not only does this requirement dramatically improve readability, it also prevents some edge cases by forcing Sass to evaluate the contents of the parentheses.
 
