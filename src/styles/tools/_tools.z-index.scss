@@ -1,0 +1,86 @@
+/**
+ * Check if map has nested keys
+ * @param  {string} $map     Key to find
+ * @param  {object} $keys... Object of keys to look into
+ * @return {boolean}         Return true or false if map has nested keys
+ */
+ @function map-has-nested-keys($map, $keys...) {
+	@each $key in $keys {
+		@if not map-has-key($map, $key) {
+			@return false;
+		}
+		$map: map-get($map, $key);
+	}
+
+	@return true;
+}
+
+/**
+ * Function helper to get deep keys from object
+ * @param  {string} $map     Key to find
+ * @param  {object} $keys... Object of deep nested keys to look into
+ * @return {string}          Found key
+ */
+@function map-deep-get($map, $keys...) {
+	@each $key in $keys {
+		$map: map-get($map, $key);
+	}
+
+	@return $map;
+}
+
+/**
+ * Function helper to avoid using `map-get($z-layers, $layer)`
+ * @param  {string} $layer The layer to use
+ * @return {number}        The z-index number returned from the `$z-layers` map
+ *
+ * Examples:
+ * Considering this `$z-layers` variable bellow, here is how the function works
+ * $z-layers: (
+ *     "tooltip": 1070,
+ *     "modal": (
+ *         "base": 1000,
+ *         "close": 1010,
+ *         "header": 1010
+ *     ),
+ *     "default": 1,
+ *     "seabed": -10000
+ * );
+ *
+ * @example scss - Usage
+ *  .modal {
+ *      z-index: z-index("modal", "base");
+ *  }
+ *
+ * @example scss - CSS Output
+ *  .modal {
+ *      z-index: 1000;
+ *  }
+ *
+ * @example scss - Usage
+ *  .element:after {
+ *      z-index: z-index("default") - 2;
+ *  }
+ *
+ * @example scss - CSS Output
+ *  .element:after {
+ *      z-index: -1;
+ *  }
+ *
+ * @example scss - Usage
+ *  .modal .btn.close {
+ *      z-index: z-index("modal", "close");
+ *  }
+ *
+ * @example scss - CSS Output
+ *  .modal .btn.close {
+ *      z-index: 1010;
+ *  }
+ */
+@function z-index($layers...) {
+	@if not map-has-nested-keys($z-layers, $layers...) {
+		@warn "No z-index layer found for `#{inspect($layers...)}` in $z-layers map. Property omitted.";
+    }
+
+	@return map-deep-get($z-layers, $layers...);
+}

@@ -4,7 +4,7 @@ const pe = require('./youch');
 
 signale.config({
 	displayTimestamp: true,
-	logLevel: 3 // cli.flags.verbose ? 3 : 8
+	logLevel: 3
 });
 
 /**

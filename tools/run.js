@@ -38,12 +38,14 @@ switch (cli.input[0]) {
 	case 'dev':
 		catchErrors(startDev)({
 			isDebug: !cli.flags.release,
-			nodeInspect: cli.flags.inspect
+			nodeInspect: cli.flags.inspect,
+			loagLevel: cli.flags.verbose ? 3 : 8
 		});
 		break;
 	case 'build':
 		catchErrors(startBuild)({
-			isDebug: !cli.flags.release
+			isDebug: !cli.flags.release,
+			loagLevel: cli.flags.verbose ? 3 : 8
 		});
 		break;
 	case 'lint':
@@ -53,6 +55,9 @@ switch (cli.input[0]) {
 		console.log('{version.number}');
 		break;
 	default:
-		catchErrors(startBuild)();
+		catchErrors(startBuild)({
+			isDebug: !cli.flags.release,
+			loagLevel: cli.flags.verbose ? 3 : 8
+		});
 		break;
 }
