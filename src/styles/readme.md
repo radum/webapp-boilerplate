@@ -77,6 +77,14 @@ In short: Every class in either of these three directories gets the appropriate 
 
 If you want to dive deeper into namespacing classes and want to know why this is a great idea, have a look at this [article](http://csswizardry.com/2015/03/more-transparent-ui-code-with-namespaces/).
 
+| Type             	| Prefix   	| Examples              	| Description                                                                                                                                                                   	|
+|------------------	|----------	|-----------------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Component        	| c-       	| c-card c-checklist    	| Form the backbone of an application and contain all of the cosmetics for a standalone component.                                                                              	|
+| Layout module    	| l-       	| l-grid l-container    	| These modules have no cosmetics and are purely used to position c- components and structure an application’s layout.                                                          	|
+| Helpers          	| h-       	| h-show h-hide         	| These utility classes have a single function, often using !important to boost their specificity. (Commonly used for positioning or visibility.)                               	|
+| States           	| is- has- 	| is-visible has-loaded 	| Indicate different states that a c- component can have. More detail on this concept can be found inside problem 6 below, but                                                  	|
+| JavaScript hooks 	| js-      	| js-tab-switcher       	| These indicate that JavaScript behavior is attached to a component. No styles should be associated with them; they are purely used to enable easier manipulation with script. 	|
+
 ## BEM & Suit CSS Naming Conventions
 
 ```css
