@@ -9,7 +9,7 @@ const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const SizePlugin = require('size-plugin');
+// const SizePlugin = require('size-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
 
@@ -106,6 +106,13 @@ module.exports = function (config) {
 			strictExportPresence: true,
 
 			rules: [
+				// // Webpack can now load mjs files, but we don't want it to
+				// {
+				// 	type: 'javascript/auto',
+				// 	test: /\.mjs$/,
+				// 	include: /node_modules/,
+				// 	use: []
+				// },
 				// Babel loader options
 				{
 					test: /\.js(\?[^?]*)?$/,
@@ -122,8 +129,8 @@ module.exports = function (config) {
 				{
 					test: /\.txt$/,
 					loader: 'raw-loader',
-				},
-			],
+				}
+			]
 		},
 
 		// https://webpack.js.org/configuration/optimization/#optimization-runtimechunk
