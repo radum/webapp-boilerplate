@@ -19,12 +19,6 @@ const defaultSizes = [
 	{ w: 2048, h: 122 }
 ];
 
-// Try to enable the use of SIMD instructions. Seems to provide a smallish
-// speedup on resizing heavy loads (~10%). Sharp disables this feature by
-// default as there's been problems with segfaulting in the past but we'll be
-// adventurous and see what happens with it on.
-sharp.simd(true);
-
 /**
  * Resize responsive images task
  * @param {Object} options - Options object
