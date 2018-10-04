@@ -15,8 +15,9 @@ RUN apk add --no-cache make gcc g++ python file libpng-dev autoconf automake bui
 RUN apk add --no-cache vips-dev fftw-dev vips-tools --repository https://dl-3.alpinelinux.org/alpine/edge/testing/
 
 # Install and cache app dependencies
-COPY package.json /app/package.json
-COPY package-lock.json /app/package-lock.json
+# COPY package.json /app/package.json
+# COPY package-lock.json /app/package-lock.json
+COPY package*.json /app
 
 # RUN npm install --silent
 RUN npm ci
