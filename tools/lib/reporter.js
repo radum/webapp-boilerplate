@@ -72,7 +72,7 @@ module.exports = function (taskName, options = {}) {
 
 	emitter.on('log', (message = '') => {
 		signale.log(message);
-	})
+	});
 
 	return emitter;
 }
