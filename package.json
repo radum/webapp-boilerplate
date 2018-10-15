@@ -95,7 +95,7 @@
     "execa": "1.0.0",
     "figures": "2.0.0",
     "globby": "8.0.1",
-    "html-webpack-plugin": "4.0.0-beta.1",
+    "html-webpack-plugin": "4.0.0-beta.2",
     "iltorb": "2.4.0",
     "imagemin": "6.0.0",
     "imagemin-mozjpeg": "7.0.0",
