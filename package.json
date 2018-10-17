@@ -72,7 +72,7 @@
     "@babel/plugin-syntax-dynamic-import": "7.0.0",
     "@babel/plugin-transform-runtime": "7.1.0",
     "@babel/preset-env": "7.1.0",
-    "autoprefixer": "9.2.0",
+    "autoprefixer": "9.2.1",
     "ava": "1.0.0-rc.1",
     "babel-loader": "8.0.4",
     "babel-plugin-console": "0.2.1",
