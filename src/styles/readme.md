@@ -192,3 +192,34 @@ Needless to say magic numbers are a plague and should be avoided at all costs. W
 ```
 
 On topic, CSS-Tricks has a [terrific article](http://css-tricks.com/magic-numbers-in-css/) about magic numbers in CSS that I encourage you to read.
+
+## Rhythm in WEB typography
+
+Resources:
+
+* https://betterwebtype.com/rhythm-in-web-typography
+
+Tools: 
+
+* http://nowodzinski.pl/syncope/
+* https://archetypeapp.com/
+* https://www.gridlover.net/
+
+Typography kits:
+
+* http://matejlatin.github.io/Gutenberg/
+
+### Vertical rhythm
+
+Here is an example on how we should calculate the values for our typography.
+
+```css
+h3 {
+  font-size: 55px; // Desired font size
+  line-height: 60px; // = 2 × 30px (main body text  line-height), basically the next multiplied value above font-size
+  margin-top: 90px; // = 3 × 30px
+  margin-bottom: 30px; // = 1 × 30px
+}
+```
+
+
