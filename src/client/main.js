@@ -6,6 +6,8 @@
  * Polyfills are necessary for enabling features like Promise, Symbol in environments that do not have support for them.
  * This is important when differentiating between what Babel does as a compiler (transforms syntax)
  * vs. a polyfill (implements built-in functions/objects). https://babeljs.io/blog/2018/08/27/7.0.0#automatic-polyfilling-experimental
+ * Babel applies syntactical transforms to our ES6+ code nothing more. Built-in features introduced in ES6+ — such as Promise, Map and Set,
+ * and new array and string methods — still need to be polyfilled.
  *
  * 		import "@babel/polyfill"; // This loads all polyfills
  *

@@ -1,11 +1,22 @@
 # Browsers that we support
+# To change what namespace is used just set `BROWSERSLIST_ENV=modern`, example in package.json scripts
+
+# Best option to use IMHO
+# http://browserl.ist/?q=last+2+Chrome+versions%2C+last+2+Safari+versions%2C+last+2+iOS+versions%2C+last+2+Firefox+versions%2C+last+2+Edge+versions
+[modern]
+last 2 Chrome versions
+last 2 Safari versions
+last 2 iOS versions
+last 2 Firefox versions
+last 2 Edge versions
 
 # # Safe bet but will bundle more
 # # http://browserl.ist/?q=%3E+1%25%2C+Last+2+versions%2C+not+IE+%3C+11
-# > 1%
-# Last 2 versions
-# Firefox ESR
-# not IE < 11
+[legacy]
+> 1%
+Last 2 versions
+Firefox ESR
+not IE < 11
 
 # # The last two versions of each browser, excluding versions
 # # that don't support <script type="module">.
@@ -20,11 +31,3 @@
 # not Firefox < 54
 # last 2 Edge versions
 # not Edge < 15
-
-# Best option to use IMHO
-# http://browserl.ist/?q=last+2+Chrome+versions%2C+last+2+Safari+versions%2C+last+2+iOS+versions%2C+last+2+Firefox+versions%2C+last+2+Edge+versions
-last 2 Chrome versions
-last 2 Safari versions
-last 2 iOS versions
-last 2 Firefox versions
-last 2 Edge versions
