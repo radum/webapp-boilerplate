@@ -1,4 +1,5 @@
 // const fs = require('fs');
+const path = require('path');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
 const express = require('express');
@@ -17,6 +18,7 @@ const serverTiming = require('server-timing');
 // TODO: https://www.npmjs.com/package/express-brute, https://github.com/animir/node-rate-limiter-flexible
 const rateLimit = require('express-rate-limit');
 const mime = require('mime');
+const engines = require('consolidate');
 
 const logger = require('../util/logger');
 const config = require('../config');
@@ -26,13 +28,17 @@ const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-m
 // Express App with view engine via Marko
 // -----------------------------------------------------------------------------
 
-require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
-require('marko/node-require'); // Allow Node.js to require and load `.marko` files
-const markoExpress = require('marko/express');
+// require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
+// require('marko/node-require'); // Allow Node.js to require and load `.marko` files
+// const markoExpress = require('marko/express');
 
 const app = express();
 
-app.use(markoExpress()); // enable res.marko(template, data)
+app.engine('html', engines.nunjucks);
+app.set('views', path.join(__dirname, '../../html'));
+app.set('view engine', 'html');
+
+// app.use(markoExpress()); // enable res.marko(template, data)
 
 // Express configuration.
 // -----------------------------------------------------------------------------

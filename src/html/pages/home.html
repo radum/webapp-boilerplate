@@ -1,7 +1,7 @@
-<include('./../app.marko', data.app)>
-<@page>
-	<include('./../layouts/_app-shell.marko')>
-	<@body>
+{% extends 'app.html' %}
+{% block page %}
+
+	{% include './components/_header.html' %}
 
 	<main id="app">
 		<header>
@@ -12,7 +12,6 @@
 		</section>
 	</main>
 
-	</@body>
-	</include>
-</@page>
-</include>
+	{% include './components/_footer.html' %}
+
+{% endblock %}

@@ -1,20 +1,22 @@
 <!doctype html>
 <html class="no-js" lang="">
 	<head>
-		<include('./includes/head-content.marko', data) />
+		{% include './includes/head-content.html' %}
 	</head>
 	<body>
-		<!-- Express app renders `/pages/{page}.marko` files, each page gets injected here via nested attributes -->
-		<include(input.page)/>
+		{% block page %}
+		This is the default content for a page
+		{% endblock %}
 
-		<if(data.assets.runtimeContent)>
-		<script>${data.assets.runtimeContent}</script>
-		</if>
-		<for(file in data.assets.scripts)>
-		<script src="${file}"></script>
-		</for>
+		{% if data.app.assets.runtimeContent %}
+		<script>{{ data.app.assets.runtimeContent | safe }}</script>
+		{% endif %}
+		{% for file in data.app.assets.scripts %}
+		<script src="{{ file }}"></script>
+		{% endfor %}
 
-		<include('./includes/service-worker.marko') />
+
+		{% include './includes/service-worker.html' %}
 
 		<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 		<script>
@@ -27,8 +29,9 @@
 		</script>
 
 		<!-- Built with love using RaduM's ES6 Web app boilerplate -->
-		<if(data.isProd === false)>
+		{% if data.app.isProd === false %}
 		<include('./includes/browser-sync.marko', data.browserSync) />
-		</if>
+		{% include './includes/browser-sync.html' %}
+		{% endif %}
 	</body>
 </html>
