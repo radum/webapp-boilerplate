@@ -193,6 +193,36 @@ Needless to say magic numbers are a plague and should be avoided at all costs. W
 
 On topic, CSS-Tricks has a [terrific article](http://css-tricks.com/magic-numbers-in-css/) about magic numbers in CSS that I encourage you to read.
 
+### CSS: order
+
+To keep everything maintainable and easy to read css properties should be ordered as follows:
+
+**Layout:**	The position of the element in space. Eg.: position, top, z-index.
+**Box:**	The element itself. Eg.: display, overflow, box-sizing.
+**Visual:**	Design of the element. Eg.: color, border, background.
+**Type:**	Typesetting of the element. Eg.: font-family, text-transform.
+
+```css
+.button {
+	position: relative;
+	z-index: 10;
+
+	display: inline-flex;
+	margin: 1rem 0;
+	padding: 0 0.5rem;
+
+	background: #3f55aa;
+	border-radius: 0.5rem;
+	border: 1px solid white;
+	color: white;
+	transition: opacity 100ms ease;
+
+	font-family: sans-serif;
+	font-size: 1rem;
+	text-transform: uppercase;
+}
+```
+
 ## Rhythm in WEB typography
 
 Resources:
