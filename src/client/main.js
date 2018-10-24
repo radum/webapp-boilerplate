@@ -1,4 +1,4 @@
-/* global document, __SENTRY_DSN_URL__ */
+/* global document, __SENTRY_DSN_URL__, __DEV__ */
 
 // Global imports
 

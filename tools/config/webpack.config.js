@@ -15,7 +15,7 @@ const DashboardPlugin = require('webpack-dashboard/plugin');
 const aliases = require('./aliases.config');
 
 module.exports = function (config) {
-	let cwd = process.cwd();
+	const cwd = process.cwd();
 
 	// Webpack configuration (main.js => main.build.js)
 	// http://webpack.github.io/docs/configuration.html
