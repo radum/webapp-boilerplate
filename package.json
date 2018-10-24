@@ -129,7 +129,7 @@
     "terser-webpack-plugin": "1.1.0",
     "webpack": "4.22.0",
     "webpack-bundle-analyzer": "3.0.3",
-    "webpack-dashboard": "^2.0.0",
+    "webpack-dashboard": "2.0.0",
     "webpack-dev-middleware": "3.4.0",
     "webpack-hot-middleware": "2.24.3",
     "webpack-manifest-plugin": "2.0.4",
