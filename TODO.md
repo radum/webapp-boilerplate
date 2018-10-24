@@ -47,6 +47,7 @@
 	  - [ ] https://github.com/webpack/watchpack
 	  - [ ] https://github.com/chimurai/http-proxy-middleware
 	  - [ ] https://github.com/gustavnikolaj/hijackresponse
+	  - [ ] https://github.com/FormidableLabs/inspectpack
 - [ ]  Learn from others how its done:
       - [ ] https://github.com/parcel-bundler/parcel/commit/af4cd330e91197fd88d826fd17440452f64e5c8a
       - [ ] https://github.com/dmnsgn/frontend-boilerplate/blob/643424183ae27ff773f4b28839a892a6a3bfa750/config/scripts/favicons.js

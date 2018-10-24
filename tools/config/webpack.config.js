@@ -8,9 +8,10 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const SizePlugin = require('size-plugin');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const DashboardPlugin = require('webpack-dashboard/plugin');
+// const SizePlugin = require('size-plugin');
 const aliases = require('./aliases.config');
 
 module.exports = function (config) {
@@ -253,7 +254,8 @@ module.exports = function (config) {
 			...(!config.isAnalyze
 				? []
 				: [
-					new BundleAnalyzerPlugin()
+					new BundleAnalyzerPlugin(),
+					new DashboardPlugin()
 				]),
 		],
 
