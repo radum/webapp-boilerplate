@@ -64,7 +64,7 @@
     "rev-hash": "2.0.0",
     "server-timing": "2.1.0",
     "spdy": "3.4.7",
-    "time-stamp": "2.1.0",
+    "time-stamp": "2.2.0",
     "winston": "3.1.0"
   },
   "devDependencies": {
