@@ -1,4 +1,4 @@
-[![David](https://img.shields.io/david/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate) [![David](https://img.shields.io/david/dev/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate/#info=devDependencies) [![Greenkeeper badge](https://badges.greenkeeper.io/radum/webapp-boilerplate.svg)](https://greenkeeper.io/)
+[![David](https://img.shields.io/david/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate) [![David](https://img.shields.io/david/dev/radum/webapp-boilerplate.svg?style=flat-square)](https://david-dm.org/radum/webapp-boilerplate/#info=devDependencies)
 
 ![Logo of the project](./images/logo.sample.png)
 
