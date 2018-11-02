@@ -23,19 +23,29 @@ $global-spacing-unit-factor-huge: 16 !default; // 128px
 // Spacing values are determined based on your project’s global baseline grid.
 // It is not recommended that you modify these following variables
 // (it can break your vertical rhythm), but if you need to, you can.
+// TODO: Consolidate the lists bellow (Good example: https://polaris.shopify.com/design/spacing)
 
-$global-spacing-unit: $global-baseline * $global-spacing-unit-factor !default;
-$global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny !default;
-$global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small !default;
-$global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large !default;
-$global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge !default;
+$global-spacing-unit: $global-baseline * $global-spacing-unit-factor !default; // 32px
+$global-spacing-unit-tiny: $global-baseline * $global-spacing-unit-factor-tiny !default; // 8px
+$global-spacing-unit-small: $global-baseline * $global-spacing-unit-factor-small !default; // 16px
+$global-spacing-unit-large: $global-baseline * $global-spacing-unit-factor-large !default; // 64px
+$global-spacing-unit-huge: $global-baseline * $global-spacing-unit-factor-huge !default; // 128px
+
+// The following list is based on the Fibonacci sequence
+$global-spacing-unit-xxs:  1px * $global-spacing-unit-factor !default; // 4px
+$global-spacing-unit-xs:   2px * $global-spacing-unit-factor !default; // 8px
+$global-spacing-unit-sm:   3px * $global-spacing-unit-factor !default; // 12px
+$global-spacing-unit-md:   5px * $global-spacing-unit-factor !default; // 20px
+$global-spacing-unit-lg:   8px * $global-spacing-unit-factor !default; // 32px
+$global-spacing-unit-xl:  13px * $global-spacing-unit-factor !default; // 52px
+$global-spacing-unit-xxl: 21px * $global-spacing-unit-factor !default; // 84px
 
 // Base typographical styles and baseline grid. You need to define these values
 // in pixels: they will be converted to more appropriate units.
 
 $global-font-size: 16px !default;
 // $global-line-height:  24px !default;
-$global-line-height: $global-spacing-unit !default;
+$global-line-height: $global-spacing-unit !default; // Evaluates to 8 (base) * 4 (default spacing factor) = 32px
 
 // Check that the chosen font rules are pixel numbers.
 @each $_font-globals in $global-font-size $global-line-height {

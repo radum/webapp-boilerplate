@@ -4,12 +4,14 @@
  * SETTINGS
  * Config...............Project-level configuration and feature switches.
  * Core.................Core and setup settings.
+ * Colors...............Project wide color pallete.
  * Global...............Project-wide variables and settings.
  *
  * TOOLS
  * Rem..................Tools for converting pixel inputs into their rem
  *                      equivalents.
  * Font-size............A mixin which guarantees baseline-friendly line-heights.
+ * Typography...........Typography related mixins.
  * Clearfix.............Micro clearfix mixin.
  * Hidden...............Mixin for hiding elements.
  * Sass MQ..............Default media query manager (imported from NPM).
@@ -60,11 +62,13 @@
 // SETTINGS
 @import "settings/settings.config";
 @import "settings/settings.core";
+@import "settings/settings.colors";
 @import "settings/settings.global";
 
 // TOOLS
 @import "tools/tools.rem";
 @import "tools/tools.font-size";
+@import "tools/tools.typography";
 @import "tools/tools.clearfix";
 @import "tools/tools.hidden";
 @import "tools/tools.z-index";
@@ -108,6 +112,7 @@
 @import "utilities/utilities.clearfix";
 @import "utilities/utilities.headings";
 @import "utilities/utilities.spacings";
+@import "utilities/utilities.responsive-spacings";
 @import "utilities/utilities.print";
 @import "utilities/utilities.hide";
 

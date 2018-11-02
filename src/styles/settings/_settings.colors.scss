@@ -1,0 +1,49 @@
+///* ========================================================================
+//   : #Colors
+//   ======================================================================== */
+
+// The global settings file contains any project-wide variables for colors
+//
+// Each color variable should follow this format `$color-{set name}-{color name, shade, tint}`
+// Example: https://canvas.hubspot.com/styles/colors
+
+// Primary colors
+//
+// Define here primary color sets. Using recognazible name as a name conventions is a best practice.
+
+// Lorax - This color set is used mainly for {description}
+$color-lorax: #ff7a59;
+$color-lorax-dark: #e66e50;
+$color-lorax-medium: #ffbcac;
+$color-lorax-light: #fff1ee;
+
+// Obsidian - This color set is used mainly for {description}
+$color-obsidian: #33475b;
+
+// Secondary colors
+//
+// Define here secondary color sets
+
+// Thunderdome
+// We usually use these in places where {description}
+$color-thunderdome: #6a78d1;
+$color-thunderdome-dark: #5e6ab8;
+$color-thunderdome-medium: #b4bbe8;
+$color-thunderdome-light: #f0f1fa;
+
+// Shades of gray
+//
+// Created using Colorbox.io
+// https://www.colorbox.io/#steps=12#hue_start=111#hue_end=188#hue_curve=easeInQuad#sat_start=0#sat_end=0#sat_curve=easeOutQuad#sat_rate=114#lum_start=100#lum_end=8#lum_curve=easeOutQuad
+$gray-0: #fff;
+$gray-10: #fcfcfc;
+$gray-20: #f6f6f6;
+$gray-30: #eee;
+$gray-40: #e2e2e2;
+$gray-50: #d3d3d3;
+$gray-60: #bfbfbf;
+$gray-70: #a6a6a6;
+$gray-80: #878787;
+$gray-90: #646464;
+$gray-100: #3c3c3c;
+$gray-110: #141414;

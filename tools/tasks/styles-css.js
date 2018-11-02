@@ -3,6 +3,7 @@ const sass = require('node-sass'); // TODO: use dart Sass?
 const postcss = require('postcss');
 const autoprefixer = require('autoprefixer');
 const postcssCustomProperties = require('postcss-custom-properties');
+const postcssColorMod = require('postcss-color-mod-function');
 const postcssReporter = require('postcss-reporter');
 const indentString = require('indent-string');
 const humanizeMs = require('ms');
@@ -88,6 +89,7 @@ function postCSSTransform(cssInput, options) {
 	const reporter = options.reporter('build-css', { subTask: 'postcss', color: config.taskColor[3] });
 	const plugins = [
 		postcssCustomProperties,
+		postcssColorMod,
 		autoprefixer,
 		postcssReporter
 	];

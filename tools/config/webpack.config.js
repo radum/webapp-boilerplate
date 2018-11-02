@@ -199,6 +199,7 @@ module.exports = function (config) {
 				'process.env.BROWSER': true,
 				__BROWSER__: true,
 				__DEV__: config.isDebug,
+				// TODO: Should come from ENV vars
 				__SENTRY_DSN_URL__: JSON.stringify(config.SENTRY_DSN_URL)
 			}),
 

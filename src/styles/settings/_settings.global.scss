@@ -33,3 +33,18 @@ $z-layers: (
 	'below': -100,
 	'seabed': -10000,
 );
+
+// Sass MQ settings
+// https://sass-mq.github.io/sass-mq/
+$mq-base-font-size: $global-font-size;
+$mq-show-breakpoints: (); // This is needed for Sass to know it exists before it sets the one bellow. Dunno why.
+@if (config(debug) == true) {
+	$mq-show-breakpoints: (md, lg, xl);
+}
+
+$mq-breakpoints: (
+	sm: 480px,
+	md: 740px,
+	lg: 980px,
+	xl: 1300px
+);

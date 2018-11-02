@@ -1,0 +1,176 @@
+///* ========================================================================
+//   #Buttons
+//   ======================================================================== */
+
+// TODO: These should go in to settings or not dunno yet
+// TODO: Fix it, Sass doesn't work within :root { } since v3.4.25
+:root {
+	--btn-font-size: 1em;
+	--btn-sm: calc(var(--btn-font-size) - 0.2em);
+	--btn-md: calc(var(--btn-font-size) + 0.2em);
+	--btn-lg: calc(var(--btn-font-size) + 0.4em);
+
+	--btn-radius: 4px;
+	--btn-color-link: $gray-0;
+
+	--btn-color-primary: #286bf4;
+	--btn-color-primary-light: color-mod(var(--btn-color-primary) tint(15%));
+	--btn-color-primary-dark: color-mod(var(--btn-color-primary) shade(15%));
+	--btn-color-primary-bg: color-mod(var(--btn-color-primary) alpha(20%));
+
+	--btn-color-accent: #f5414f;
+	--btn-color-accent-light: color-mod(var(--btn-color-accent) tint(15%));
+	--btn-color-accent-dark: color-mod(var(--btn-color-accent) shade(10%));
+	--btn-color-accent-bg: color-mod(var(--btn-color-accent) alpha(20%));
+
+	--btn-primary-bg: var(--btn-color-primary);
+	--btn-primary-hover: var(--btn-color-primary-light);
+	--btn-primary-active: var(--btn-color-primary-dark);
+	--btn-primary-label: $gray-0;
+
+	--btn-secondary-bg: $gray-40;
+	--btn-secondary-active: $gray-50;
+	--btn-secondary-label: $gray-100;
+
+	--btn-accent-bg: var(--btn-color-accent);
+	--btn-accent-hover: var(--btn-color-accent-light);
+	--btn-accent-active: var(--btn-color-accent-dark);
+	--btn-accent-label: $gray-0;
+
+	--btn-disabled-bg: $gray-50;
+	--btn-disabled-label: $gray-100;
+}
+
+.btn {
+	display: inline-flex;
+	position: relative;
+	white-space: nowrap;
+	text-decoration: none;
+	line-height: 1;
+
+	padding: $global-spacing-unit-xs $global-spacing-unit-sm;
+	border-radius: var(--btn-radius);
+	font-size: var(--btn-font-size);
+	color: var(--btn-color-link);
+
+	transition: 0.2s;
+
+	&:active {
+		transition: none;
+	}
+
+	.icon {
+		/* icon inherits color of button label */
+		color: inherit;
+		flex-shrink: 0;
+	}
+}
+
+// Themes
+//
+// Button themes and variations
+.btn--primary {
+	// main button
+	background-color: var(--btn-primary-bg);
+	color: var(--btn-primary-label);
+	@include fontSmooth;
+
+	&:visited {
+		color: var(--btn-primary-label);
+	}
+
+	&:hover {
+		background-color: var(--btn-primary-hover);
+	}
+
+	&:active {
+		background-color: var(--btn-primary-active);
+	}
+}
+
+.btn--secondary {
+	// subtle version, used for secondary actions or in combo with primary/accent button
+	background-color: var(--btn-secondary-bg);
+	color: var(--btn-secondary-label);
+
+	&:visited {
+		color: var(--btn-secondary-label);
+	}
+
+	&:active {
+		background-color: var(--btn-secondary-active);
+	}
+}
+
+.btn--accent {
+	// used to draw special attention to the button (e.g. destructive actions)
+	background-color: var(--btn-accent-bg);
+	color: var(--btn-accent-label);
+	@include fontSmooth;
+
+	&:visited {
+		color: var(--btn-accent-label);
+	}
+
+	&:hover {
+		background-color: var(--btn-accent-hover);
+	}
+
+	&:active {
+		background-color: var(--btn-accent-active);
+	}
+}
+
+// Feedback
+//
+// Button feedback variations like disabled
+.btn[disabled] {
+	cursor: not-allowed;
+	background-color: var(--btn-disabled-bg);
+	color: var(--btn-disabled-label);
+	box-shadow: none;
+	opacity: 0.6;
+
+	&:visited {
+		color: var(--btn-disabled-label);
+	}
+}
+
+// Button size
+//
+// Button sizes
+.btn--sm {
+	font-size: var(--btn-sm);
+}
+
+.btn--md {
+	font-size: var(--btn-md);
+}
+
+.btn--lg {
+	font-size: var(--btn-lg);
+}
+
+.btn--full-width {
+	display: flex;
+	width: 100%;
+	justify-content: center;
+}
+
+// Buttons group
+//
+// Button sizes
+.btns {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: calc(-1 * $global-spacing-unit-xs);
+
+	> * {
+		margin-right: $global-spacing-unit-xs;
+		margin-bottom: $global-spacing-unit-xs;
+
+		&:last-of-type {
+			margin-right: 0;
+		}
+	}
+}

@@ -23,14 +23,14 @@
  *
  * This would bring us the following classes:
  *
- *   .u-margin-small@mobile {}
- *   .u-margin-small@tablet {}
- *   .u-margin-small@desktop {}
- *   .u-margin-small@wide {}
- *   .u-margin-bottom-small@mobile {}
- *   .u-margin-bottom-small@tablet {}
- *   .u-margin-bottom-small@desktop {}
- *   .u-margin-bottom-small@wide {}
+ *   .u-margin-small@sm {}
+ *   .u-margin-small@md {}
+ *   .u-margin-small@lg {}
+ *   .u-margin-small@xl {}
+ *   .u-margin-bottom-small@sm {}
+ *   .u-margin-bottom-small@md {}
+ *   .u-margin-bottom-small@lg {}
+ *   .u-margin-bottom-small@xl {}
  *
  * You can change the generated CSS classes by further extending the Sass maps.
  * If you want every ‘normal’ spacing (those from `utilities.spacings`) also as
@@ -61,11 +61,11 @@ $spacing-directions: null !default;
 	// in the class name. By default, we are generating the responsive suffixes
 	// for the classes with a `@` symbol so you get classes like:
 	//
-	//   <div class="u-margin-bottom@mobile">
+	//   <div class="u-margin-bottom@sm">
 	//
 	// Be aware that since the `@` symbol is a reserved symbol in CSS, it has to be
 	// escaped with a `\`. In the markup though, you write your classes without the
-	// backslash (e.g. `u-margin-bottom@mobile`).
+	// backslash (e.g. `u-margin-bottom@sm`).
 	$widths-breakpoint-separator: \@ !default;
 
 	$responsive-spacing-directions: null !default;
