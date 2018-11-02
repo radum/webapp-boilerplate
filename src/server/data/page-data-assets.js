@@ -8,8 +8,8 @@ const webpackStaticAssetsObj = require(config.server.paths.assetsWebpackJSONFile
 const stylesAssetsObj = require(config.server.paths.assetsStylesJSONFile);
 let runtimeContent;
 
-if (webpackStaticAssetsObj['runtime.js']) {
-	runtimeContent = fs.readFileSync(path.join(config.server.paths.staticAssets, webpackStaticAssetsObj['runtime.js']), 'utf-8');
+if (webpackStaticAssetsObj.runtime) {
+	runtimeContent = fs.readFileSync(path.join(config.server.paths.staticAssets, webpackStaticAssetsObj.runtime.js), 'utf-8');
 }
 
 const dataSchema = joi.object({
@@ -30,9 +30,9 @@ module.exports = (script) => {
 
 	Object.keys(stylesAssetsObj).map((style) => data.assets.styles.push(stylesAssetsObj[style]));
 
-	if (webpackStaticAssetsObj['chunk-vendors.js']) data.assets.scripts.push(webpackStaticAssetsObj['chunk-vendors.js']);
+	if (webpackStaticAssetsObj['chunk-vendors']) data.assets.scripts.push(webpackStaticAssetsObj['chunk-vendors'].js);
 
-	if (webpackStaticAssetsObj[script]) data.assets.scripts.push(webpackStaticAssetsObj[script]);
+	if (webpackStaticAssetsObj[script]) data.assets.scripts.push(webpackStaticAssetsObj[script].js);
 
 	if (runtimeContent) {
 		data.assets.runtimeContent = runtimeContent;

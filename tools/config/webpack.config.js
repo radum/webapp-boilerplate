@@ -3,7 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+const AssetsPlugin = require('assets-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
@@ -211,11 +211,12 @@ module.exports = function (config) {
 
 			// Generate a manifest file which contains a mapping of all asset filenames
 			// to their corresponding output file so that tools can pick it up.
-			new ManifestPlugin({
-				fileName: '../../asset-manifest-script.json', // Save the file outside of `static/scripts` folder as it is relative to the compiler output path
-				filter: (file) => {
-					return file.name.indexOf('.map') < 0;
-				},
+			new AssetsPlugin({
+				filename: 'asset-manifest-script.json',
+				includeManifest: true,
+				manifestFirst: true,
+				path: path.resolve(cwd, config.paths.buildPath),
+				prettyPrint: true
 			}),
 
 			// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin

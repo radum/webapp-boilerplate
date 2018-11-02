@@ -7,7 +7,7 @@ node_modules
 npm-debug.log
 
 # Build, cache
-build
+/build
 build-tmp
 .cache
 .esm-cache

@@ -9,7 +9,7 @@ const template = require(`${config.server.paths.htmlTemplates}/pages/home.marko`
 const data = {
 	app: {
 		...pageData,
-		...pageDataAssets('main.js')
+		...pageDataAssets('main')
 	},
 	page: {
 

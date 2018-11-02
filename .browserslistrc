@@ -2,11 +2,11 @@
 # To change what namespace is used just set `BROWSERSLIST_ENV=modern`, example in package.json scripts
 
 # Best option to use IMHO
-# http://browserl.ist/?q=last+2+Chrome+versions%2C+last+2+Safari+versions%2C+last+2+iOS+versions%2C+last+2+Firefox+versions%2C+last+2+Edge+versions
+# http://browserl.ist/?q=last+2+Chrome+versions%2C+last+2+Safari+versions%2C+last+1+iOS+versions%2C+last+2+Firefox+versions%2C+last+2+Edge+versions
 [modern]
 last 2 Chrome versions
 last 2 Safari versions
-last 2 iOS versions
+last 1 iOS versions
 last 2 Firefox versions
 last 2 Edge versions
 
