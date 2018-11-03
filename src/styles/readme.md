@@ -65,13 +65,150 @@ You don’t need to really do much with this file other than ensure you don’t 
 
 This file exists to show you how you might build components into the project.
 
+## BEM & Suit CSS Naming Conventions
+
+A very popular and super-helpful convention for naming CSS components is [BEM](http://getbem.com/introduction/) , developed by the Yandex, the popular Russian search engine. The naming convention is very simple:
+
+```
+[BLOCK]__[ELEMENT]–[MODIFIER]
+```
+
+```css
+/* block */
+.c-photo {}
+
+/* element */
+.c-photo__img {}
+
+/* modifier */
+.c-photo--large {}
+```
+
+### Explicit rules around Sass nesting
+
+Nesting in Sass can be very convenient, but runs the risk of poor output with overly long selector strings.
+
+We follow the [Inception Rule](http://thesassway.com/beginner/the-inception-rule) and **never nested Sass more than three layers deep**.
+
+#### Grandchild Selectors 
+
+```scss
+// Good
+.Block__Element–Modifier {
+}
+
+// Bad
+.Block__Element__Element–Modifier {
+}
+```
+
+#### Wrapper naming
+
+```html
+// See _Namespaces_ bellow
+<ul class="l-grid">
+    <li class="l-grid__item">
+        <div class="c-card">
+            <div class="c-card__header">
+                […]
+            </div>
+            <div class="c-card__body">
+                […]
+            </div>
+        </div>
+    </li>
+</ul>
+```
+
+#### Nesting components, Cross-Component… Components
+
+A component should not know about the implementation of its dependencies. The appearance of dependencies must be configured using the interface they provide.
+
+The most [robust](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/) [option](https://github.com/suitcss/suit/blob/master/doc/components.md#styling-dependencies) would be to use something that is called in BEM a [mix](https://en.bem.info/forum/4/) or [adopted child](http://simurai.com/blog/2015/05/11/nesting-components) as Simurai calls it.
+
+```html
+<header class="c-header">
+	<button class="c-header-item c-button">Button</button>
+</header>
+```
+
+```scss
+// What would we do if we don’t want to create an own child, but still have one.
+// Right, we could adopt one. In our example we adopt a Button component as our own child.
+// We didn’t create it, but now we can tweak.. erm.. I mean “raise” it like it’s our own
+
+// born in button.scss (with its own font-size)
+.c-button {
+  font-size: 1em;
+}
+
+// raised in header.css (adopted component where we override properties we need, and we don't touch the original one)
+.c-header .header-item {
+  font-size: .75em;
+}
+```
+
+or as an alternative
+
+```html
+<header class="c-header">
+	<button class="c-header__c-button c-button">Button</button>
+</header>
+```
+
+It is a bit uncommon that the same HTML element shares classes from two different components. And it’s not without any risks. More about them later. But I really like this approach because it keeps the components independent without having to know about each other.
+
+Another nice thing is that if we want to add other components to the Header that also need the same adjustments, we can reuse the same Header-item class, like for example on a text Input.
+
+Depending on what properties we wanna change, it might not always be ideal. For example, because the Button already had font-size defined, we had to increase specificity by using .Header .Header-item. But that would also override variations like .Button--small. That might be how we want it, but there are also situations where we’d like the variation to always be “stronger”. An example would be when changing colors.
+
+**The recommandation** would be to aviod this type of sittuation
+
+The cosmetics of a truly modular UI element should be totally agnostic of the element’s parent container — it should look the same regardless of where you drop it. Adding a class from another component for bespoke styling, as the “mix” approach does, violates the [open/closed principle](https://en.wikipedia.org/wiki/Open/closed_principle) of component-driven design — i.e there should be no dependency on another module for aesthetics.
+
+Your best bet is to use a modifier for these small cosmetic differences, because you may well find that you wish to reuse them elsewhere as your project grows.
+
+Even if you never use those additional classes again, at least you won’t be tied to the parent container, specificity or source order to apply the modifications.
+
+Of course, the other option is to go back to your designer and tell them that the button should be consistent with the rest of the buttons on the website and to avoid this issue altogether :troll:.
+
+#### When to use a modifier or New Component
+
+One of the biggest problems is deciding where a component ends and a new one begins.
+
+It’s very easy to over-modularize and make everything a component. I recommend starting with modifiers, but if you find that your specific component CSS file is getting difficult to manage, then it’s probably time to break out a few of those modifiers. A good indicator is when you find yourself having to reset all of the “block” CSS in order to style your new modifier — this, to me, suggests new component time.
+
+#### Not all elements should have a class
+
+<p> tags for example should never have a class.
+
+The general rule of thump is those elments that will probably never change to something else (<p>, <i>, <span>, <ul><li> sometimes) should not have a class.
+
+Adding a class to everything although it gives you control, pollutes your markup with classes. Most cases the markup never changes.
+
+#### Responsive suffixes
+
+An example of this might be a dropdown menu that converts to a set of tabs at a given breakpoint, or offscreen navigation that switches to a menu bar at a given breakpoint.
+
+Essentially, one component would have two very different cosmetic treatments, dictated by a media query.
+
+[A good option](https://csswizardry.com/2015/08/bemit-taking-the-bem-naming-convention-a-step-further/) to follow could be to suffix the class (using the same suffixes as sass-mq map is defined)
+
+```html
+<ul class="c-image-list@sm c-carousel@lg">
+```
+
 ## Namespaces
 
 There are three different namespaces directly relevant:
 
-* .o-: Objects
-* .c-: Components
-* .u-: Utilities
+* **.o-: Objects** _(o-list-inline)_ - TODO: Document
+* **.c-: Components** _(c-card c-checklist)_ - Form the backbone of an application and contain all of the cosmetics for a standalone component.
+* **.l-: Layout** _(l-grid l-container)_ - These modules have no cosmetics and are purely used to position c- components and structure an application’s layout.
+* **.u-: Utilities** _(u-show u-hide)_ - These utility classes have a single function, sometimes using !important to boost their specificity.
+* **.is-: OR .has-: State** _(is-visible has-loaded)_ - Indicate different states that a c- component can have.
+* **.t-: Theme** _(t-dark-mode)_ - TODO: Document
+* **.js-: Javascript hooks** _(js-tab-switcher)_ - These indicate that JavaScript behavior is attached to a component. No styles should be associated with them; they are purely used to enable easier manipulation with script.
 
 In short: Every class in either of these three directories gets the appropriate prefix in its classname. All classes in one of these three layers has this kind of prefix. Be sure to follow this convention in your own code as well to keep a consistent naming convention across your code base.
 
@@ -84,19 +221,6 @@ If you want to dive deeper into namespacing classes and want to know why this is
 | Helpers          	| h-       	| h-show h-hide         	| These utility classes have a single function, often using !important to boost their specificity. (Commonly used for positioning or visibility.)                               	|
 | States           	| is- has- 	| is-visible has-loaded 	| Indicate different states that a c- component can have. More detail on this concept can be found inside problem 6 below, but                                                  	|
 | JavaScript hooks 	| js-      	| js-tab-switcher       	| These indicate that JavaScript behavior is attached to a component. No styles should be associated with them; they are purely used to enable easier manipulation with script. 	|
-
-## BEM & Suit CSS Naming Conventions
-
-```css
-/* block */
-.c-photo {}
-
-/* element */
-.c-photo__img {}
-
-/* modifier */
-.c-photo--large {}
-```
 
 ## Syntax & Formatting
 
