@@ -111,7 +111,7 @@
     "p-map": "2.0.0",
     "postcss": "7.0.5",
     "postcss-color-mod-function": "3.0.3",
-    "postcss-custom-properties": "8.0.8",
+    "postcss-custom-properties": "8.0.9",
     "postcss-reporter": "6.0.0",
     "prettier": "1.14.3",
     "pretty-bytes": "5.1.0",
