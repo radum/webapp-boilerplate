@@ -37,5 +37,5 @@ function createTaskError(message, type) {
 exports.TaskError = TaskError;
 
 // Export the factory function for the custom error object. The factory function lets
-// the calling context create new CLIError instances without calling the [new] keyword.
+// the calling context create new TaskError instances without calling the [new] keyword.
 exports.createTaskError = createTaskError;
