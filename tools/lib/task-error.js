@@ -1,3 +1,9 @@
+/**
+ * Task error used by all plugins / tasks that want to report an error
+ *
+ * @class TaskError
+ * @extends {Error} - Native Node.js error object
+ */
 class TaskError extends Error {
 	/**
 	 * Creates an instance of TaskError extending the native Error.
