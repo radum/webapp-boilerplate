@@ -126,7 +126,7 @@
     "stylelint": "9.7.1",
     "stylelint-formatter-pretty": "1.0.3",
     "stylelint-no-unsupported-browser-features": "3.0.2",
-    "stylelint-scss": "3.3.2",
+    "stylelint-scss": "3.4.0",
     "supports-color": "5.5.0",
     "terser-webpack-plugin": "1.1.0",
     "webpack": "4.25.1",
