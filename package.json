@@ -51,7 +51,7 @@
     "express-session": "1.15.6",
     "express-status-monitor": "1.2.3",
     "helmet": "3.14.0",
-    "joi": "14.0.4",
+    "joi": "14.0.6",
     "lit-html": "0.12.0",
     "lodash": "4.17.11",
     "lusca": "1.6.1",
