@@ -26,7 +26,7 @@
   "scripts": {
     "taskrunner": "cross-env NODE_ENV=development node tools/run.js",
     "dev": "cross-env NODE_ENV=development node tools/run.js dev",
-    "dev:inspect": "cross-env NODE_ENV=development node tools/run.js dev --inspect",
+    "dev:inspect": "cross-env NODE_ENV=development node --inspect tools/run.js dev",
     "dev:verbose": "npm run dev -- --verbose",
     "dev:analyze": "npm run dev -- --analyze",
     "dev:lint": "npm run taskrunner -- lint",

@@ -4,16 +4,13 @@ const sharp = require('sharp');
 const globby = require('globby');
 const pMap = require('p-map');
 
-const TaskError = require('../lib/task-error').TaskError
+// const TaskError = require('../lib/task-error').TaskError;
 const { config } = require('../config');
 const fs = require('../lib/fs');
 
 const defaultSizes = [
-	{ w: 200, h: 119 },
 	{ w: 721, h: 430 },
-	{ w: 1062, h: 633 },
 	{ w: 1325, h: 789 },
-	{ w: 1559, h: 929 },
 	{ w: 1775, h: 105 },
 	{ w: 1987, h: 118 },
 	{ w: 2048, h: 122 }
