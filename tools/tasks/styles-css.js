@@ -13,6 +13,7 @@ const fs = require('../lib/fs');
 const TaskError = require('../lib/task-error').TaskError
 const { config } = require('../config');
 const minifyCss = require('./styles-minify');
+const extractMedia = require('../lib/postcss-extract-media-query');
 
 /**
  * Formats a Sass error object and returns an new Error object
@@ -91,7 +92,19 @@ function postCSSTransform(cssInput, options) {
 		postcssCustomProperties,
 		postcssColorMod,
 		autoprefixer,
-		postcssReporter
+		postcssReporter,
+		extractMedia({
+			output: {
+				path: path.resolve(config.paths.stylesOutputDest)
+			},
+			queries: {
+				'sm': { from: 0, to: 480 },
+				'md': { from: 480, to: 740 },
+				'lg': { from: 980, to: 980 },
+				'xl': { from: 1300 }
+			},
+			whitelist: true
+		})
 	];
 	const settings = {
 		// Without `from` option PostCSS could generate wrong source map and will not find Browserslist config.
@@ -138,6 +151,9 @@ async function buildCSS(options) {
 	reporter.emit('start', 'running css build steps');
 
 	try {
+		// Create output folder (PostCSS will need it to begin with)
+		await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
+
 		// Compile CSS steps
 		let cssOutput = await compileSass({
 			isDebug: options.isDebug,
@@ -164,8 +180,7 @@ async function buildCSS(options) {
 			cssOutput = minifyResponse.cssOutput;
 		}
 
-		// Create output folder and write results to output files
-		await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
+		// Write results to output files
 		await writeFileToDisk(cssOutput, {
 			isDebug: options.isDebug,
 			reporter

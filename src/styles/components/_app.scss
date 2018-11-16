@@ -1,4 +1,30 @@
 main#app {
 	display: grid;
 	user-select: none;
+
+	.foo {
+		@include mq($from: sm, $until: lg) {
+			background: red;
+		}
+
+		@include mq($from: md) {
+			background: green;
+		}
+
+		@include mq($until: md) {
+			background: blue;
+		}
+	}
+}
+
+.media-query-test {
+	display: grid;
+
+	@include mq($from: sm, $until: lg) {
+		background: red;
+	}
+
+	@include mq($from: md) {
+		background: green;
+	}
 }
