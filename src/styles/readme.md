@@ -180,9 +180,9 @@ It’s very easy to over-modularize and make everything a component. I recommend
 
 #### Not all elements should have a class
 
-<p> tags for example should never have a class.
+&lt;p&gt; tags for example should never have a class.
 
-The general rule of thump is those elments that will probably never change to something else (<p>, <i>, <span>, <ul><li> sometimes) should not have a class.
+The general rule of thump is those elments that will probably never change to something else (&lt;p&gt;, &lt;i&gt;, &lt;span&gt;, &lt;ul&gt;&lt;li&gt; sometimes) should not have a class.
 
 Adding a class to everything although it gives you control, pollutes your markup with classes. Most cases the markup never changes.
 
