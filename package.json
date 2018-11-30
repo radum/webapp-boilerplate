@@ -101,7 +101,7 @@
     "imagemin": "6.0.0",
     "imagemin-mozjpeg": "8.0.0",
     "imagemin-optipng": "6.0.0",
-    "imagemin-webp": "4.1.0",
+    "imagemin-webp": "5.0.0",
     "indent-string": "3.2.0",
     "meow": "5.0.0",
     "mkdirp": "0.5.1",
