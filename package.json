@@ -120,7 +120,7 @@
     "rimraf": "2.6.2",
     "sass-mq": "5.0.0",
     "sharp": "0.21.0",
-    "size-plugin": "1.0.1",
+    "size-plugin": "1.1.0",
     "stack-trace": "0.0.10",
     "stack-utils": "1.0.2",
     "stylelint": "9.9.0",
