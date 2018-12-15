@@ -74,7 +74,7 @@
     "@babel/preset-env": "7.2.0",
     "assets-webpack-plugin": "3.9.7",
     "autoprefixer": "9.4.2",
-    "ava": "1.0.0-rc.2",
+    "ava": "1.0.1",
     "babel-loader": "8.0.4",
     "babel-plugin-console": "0.2.1",
     "browser-sync": "2.26.3",
