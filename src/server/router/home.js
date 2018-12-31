@@ -3,7 +3,7 @@ const pageDataAssets = require('../data/page-data-assets');
 const pageData = require('../data/page-data');
 
 // App template
-const template = require(`${config.server.paths.htmlTemplates}/pages/home.marko`);
+const template = `${config.server.paths.htmlTemplates}/pages/home.pug`;
 
 // Template data
 const data = {
@@ -17,7 +17,7 @@ const data = {
 };
 
 function homePageRouter (req, res) {
-	res.marko(template, data);
+	res.render(template, data);
 }
 
 module.exports = homePageRouter;

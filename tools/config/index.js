@@ -37,7 +37,7 @@ const config = {
 		serverJsFiles: 'src/server/**/*.js',
 		serverEntryPoint: 'src/server/server.js',
 		serverHtmlPath: 'src/html',
-		serverFiles: '{src/server/**/*.js,src/html/**/*.marko}',
+		serverFiles: '{src/server/**/*.js,src/html/**/*.pug}',
 		serverOutput: 'build/server',
 		serverHtmlOutput: 'build/html',
 

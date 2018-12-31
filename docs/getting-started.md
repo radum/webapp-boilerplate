@@ -17,7 +17,7 @@ Before you start, take a moment to see how the project structure looks like:
 ├── /node_modules/              # 3rd-party libraries and utilities
 ├── /src/                       # The source code of the application
 │   ├── /client/                # All JS files will be here
-│   ├── /html/                  # All templates used by the Node server ([Marko](http://markojs.com/))
+│   ├── /html/                  # All templates used by the Node server ([PUG](https://pugjs.org))
 │   ├── /server/                # Node.js server files and config
 │   ├── /ssl/                   # SSL local certificates to use on your machine. (The certificate is for localhost domain name)
 │   ├── /static/                # All static files will be here. Images, robots.txt, favicon, etc.
