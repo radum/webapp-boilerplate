@@ -6,14 +6,12 @@
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<if(data.isProd === true && data.domainName)>
-<link rel="preconnect" href=`//${data.domainName}` />
-<link rel="dns-prefetch" href=`//${data.domainName}` />
-</if>
+if (app.isProd === true && app.domainName)
+	<link rel="preconnect" href={`//#{app.domainName}`} />
+	<link rel="dns-prefetch" href={`//#{app.domainName}`} />
 
-<for(file in data.assets.scripts)>
-<link rel="preload" as="script" href="${file}" />
-</for>
+each file in app.assets.scripts
+	<link rel="preload" as="script" href="#{file}" />
 
 <!-- Disable tap highlight on IE -->
 <meta name="msapplication-tap-highlight" content="no">
@@ -40,11 +38,8 @@
 <meta name="theme-color" content="#327CCB">
 
 <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
-<!--
-<link rel="canonical" href=`http://www.${data.domainName}/`>
--->
+<!-- <link rel="canonical" href=`http://www.${app.domainName}/`> -->
 
-
-<for(file in data.assets.styles)>
+<for(file in app.assets.styles)>
 <link rel="stylesheet" href="${file}">
 </for>

@@ -17,7 +17,7 @@ A brief description of your project, what it is used for.
 - Map compiled CSS/JS to source stylesheets/js with source maps
 - PWA features
 - Built in Node JS server (including http2 / https support) using [Express.js](https://expressjs.com/)
-- Template engine using [Marko.js](https://markojs.com/docs/express/)
+- Template engine using [PUG.js](https://pugjs.org)
 - [browserslist](http://browserl.ist/) support for babel and friends
 - Linting done with [eslint](https://eslint.org/) and [stylelint](https://stylelint.io/)
 - Custom task runner using promises

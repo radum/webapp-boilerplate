@@ -23,16 +23,12 @@ const config = require('../config');
 const findEncoding = require('../util/encoding-selection').findEncoding;
 const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');
 
-// Express App with view engine via Marko
+// Express App with view engine via PUG
 // -----------------------------------------------------------------------------
-
-require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
-require('marko/node-require'); // Allow Node.js to require and load `.marko` files
-const markoExpress = require('marko/express');
-
 const app = express();
 
-app.use(markoExpress()); // enable res.marko(template, data)
+app.set('view engine', 'pug');
+app.set('views', [config.server.paths.htmlTemplates]);
 
 // Express configuration.
 // -----------------------------------------------------------------------------
@@ -42,6 +38,9 @@ app.use(markoExpress()); // enable res.marko(template, data)
 // the proxy), not of the proxy itself. We need this for HTTPS redirection
 // and bot rendering.
 app.set('trust proxy', true);
+
+// Disable the "X-Powered-By: Express" HTTP header.
+app.set('x-powered-by', false);
 
 // Express http/s ports
 app.set('http-port', config.server.port || 3000);
