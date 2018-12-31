@@ -1,5 +1,14 @@
-<include('./../app.marko', data.app)>
+import App from './../app.marko';
+import AppShell from './../layouts/_app-shell.marko';
+
+<${App} ...data.app>
 <@page>
+	<${AppShell}>
+	<@body>
+
 	<h1>About</h1>
+
+	</@body>
+	</>
 </@page>
-</include>
+</>

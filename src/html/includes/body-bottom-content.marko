@@ -1,3 +1,5 @@
+import ServiceWorker from './service-worker.marko';
+
 <if(data.assets.runtimeContent)>
 <script>${data.assets.runtimeContent}</script>
 </if>
@@ -11,7 +13,7 @@
 <script src="${file}"></script>
 </for>
 
-<include('./includes/service-worker.marko') />
+<${ServiceWorker}/>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
 <script>

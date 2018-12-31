@@ -1,6 +1,9 @@
-<include('./../app.marko', data.app)>
+import App from './../app.marko';
+import AppShell from './../layouts/_app-shell.marko';
+
+<${App} ...data.app>
 <@page>
-	<include('./../layouts/_app-shell.marko')>
+	<${AppShell}>
 	<@body>
 
 	<main id="app">
@@ -13,6 +16,6 @@
 	</main>
 
 	</@body>
-	</include>
+	</>
 </@page>
-</include>
+</>

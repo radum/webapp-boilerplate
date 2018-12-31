@@ -42,9 +42,23 @@ $mq-show-breakpoints: (); // This is needed for Sass to know it exists before it
 	$mq-show-breakpoints: (md, lg, xl);
 }
 
-$mq-breakpoints: (
-	sm: 480px,
-	md: 740px,
+// Sass MQ settings
+// https://sass-mq.github.io/sass-mq/
+$mq-show-breakpoints: (); // This is needed for Sass to know it exists before it sets the one bellow. Dunno why.
+@if (config(debug) == true) {
+	$mq-show-breakpoints: (md, lg, xl);
+}
+
+$breakpoints: (
+	xl: 1440px,
 	lg: 980px,
-	xl: 1300px
-);
+	md: 740px,
+	sm: 480px
+) !default;
+
+$mq-breakpoints: (
+	xl: map-get($breakpoints, xl),
+	lg: map-get($breakpoints, lg),
+	md: map-get($breakpoints, md),
+	sm: map-get($breakpoints, sm)
+) !default;

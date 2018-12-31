@@ -5,9 +5,20 @@
 // A map of global config settings. Define any project-level configuration,
 // feature switches, etc. in here.
 
+// Sass-loader environment variables will prepend `'$env: ' + process.env.NODE_ENV + ';'`
+$environment: development;
+$isDebug: true;
+
+@if variable-exists(env) {
+	@if $env == 'production' {
+		$environment: prod;
+		$isDebug: false;
+	}
+}
+
 $config: (
-	env: dev,
-	debug: true
+	env: $environment,
+	debug: $isDebug
 );
 
 /// You can access data in this map using the following function:

@@ -64,6 +64,7 @@
 @import "settings/settings.core";
 @import "settings/settings.colors";
 @import "settings/settings.global";
+@import "settings/settings.grid";
 
 // TOOLS
 @import "tools/tools.rem";
@@ -72,6 +73,7 @@
 @import "tools/tools.clearfix";
 @import "tools/tools.hidden";
 @import "tools/tools.z-index";
+@import "tools/tools.grid";
 @import "node_modules/sass-mq/mq";
 
 // GENERIC
@@ -115,5 +117,6 @@
 @import "utilities/utilities.responsive-spacings";
 @import "utilities/utilities.print";
 @import "utilities/utilities.hide";
+@import 'utilities/utilities.grid';
 
 @import "shame";
