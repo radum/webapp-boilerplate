@@ -1,0 +1,170 @@
+// Returns the lower grid boundary or null if the smallest grid is selected
+@function l-grid-breakpoint-min($size) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+	$min: map-get($l-grid-breakpoints, $size);
+
+	@return if($min > map-get($breakpoints, sm), $min, null);
+}
+
+// Returns the upper grid boundary or null if the largest grid is selected
+@function l-grid-breakpoint-max($size) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+	$names: map-keys($l-grid-columns);
+	$n: index($names, $size);
+	$prev: if($n > 1, nth($names, $n - 1), null);
+
+	@return if($prev, (l-grid-breakpoint-min($prev) - 1px), null);
+}
+
+// Private mixins, meant for internal use.
+@mixin l-grid-media-query_($size) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	$min: l-grid-breakpoint-min($size);
+	$max: l-grid-breakpoint-max($size);
+
+	@if $min == null and $max != null {
+		// SM
+		@include mq($until: md) {
+			@content;
+		}
+	} @else if $min != null and $max != null {
+		// MD LG
+		// TODO: Convert these to EMs as per MQ does.
+		@media (min-width: $min) and (max-width: $max) {
+			@content;
+		}
+	} @else if $min != null and $max == null {
+		// XL
+		@include mq($from: xl) {
+			@content;
+		}
+	} @else {
+		// Fallback - no breakpoints defined
+		@content;
+	}
+}
+
+@mixin l-grid-cell-span_($size, $span, $gutter) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	$percent: percentage($span / map-get($l-grid-columns, $size));
+
+	@if $percent > 100% {
+		$percent: 100%;
+	}
+
+	width: calc(#{$percent} - #{$gutter});
+	width: calc(#{$percent} - var(--l-grid-gutter-#{$size}, #{$gutter}));
+
+	@supports (display: grid) {
+		width: auto;
+		grid-column-end: span min($span, map-get($l-grid-columns, $size));
+	}
+}
+
+// Public mixins, meant for developer usage.
+@mixin l-grid($size, $margin, $max-width: null) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	box-sizing: border-box;
+	margin: 0 auto;
+	padding: $margin;
+	padding: var(--l-grid-margin-#{$size}, #{$margin});
+
+	@if $max-width {
+		max-width: $max-width;
+	}
+}
+
+@mixin l-grid-inner($size, $margin, $gutter) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	display: flex;
+	flex-flow: row wrap;
+	align-items: stretch;
+	margin: -$gutter / 2;
+	margin: calc(var(--l-grid-gutter-#{$size}, #{$gutter}) / 2 * -1);
+
+	@supports (display: grid) {
+		display: grid;
+		margin: 0;
+		grid-gap: $gutter;
+		grid-gap: var(--l-grid-gutter-#{$size}, $gutter);
+		grid-template-columns: repeat(map-get($l-grid-columns, $size), minmax(0, 1fr));
+	}
+}
+
+@mixin l-grid-cell($size, $default-span, $gutter) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	@include l-grid-cell-span_($size, $default-span, $gutter);
+
+	box-sizing: border-box;
+	margin: $gutter / 2;
+	margin: calc(var(--l-grid-gutter-#{$size}, #{$gutter}) / 2);
+
+	@supports (display: grid) {
+		margin: 0;
+	}
+}
+
+@mixin l-grid-cell-order($order) {
+	order: $order;
+}
+
+@mixin l-grid-cell-align($position) {
+	@if $position == 'top' {
+		align-self: flex-start;
+
+		@supports (display: grid) {
+			align-self: start;
+		}
+	}
+
+	@if $position == 'middle' {
+		align-self: center;
+	}
+
+	@if $position == 'bottom' {
+		align-self: flex-end;
+
+		@supports (display: grid) {
+			align-self: end;
+		}
+	}
+
+	@if $position == 'stretch' {
+		align-self: stretch;
+	}
+}
+
+@mixin l-grid-fixed-column-width($size, $margin, $gutter, $column-width) {
+	@if not map-has-key($l-grid-columns, $size) {
+		@error "Invalid style specified! Choose one of #{map-keys($l-grid-columns)}";
+	}
+
+	$columnCount: map-get($l-grid-columns, $size);
+	$gutter-number: $columnCount - 1;
+	$margin-number: 2;
+
+	width: $column-width * $columnCount + $gutter * $gutter-number + $margin * $margin-number;
+	width: calc(
+		var(--l-grid-column-width-#{$size}, #{$column-width}) * #{$columnCount} + var(--l-grid-gutter-#{$size}, #{$gutter}) * #{$gutter-number} +
+			var(--l-grid-margin-#{$size}, #{$margin}) * #{$margin-number}
+	);
+}

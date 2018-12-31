@@ -1,0 +1,42 @@
+///* ========================================================================
+//   #GRID
+//   ======================================================================== */
+
+$l-grid-breakpoints: (
+	xl: map-get($breakpoints, xl),
+	lg: map-get($breakpoints, lg),
+	md: map-get($breakpoints, md),
+	sm: map-get($breakpoints, sm)
+) !default;
+
+$l-grid-columns: (
+	xl: 12,
+	lg: 12,
+	md: 6,
+	sm: 2
+) !default;
+
+$l-grid-default-margin: (
+	xl: 100px,
+	lg: 40px,
+	md: 30px,
+	sm: 30px
+) !default;
+
+$l-grid-default-gutter: (
+	xl: 20px,
+	lg: 20px,
+	md: 30px,
+	sm: 30px
+) !default;
+
+$l-grid-column-width: (
+	xl: 100px,
+	lg: 100px,
+	md: 100px,
+	sm: 100px
+) !default;
+
+$l-grid-default-column-span: 4 !default;
+
+$l-grid-max-width: map-get($breakpoints, xl) !default;
