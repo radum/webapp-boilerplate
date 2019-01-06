@@ -41,7 +41,7 @@
   "dependencies": {
     "@babel/runtime": "7.2.0",
     "body-parser": "1.18.3",
-    "chalk": "2.4.1",
+    "chalk": "2.4.2",
     "compression": "1.7.3",
     "cookie-parser": "1.4.3",
     "dotenv": "6.2.0",
