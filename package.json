@@ -86,7 +86,7 @@
     "directory-named-webpack-plugin": "4.0.0",
     "emittery": "0.4.1",
     "eslint": "5.12.0",
-    "eslint-config-kentcdodds": "14.0.4",
+    "eslint-config-kentcdodds": "14.1.0",
     "eslint-formatter-pretty": "2.1.0",
     "eslint-plugin-compat": "2.6.3",
     "eslint-plugin-eslint-comments": "3.0.1",
