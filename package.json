@@ -114,7 +114,7 @@
     "postcss-color-mod-function": "3.0.3",
     "postcss-custom-properties": "8.0.9",
     "postcss-reporter": "6.0.1",
-    "prettier": "1.16.0",
+    "prettier": "1.16.1",
     "pretty-bytes": "5.1.0",
     "raw-loader": "1.0.0",
     "replace-ext": "1.0.0",
