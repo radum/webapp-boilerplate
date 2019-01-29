@@ -1,11 +1,11 @@
 <!-- <include('../partials/_img.marko') image="/images/test" alt=""/> -->
 <img
 	sizes="(max-width: 2048px) 100vw, 2048px"
-	srcset="
+	srcset=`
 		${input.image}_w_721.jpg 721w,
 		${input.image}_w_1325.jpg 1325w,
 		${input.image}_w_1775.jpg 1775w,
 		${input.image}_w_1987.jpg 1987w,
-		${input.image}_w_2048.jpg 2048w"
-	src="${input.image}.jpg"
-	alt="${input.alt}">
+		${input.image}_w_2048.jpg 2048w`
+	src=`${input.image}.jpg`
+	alt=`${input.alt}`>
