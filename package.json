@@ -130,7 +130,7 @@
     "stylelint-scss": "3.5.2",
     "supports-color": "6.1.0",
     "terser-webpack-plugin": "1.2.1",
-    "webpack": "4.29.0",
+    "webpack": "4.29.1",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-dashboard": "2.1.0",
     "webpack-dev-middleware": "3.5.1",
