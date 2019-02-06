@@ -129,7 +129,7 @@
     "stylelint-no-unsupported-browser-features": "3.0.2",
     "stylelint-scss": "3.5.2",
     "supports-color": "6.1.0",
-    "terser-webpack-plugin": "1.2.1",
+    "terser-webpack-plugin": "1.2.2",
     "webpack": "4.29.2",
     "webpack-bundle-analyzer": "3.0.3",
     "webpack-dashboard": "2.1.0",
