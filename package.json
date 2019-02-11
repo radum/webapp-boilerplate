@@ -50,7 +50,7 @@
     "express-rate-limit": "3.3.2",
     "express-session": "1.15.6",
     "express-status-monitor": "1.2.3",
-    "helmet": "3.15.0",
+    "helmet": "3.15.1",
     "joi": "14.3.1",
     "lit-html": "0.14.0",
     "lodash": "4.17.11",
