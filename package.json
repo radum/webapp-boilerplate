@@ -131,7 +131,7 @@
     "supports-color": "6.1.0",
     "terser-webpack-plugin": "1.2.2",
     "webpack": "4.29.3",
-    "webpack-bundle-analyzer": "3.0.3",
+    "webpack-bundle-analyzer": "3.0.4",
     "webpack-dashboard": "2.1.0",
     "webpack-dev-middleware": "3.5.2",
     "webpack-hot-middleware": "2.24.3",
