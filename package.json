@@ -80,7 +80,7 @@
     "babel-plugin-console": "0.2.1",
     "browser-sync": "2.26.3",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
-    "chokidar": "2.1.0",
+    "chokidar": "2.1.1",
     "clean-css": "4.2.1",
     "cross-env": "5.2.0",
     "directory-named-webpack-plugin": "4.0.0",
