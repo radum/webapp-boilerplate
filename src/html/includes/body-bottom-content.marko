@@ -9,7 +9,7 @@ import ServiceWorker from './service-worker.marko';
 <script nomodule src="lagacy.js"></script>
 -->
 
-<for(file in data.assets.scripts)>
+<for|file| of=data.assets.scripts>
 <script src=`${file}`></script>
 </for>
 

@@ -11,7 +11,7 @@
 <link rel="dns-prefetch" href=`//${data.domainName}` />
 </if>
 
-<for(file in data.assets.scripts)>
+<for|file| of=data.assets.scripts>
 <link rel="preload" as="script" href=`${file}` />
 </for>
 
@@ -45,6 +45,6 @@
 -->
 
 
-<for(file in data.assets.styles)>
+<for|file| of=data.assets.styles>
 <link rel="stylesheet" href=`${file}`>
 </for>
