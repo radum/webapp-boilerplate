@@ -12,7 +12,6 @@ const helmet = require('helmet');
 const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
 const expressRoutesLogger = require('morgan');
-const expressStatusMonitor = require('express-status-monitor');
 const serverTiming = require('server-timing');
 // TODO: https://www.npmjs.com/package/express-brute, https://github.com/animir/node-rate-limiter-flexible
 const rateLimit = require('express-rate-limit');
@@ -96,11 +95,6 @@ expressRoutesLogger.token('timestamp', () => {
 	return '[' + chalk.magenta(timestamp('HH:mm:ss')) + '] [' + chalk.magenta('server') + ']';
 });
 app.use(expressRoutesLogger(config.server.morganLogLevel));
-
-// Simple, self-hosted module to report realtime server metrics for Express-based node servers.
-// Link: http://localhost:{PORT}/status/
-// https://www.npmjs.com/package/express-status-monitor
-app.use(expressStatusMonitor());
 
 // Application security
 app.use(lusca.xframe('SAMEORIGIN'));
