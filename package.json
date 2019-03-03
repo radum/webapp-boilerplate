@@ -95,7 +95,7 @@
     "eslint-plugin-unicorn": "7.1.0",
     "execa": "1.0.0",
     "figures": "2.0.0",
-    "globby": "9.0.0",
+    "globby": "9.1.0",
     "html-webpack-plugin": "4.0.0-beta.5",
     "iltorb": "2.4.1",
     "imagemin": "6.1.0",
