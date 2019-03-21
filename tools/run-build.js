@@ -34,8 +34,9 @@ async function startBuild(options) {
 	await copyExtra();
 
 	await Promise.all([
-		compileCSS(config.paths.stylesEntryPoint, {
+		compileCSS(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
 			isDebug: options.isDebug,
+			buildPath: config.paths.buildPath,
 			sass: {
 				sourceMapEmbed:	options.isDebug
 			}

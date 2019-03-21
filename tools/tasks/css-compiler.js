@@ -14,7 +14,6 @@ const revHash = require('rev-hash');
 const fs = require('../lib/fs');
 const TaskError = require('../lib/task-error').TaskError
 const reporter = require('../lib/reporter');
-const { config } = require('../config');
 const cssMinify = require('./css-minify');
 
 /**
@@ -49,7 +48,7 @@ function sassFormatError(error) {
 async function compileSass(options) {
 	const logger = reporter(options.taskName, { subTaskName: options.subTaskName, color: options.taskColor });
 	const sassOptions = {
-		file: config.paths.stylesEntryPoint,
+		file: options.entryPoint,
 		outputStyle: 'expanded',
 		includePaths: ['.'],
 		sourceMapContents: true,
@@ -90,7 +89,7 @@ async function compileSass(options) {
  * @returns {Promise} Promise object
  */
 function postCSSTransform(cssInput, options) {
-	const logger = reporter('css-compiler', { subTaskName: 'postcss', color: config.taskColor[3] });
+	const logger = reporter('css-compiler', { subTaskName: 'postcss', color: options.taskColor });
 	const plugins = [
 		postcssCustomProperties,
 		postcssColorMod,
@@ -114,26 +113,29 @@ function postCSSTransform(cssInput, options) {
 /**
  * Write file to disk with the CSS output and revision the filename
  * @param {String} cssOutput - CSS output
+ * @param {String} dest - CSS output folder path
  * @param {Object} options - Options object
  * @returns {Promise} Promise object
  */
-function writeFileToDisk(cssOutput, options) {
+function writeFileToDisk(cssOutput, dest, options) {
 	const outputHash = options.isDebug ? 'dev' : revHash(cssOutput);
+	const entryPointFileName = path.basename(options.entryPoint, '.scss');
 	const manifestContent = `{
-	"${config.paths.stylesEntryPoint}": "/styles/${config.paths.stylesOutputFile}.${outputHash}.css"
+	"${options.entryPoint}": "/styles/${entryPointFileName}.build.${outputHash}.css"
 }`;
 
 	options.logger.emit('info', `writing ${options.isDebug ? 'dev' : 'production'} files to disk`)
 
 	return Promise.all([
-		fs.writeFile(path.resolve(config.paths.buildPath + `/asset-manifest-style.json`), manifestContent),
-		fs.writeFile(path.resolve(config.paths.stylesOutputDest + `/${config.paths.stylesOutputFile}.${outputHash}.css`), cssOutput)
+		fs.writeFile(path.resolve(options.buildPath + `/asset-manifest-style.json`), manifestContent),
+		fs.writeFile(path.resolve(dest + `/${entryPointFileName}.build.${outputHash}.css`), cssOutput)
 	]);
 }
 
 /**
  * Run all CSS transformation tasks. SASS, PostCSS, etc, and the write and revsion the output to disk
  * @param {String} entryPoint CSS entry point gile path
+ * @param {String} dest CSS output folder path
  * @param {Object} options Options object
  * @param {String} options.taskName Task name used for reporting purposes
  * @param {String} options.taskColor Task color used for reporting purposes
@@ -142,7 +144,7 @@ function writeFileToDisk(cssOutput, options) {
  * @param {String} options.sass Sass lib options
  * @returns {Promise} Promise object
  */
-async function compileCSS(entryPoint, options) {
+async function compileCSS(entryPoint, dest, options) {
 	const taskName = options.taskName || 'css-compiler';
 	const taskColor = options.taskColor || '#FFD166;'
 	const logger = reporter(taskName, { color: taskColor });
@@ -172,6 +174,7 @@ async function compileCSS(entryPoint, options) {
 	// PostCSS transform SASS output
 	const postCSSOutput = await postCSSTransform(cssOutput, {
 		reporter: logger,
+		taskColor,
 		postcss: {
 			map: {
 				inline: options.sourceMapEmbed,
@@ -187,9 +190,11 @@ async function compileCSS(entryPoint, options) {
 	}
 
 	// Create output folder and write results to output files
-	await fs.makeDir(path.resolve(config.paths.stylesOutputDest));
-	await writeFileToDisk(cssOutput, {
+	await fs.makeDir(path.resolve(dest));
+	await writeFileToDisk(cssOutput, dest, {
+		entryPoint,
 		isDebug: options.isDebug,
+		buildPath: options.buildPath,
 		logger
 	});
 

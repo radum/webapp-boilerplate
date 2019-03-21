@@ -19,19 +19,20 @@ function compression(options) {
 	]);
 	let totalFiles = 0;
 
-	const compress = (file) => fs.readFile(file, { encoding: null }).then(async (fileBuffer) => {
-		totalFiles += 1;
+	const compress = file =>
+		fs.readFile(file, { encoding: null }).then(async fileBuffer => {
+			totalFiles += 1;
 
-		try {
-			const output = await brotliCompress(fileBuffer);
+			try {
+				const output = await brotliCompress(fileBuffer);
 
-			fs.writeFile(`${file}.br`, output);
+				fs.writeFile(`${file}.br`, output);
 
-			reporter.emit('info', `compressed ${file}.br`);
-		} catch(error) {
-			reporter.emit('error', error);
-		}
-	});
+				reporter.emit('info', `compressed ${file}.br`);
+			} catch (error) {
+				reporter.emit('error', error);
+			}
+		});
 
 	return pMap(files, compress, { concurrency: os.cpus().length }).then(() => {
 		let msg = `compressed ${totalFiles} files`;

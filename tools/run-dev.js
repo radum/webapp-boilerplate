@@ -33,12 +33,13 @@ async function startDev(options) {
 	});
 
 	await Promise.all([
-		compileCSS(config.paths.stylesEntryPoint, {
+		compileCSS(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
 			isDebug: options.isDebug,
+			eventBus,
+			buildPath: config.paths.buildPath,
 			sass: {
 				sourceMapEmbed:	options.isDebug
-			},
-			eventBus
+			}
 		}),
 		compileJS({ eventBus }),
 		// TODO: Add it back
@@ -56,12 +57,13 @@ async function startDev(options) {
 	// TODO: Add it back
 	// await new watcher(['src/static/**/*.*'], { ...opts, label: 'static assets' }, () => copyStatic(opts));
 	await new watcher([`${config.paths.srcPath}/styles/**/*.scss`], { label: 'sass files' }, () => {
-		return compileCSS(config.paths.stylesEntryPoint, {
+		return compileCSS(config.paths.stylesEntryPoint, config.paths.stylesOutputDest, {
 			isDebug: options.isDebug,
+			eventBus,
+			buildPath: config.paths.buildPath,
 			sass: {
 				sourceMapEmbed:	options.isDebug
-			},
-			eventBus
+			}
 		});
 	});
 	await new watcher(['src/html/**/*.*'], { label: 'html files' }, () => runServer({ inspect: options.nodeInspect }));

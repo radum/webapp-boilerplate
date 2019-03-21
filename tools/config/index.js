@@ -22,10 +22,11 @@ const config = {
 		buildPath: 'build',
 		cacheFolder: '.cache',
 
+		staticAssetsOutput: 'build/static',
+
 		styles: 'src/styles/**/*.scss',
 		stylesEntryPoint: 'src/styles/main.scss',
 		stylesOutputDest: 'build/static/styles',
-		stylesOutputFile: 'main.build', // `.css` extension will be appended automatically
 
 		scriptsPath: 'src/client',
 		scriptsFiles: 'src/client/**/*.js',
@@ -37,14 +38,10 @@ const config = {
 		serverEntryPoint: 'src/server/server.js',
 		serverFiles: '{src/server/**/*.js,src/html/**/*.marko}',
 
-		staticAssetsOutput: 'build/static',
-
 		images: 'src/static/images/**/*',
 		imagesPath: 'src/static/images',
 		imagesOutputDest: 'build/static/images'
-	},
-
-	taskColor: ['#00a8e8', '#B2DBBF', '#F3FFBD', '#FFD166', '#fe938c', '#88d498', '#9c89b8']
+	}
 };
 
 exports.config = config;
