@@ -1,17 +1,21 @@
 const CleanCSS = require('clean-css');
 const prettyBytes = require('pretty-bytes');
-const TaskError = require('../lib/task-error').TaskError
-const { config } = require('../config');
+const reporter = require('../lib/reporter');
 
 /**
  * CSS minifier va CleanCSS
  * @param {String} source CSS Source
  * @param {Object} options Options object
+ * @param {String} options.taskName Task name used for reporting purposes
+ * @param {String} options.taskColor Task color used for reporting purposes
  * @returns {Promise} The return promise with the minified code and the log msg
  */
-async function minifyCSS(source, options) {
-	const reporter = options.reporter('build-css', { subTask: 'minify-css', color: config.taskColor[3] });
-	reporter.emit('start', 'running cleancss minifier');
+async function minifyCSS(source, options = {}) {
+	const taskName = options.label || 'css-compiler';
+	const taskColor = options.taskColor || '#FFD166;'
+	const logger = reporter(taskName, { subTaskName: 'minify-css', color: taskColor });
+
+	logger.emit('start', 'running CleanCSS minifier');
 
 	const cleanTask = new CleanCSS({
 		level: 2,
@@ -28,14 +32,14 @@ async function minifyCSS(source, options) {
 		const efficiency = output.stats.efficiency.toFixed(1).replace(/\.0$/, '');
 		const timeSpent = output.stats.timeSpent;
 
-		reporter.emit('info', `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`);
-		reporter.emit('done', 'css code minified');
+		logger.emit('info', `Minify CSS from ${originalSize} to ${minifiedSize} (${efficiency}% in ${timeSpent}ms)`);
+		logger.emit('done', 'css code minified');
 
-		return { cssOutput: output.styles };
+		return output.styles;
 	} catch (error) {
-		reporter.emit('error', error);
+		logger.emit('error', error);
 
-		throw new TaskError(error);
+		throw error;
 	}
 }
 

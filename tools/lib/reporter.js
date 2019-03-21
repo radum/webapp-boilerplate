@@ -1,8 +1,10 @@
 const Emittery = require('emittery');
+const chalk = require('chalk')
 const signale = require('./signale');
 const pe = require('./youch');
 
 signale.config({
+	displayLabel: false,
 	displayTimestamp: true,
 	logLevel: 3
 });
@@ -12,12 +14,12 @@ signale.config({
  * @param {String} taskName - Task name
  * @param {Object} options - Options object
  * @param {String} options.color - Task color code
- * @param {String} options.subTask - Subtask name
+ * @param {String} options.subTaskName - Subtask name
  * @returns {Object} Emitter function
  */
 module.exports = function (taskName, options = {}) {
 	const emitter = new Emittery();
-	const logger = options.subTask ? signale.scope(taskName, options.subTask) : signale.scope(taskName);
+	const logger = options.subTaskName ? signale.scope(taskName, options.subTaskName) : signale.scope(taskName);
 	logger.setScopeColor(options.color);
 
 	const errorMsgPrepend = '¯\\_(ツ)_/¯ there was an error';
@@ -27,7 +29,7 @@ module.exports = function (taskName, options = {}) {
 	});
 
 	emitter.on('done', (message = '') => {
-		logger.done(message);
+		logger.done(chalk.green(message));
 	});
 
 	emitter.on('watch', (message = '') => {
@@ -55,7 +57,7 @@ module.exports = function (taskName, options = {}) {
 	});
 
 	emitter.on('info', (message) => {
-		logger.info(message);
+		logger.info(chalk.blue(message));
 	});
 
 	emitter.on('note', (message) => {

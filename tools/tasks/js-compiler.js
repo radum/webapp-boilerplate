@@ -2,19 +2,19 @@ const webpack = require('webpack');
 const chalk = require('chalk');
 const prettifyTime = require('../lib/prettify-time');
 const TaskError = require('../lib/task-error').TaskError
-const { config, webpackConfig } = require('../config');
-
-let reporter;
+const reporter = require('../lib/reporter');
+const { webpackConfig } = require('../config');
 
 /**
  * Compiler logger function that transforms the output into a readable stream of text
  * @param {Error} err - Error object in case webpack fails (these are not compilation errors)
  * @param {Object} stats - Webpack stats object that contains all information about your build
+ * @param {EventEmitter} logger - Logger event emitter
  */
-function compilerLogger(err, stats) {
+function compilerLogger(err, stats, logger) {
 	if (err) {
-		reporter.emit('fatal', err.name);
-		reporter.emit('log', err.details);
+		logger.emit('fatal', err.name);
+		logger.emit('log', err.details);
 
 		throw new TaskError('webpack', err);
 	}
@@ -26,13 +26,13 @@ function compilerLogger(err, stats) {
 		error.errors = jsonStats.errors;
 		error.warnings = jsonStats.warnings;
 
-		reporter.emit('log', chalk.red(error));
-		reporter.emit('log', chalk.red('Failed to build webpack'));
+		logger.emit('log', chalk.red(error));
+		logger.emit('log', chalk.red('Failed to build webpack'));
 	} else {
 		const compileTime = prettifyTime(stats.endTime - stats.startTime);
 
-		reporter.emit('note', `compilation finished\n${stats.toString({ colors: true })}`);
-		reporter.emit('note', `compiled with ${chalk.cyan('webpack')} in ${chalk.magenta(compileTime)}`);
+		logger.emit('note', `compilation finished\n${stats.toString({ colors: true })}`);
+		logger.emit('note', `compiled with ${chalk.cyan('webpack')} in ${chalk.magenta(compileTime)}`);
 	}
 }
 
@@ -41,26 +41,29 @@ function compilerLogger(err, stats) {
  * @param {Object} options object
  * @returns {Promise} Compiler promise
  */
-function compiler(options) {
+function compileJS(options = {}) {
+	const taskName = options.label || 'js-compiler';
+	const taskColor = options.taskColor || '#00a8e8;'
+	const logger = reporter(taskName, { color: taskColor });
+
 	let instance;
 
-	reporter = options.reporter('js-compiler', { color: config.taskColor[0] });
-	reporter.emit('start', 'bundle js with webpack');
+	logger.emit('start', 'bundle js with webpack');
 
 	return new Promise((resolve) => {
-		reporter.emit('info', 'running webpack');
+		logger.emit('info', 'running webpack');
 
 		instance = webpack(webpackConfig, (err, stats) => {
-			compilerLogger(err, stats);
+			compilerLogger(err, stats, logger);
 
 			if (options.eventBus && err === null && !stats.hasErrors()) {
 				options.eventBus.emit('bs:reload');
 			}
 
 			if (err === null && !stats.hasErrors()) {
-				reporter.emit('done', 'webpack compilation completed');
+				logger.emit('done', 'webpack compilation completed');
 			} else if (err !== null || stats.hasErrors()) {
-				reporter.emit('error', 'error while running webpack');
+				logger.emit('error', 'error while running webpack');
 			}
 
 			resolve(instance);
@@ -68,4 +71,4 @@ function compiler(options) {
 	});
 }
 
-module.exports = compiler;
+module.exports = compileJS;

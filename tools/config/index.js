@@ -33,18 +33,10 @@ const config = {
 		scriptsOutputDest: 'build/static/scripts',
 		scriptsPublicPath: '/scripts/',
 
-		serverPath: 'src/server',
 		serverJsFiles: 'src/server/**/*.js',
 		serverEntryPoint: 'src/server/server.js',
-		serverHtmlPath: 'src/html',
 		serverFiles: '{src/server/**/*.js,src/html/**/*.marko}',
-		serverOutput: 'build/server',
-		serverHtmlOutput: 'build/html',
 
-		sslFilesPath: 'src/ssl',
-		sslFilesOutput: 'build/ssl',
-
-		staticAssets: 'src/static',
 		staticAssetsOutput: 'build/static',
 
 		images: 'src/static/images/**/*',

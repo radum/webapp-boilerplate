@@ -1,6 +1,7 @@
 /* eslint promise/catch-or-return: 0, promise/always-return: 0  */
 
 const chokidar = require('chokidar');
+const reporter = require('../lib/reporter');
 const { config } = require('../config');
 
 const MIN_DEBOUNCE_DELAY = 50;
@@ -87,20 +88,27 @@ class Watcher {
 	 * @param {Function} taskFn - Task function to call on changes
 	 */
 	constructor(filesGlob, options, taskFn) {
+		const taskName = options.taskName || 'watch';
+		const taskColor = options.taskColor || '#88d498;';
+
+		this.logger = reporter(taskName, { color: taskColor });
 		this.debouncer = new Debouncer(this);
 		this.filesGlob = filesGlob;
 		this.options = options;
 		this.taskFn = taskFn;
-		this.reporter = options.reporter('watch', { color: config.taskColor[5] });
 
-		this.reporter.emit('watch', `${options.label} (press ctrl-c to exit)`);
+		this.logger.emit('watch', `${options.label} (press ctrl-c to exit)`);
 
 		this.run = () => {
 			// this.busy = this.taskFn().catch(rethrowAsync);
-			this.busy = this.taskFn().catch(() => {
-				this.busy = undefined;
+
+			// Don't swallow exceptions and log them out without bugging out of the watcher instance.
+			this.busy = this.taskFn().catch(error => {
+				setImmediate(() => {
+					this.logger.emit('error', error);
+				});
 			});
-		}
+		};
 
 		this.watchFiles();
 	}
@@ -111,13 +119,13 @@ class Watcher {
 		await new Promise((resolve, reject) => {
 			const watcher = chokidar.watch(patterns, {
 				ignoreInitial: true
-			})
+			});
 
 			watcher.once('error', reject);
 			watcher.on('all', (event, path) => {
 				if (event === 'add' || event === 'change' || event === 'unlink') {
-					this.reporter.emit('watch', `files changed (${this.options.label})`);
-					this.reporter.emit('info', `Detected ${event} of ${path}`);
+					this.logger.emit('watch', `files changed (${this.options.label})`);
+					this.logger.emit('info', `Detected ${event} of ${path}`);
 
 					this.debouncer.debounce();
 				}

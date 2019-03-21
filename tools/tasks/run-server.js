@@ -1,6 +1,7 @@
 const cp = require('child_process');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
+const reporter = require('../lib/reporter');
 const { config } = require('../config');
 
 let server;
@@ -14,9 +15,11 @@ let pending = true;
 const RUNNING_REGEXP = /Server is running at https:\/\/(.*?)/;
 
 function runServer(options = { inspect: false }) {
-	const reporter = options.reporter('express-server', { color: config.taskColor[6] });
+	const taskName = options.label || 'express-server';
+	const taskColor = options.taskColor || '#9c89b8;'
+	const logger = reporter(taskName, { color: taskColor });
 
-	reporter.emit('start', 'starting node server (via expressjs)')
+	logger.emit('start', 'starting node server (via expressjs)')
 
 	return new Promise((resolve) => {
 		function onStdOut(data) {
@@ -30,7 +33,7 @@ function runServer(options = { inspect: false }) {
 				server.stdout.on('data', x => process.stdout.write(x));
 				pending = false;
 
-				reporter.emit('done', 'local node server started');
+				logger.emit('done', 'local node server started');
 
 				resolve(server);
 			}

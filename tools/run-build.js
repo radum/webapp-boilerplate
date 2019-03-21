@@ -1,16 +1,14 @@
+const path = require('path');
 const reporter = require('./lib/reporter');
 const clean = require('./tasks/clean');
-const {
-	copyStatic,
-	copyServer,
-	copySSL,
-	copyExtra
-} = require('./tasks/copy');
-const buildCSS = require('./tasks/styles-css');
-const compiler = require('./tasks/compiler');
-const imagemin = require('./tasks/imagemin');
-const imageResize = require('./tasks/image-resize');
-const compression = require('./tasks/compression');
+const copyStatic = require('./tasks/copy');
+const copyExtra = require('./tasks/copy-extra');
+const compileCSS = require('./tasks/css-compiler');
+const compileJS = require('./tasks/js-compiler');
+// const imagemin = require('./tasks/imagemin');
+// const imageResize = require('./tasks/image-resize');
+// const compression = require('./tasks/compression');
+const { config } = require('./config');
 
 /**
  * Run the build task, building a production ready app
@@ -18,30 +16,37 @@ const compression = require('./tasks/compression');
  * @returns {Promise} - Promise object
  */
 async function startBuild(options) {
-	const opts = {
-		reporter
-	};
-
 	reporter('build').emit('log', 'starting build');
 
-	await clean(opts);
-	await copyStatic(opts);
-	await copyServer(opts);
-	await copySSL(opts);
-	await copyExtra(opts);
+	await clean([`${config.paths.buildPath}/*`], { reporter });
+
+	// To preserve folder structure, CPY needs `cwd` to be passed.
+	const cpy = { cwd: path.join(process.cwd(), config.paths.srcPath), parents: true };
+	const absoluteBuildPath = path.join(process.cwd(), config.paths.buildPath);
+
 	await Promise.all([
-		buildCSS({
-			...opts,
+		copyStatic({ taskName: 'copy:static', src: 'static/**/*', dest: absoluteBuildPath, cpy }),
+		copyStatic({ taskName: 'copy:server', src: 'server/**/*', dest: absoluteBuildPath, cpy }),
+		copyStatic({ taskName: 'copy:server-template', src: 'html/**/*', dest: absoluteBuildPath, cpy }),
+		copyStatic({ taskName: 'copy:ssl', src: 'ssl/**/*', dest: absoluteBuildPath, cpy })
+	]);
+
+	await copyExtra();
+
+	await Promise.all([
+		compileCSS(config.paths.stylesEntryPoint, {
 			isDebug: options.isDebug,
 			sass: {
 				sourceMapEmbed:	options.isDebug
 			}
 		}),
-		compiler(opts),
-		imagemin(opts)
+		compileJS(),
+		// TODO: Add it back
+		// imagemin(opts)
 	]);
-	await compression(opts);
-	await imageResize(opts);
+	// TODO: Add it back
+	// await compression(opts);
+	// await imageResize(opts);
 }
 
 module.exports = startBuild;

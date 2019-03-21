@@ -4,7 +4,7 @@
   "tabWidth": 4,
   "useTabs": true,
   "semi": true,
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "bracketSpacing": true,
   "arrowParens": "avoid",
   "_comment": "TODO: Explore using this with ESlint https://github.com/prettier/prettier#eslint-integrations"

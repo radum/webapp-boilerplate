@@ -40,6 +40,10 @@ const timeSpan = then => {
   return (now() - then);
 };
 
+// TODO: Maybe use it to align messages also.
+// But it has a big assumption. That all loggers are created before they are used.
+const scopes = [];
+
 class Signale {
   constructor(options = {}) {
     this._interactive = options.interactive || false;
@@ -336,6 +340,7 @@ class Signale {
     if (name.length === 0) {
       throw new Error('No scope name was defined.');
     }
+    scopes.push(name);
     return new Signale(Object.assign(this.currentOptions, {scope: name}));
   }
 

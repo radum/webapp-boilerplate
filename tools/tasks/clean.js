@@ -1,23 +1,32 @@
-const { config } = require('../config');
 const fs = require('../lib/fs');
 const TaskError = require('../lib/task-error').TaskError
+const reporter = require('../lib/reporter');
 
 /**
- * Cleans up the output (build) directory.
- * @param {Object} options - Options object
+ * Cleans up the output (build) directory, or any other path that you pass.
+ * @param {Array} paths - Array of paths to be removed
+ * @param {Object} options Options object
+ * @param {String} options.taskName Task name used for reporting purposes
+ * @param {String} options.taskColor Task color used for reporting purposes
  * @returns {Promise} Task promise
  */
-async function clean(options) {
-	const reporter = options.reporter('clean', { color: config.taskColor[2] });
-	const cleanPaths = [];
-	reporter.emit('start', 'cleaning temp folders');
+function clean(paths, options) {
+	const taskName = options.taskName || 'clean';
+	const taskColor = options.taskColor || '#F3FFBD;'
+	const logger = reporter(taskName, { color: taskColor });
 
-	// Push all paths that need to be cleared
-	cleanPaths.push(config.paths.buildPath + '/*');
+	logger.emit('start', 'cleaning temp folders');
+
+	if (!Array.isArray(paths)) {
+		const arrayErr = 'First param should be an array of paths!';
+		logger.emit('error', arrayErr);
+
+		throw new TaskError(arrayErr);
+	}
 
 	// Generate job array for all paths
-	const cleanJobs = cleanPaths.map(path => {
-		reporter.emit('info', `cleaning path: ${path}`);
+	const cleanJobs = paths.map(path => {
+		logger.emit('info', `cleaning path: ${path}`);
 
 		return fs.cleanDir(path, {
 			nosort: true,
@@ -25,15 +34,12 @@ async function clean(options) {
 		})
 	});
 
-	try {
-		await  Promise.all(cleanJobs);
+	return Promise.all(cleanJobs)
+		.then(() => {
+			logger.emit('done', 'temp folders cleaned');
 
-		reporter.emit('done', 'temp folders cleaned')
-	} catch (error) {
-		reporter.emit('error', error);
-
-		throw new TaskError(error);
-	}
+			return null;
+		});
 }
 
 module.exports = clean;

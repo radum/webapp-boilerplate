@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const globby = require('globby');
-const mkdirp = require('mkdirp');
+const makeDir = require('make-dir');
 const rimraf = require('rimraf');
 
 /**
@@ -82,15 +82,6 @@ const renameFile = (source, target) => new Promise((resolve, reject) => {
 });
 
 /**
- * Create a new folder
- * @param {String} name - Folder name
- * @returns {Promise} Promise object
- */
-const makeDir = name => new Promise((resolve, reject) => {
-	mkdirp(name, error => (error ? reject(new Error(error)) : resolve()));
-});
-
-/**
  * Read directory as a glob promise
  * @param {(String|Array)} pattern - Globby pattern
  * @param {Object} options - Options object
@@ -107,7 +98,8 @@ const moveDir = async (source, target) => {
 	const dirs = await readDir('**/*.*', {
 		cwd: source,
 		nosort: true,
-		dot: true
+		dot: true,
+		nodir: true
 	});
 
 	await Promise.all(dirs.map(async (dir) => {

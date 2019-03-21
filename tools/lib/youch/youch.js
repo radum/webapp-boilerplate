@@ -43,8 +43,9 @@ class Youch {
       .replace(/dist\/webpack:\//g, "")
     return new Promise((resolve, reject) => {
       fs.readFile(path, 'utf-8', (error, contents) => {
-        if (error || !contents) {
-          return resolve(null)
+        if (error) {
+		  resolve(null)
+		  return
         }
 
         const lines = contents.split(/\r?\n/)
@@ -251,7 +252,7 @@ class Youch {
 
     const parsedCookies = cookie.parse(this.request.headers.cookie || '')
     const cookies = Object.keys(parsedCookies).map((key) => {
-      return {key, value: parsedCookies[key]}
+      return { key, value: parsedCookies[key] }
     })
 
     return {

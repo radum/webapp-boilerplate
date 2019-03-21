@@ -110,7 +110,7 @@ module.exports = function (config) {
 				// // Webpack can now load mjs files, but we don't want it to
 				// {
 				// 	type: 'javascript/auto',
-				// 	test: /\.mjs$/,
+				// 	test: /\.m?jsx?$/,
 				// 	include: /node_modules/,
 				// 	use: []
 				// },
