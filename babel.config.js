@@ -6,14 +6,15 @@ module.exports = function(api) {
 				modules: false,
 				useBuiltIns: 'usage',
 				debug: false,
+				corejs: 3
 			},
 		],
 	];
 
 	const plugins = [
 		'@babel/plugin-syntax-dynamic-import',
-		'@babel/plugin-transform-runtime',
 		'@babel/plugin-proposal-class-properties',
+		'@babel/plugin-transform-runtime',
 		'console'
 	];
 
