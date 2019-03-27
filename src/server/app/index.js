@@ -13,7 +13,10 @@ const PrettyError = require('pretty-error');
 const errorhandler = require('errorhandler');
 const expressRoutesLogger = require('morgan');
 const serverTiming = require('server-timing');
-// TODO: https://www.npmjs.com/package/express-brute, https://github.com/animir/node-rate-limiter-flexible
+// TODO: Rate limit options
+// https://www.npmjs.com/package/express-brute,
+// https://github.com/animir/node-rate-limiter-flexible
+// https://github.com/energizer91/smart-request-balancer
 const rateLimit = require('express-rate-limit');
 const mime = require('mime');
 
@@ -189,8 +192,12 @@ if (!config.isProd) {
 	app.use(noopServiceWorkerMiddleware());
 }
 
-// Register express static for all files within the static folder
-app.use('/', express.static(config.server.paths.staticAssets));
+// Register express static for all files within the static folder.
+// Set the max-age property of the Cache-Control header for all static assets to 1 year.
+// Using a long term cache is a good strategy considering that all assetes will be versioned.
+app.use('/', express.static(config.server.paths.staticAssets, {
+	maxAge: '1y'
+}));
 
 // Error handling
 // -----------------------------------------------------------------------------
