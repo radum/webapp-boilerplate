@@ -121,7 +121,7 @@
     "raw-loader": "2.0.0",
     "replace-ext": "1.0.0",
     "rimraf": "2.6.3",
-    "sass": "1.17.4",
+    "sass": "1.18.0",
     "sass-mq": "5.0.0",
     "sharp": "0.22.0",
     "size-plugin": "1.2.0",
