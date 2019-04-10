@@ -5,6 +5,7 @@
 // A map of global config settings. Define any project-level configuration,
 // feature switches, etc. in here.
 
+// TODO: This doesn't work
 // Sass-loader environment variables will prepend `'$env: ' + process.env.NODE_ENV + ';'`
 $environment: development;
 $isDebug: true;
