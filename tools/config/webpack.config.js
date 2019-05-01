@@ -2,6 +2,7 @@
 
 const path = require('path');
 const webpack = require('webpack');
+const PnpWebpackPlugin = require('pnp-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
@@ -183,11 +184,22 @@ module.exports = function (config) {
 			alias: aliases.webpack,
 			// A list of additional resolve plugins which should be applied
 			plugins: [
+				// Adds support for installing with Plug'n'Play, leading to faster installs and adding
+				// guards against forgotten dependencies and such.
+				PnpWebpackPlugin,
 				// Normally, Webpack looks for index file when the path passed to require points to a directory;
 				// which means there may have a lot of index files.
 				// This plugin makes it possible to control what file within directory will be treated as entry file.
 				// https://www.npmjs.com/package/directory-named-webpack-plugin
 				new DirectoryNamedWebpackPlugin(true)
+			]
+		},
+
+		resolveLoader: {
+			plugins: [
+				// Also related to Plug'n'Play, but this time it tells Webpack to load its loaders
+				// from the current package.
+				PnpWebpackPlugin.moduleLoader(module),
 			]
 		},
 
