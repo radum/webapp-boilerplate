@@ -113,7 +113,7 @@
     "os": "0.1.1",
     "p-map": "2.1.0",
     "pnp-webpack-plugin": "1.4.3",
-    "postcss": "7.0.14",
+    "postcss": "7.0.16",
     "postcss-color-mod-function": "3.0.3",
     "postcss-custom-properties": "8.0.10",
     "postcss-reporter": "6.0.1",
