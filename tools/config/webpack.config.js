@@ -9,11 +9,13 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const DashboardPlugin = require('webpack-dashboard/plugin');
 // const SizePlugin = require('size-plugin');
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
 const aliases = require('./aliases.config');
+const paths = require('./paths');
+const modules = require('./modules');
 
 module.exports = function (config) {
 	const cwd = process.cwd();
@@ -178,6 +180,14 @@ module.exports = function (config) {
 		},
 
 		resolve: {
+			// This allows you to set a fallback for where Webpack should look for modules.
+			// We placed these paths second because we want `node_modules` to "win"
+			// if there are any conflicts. This matches Node resolution mechanism.
+			// https://github.com/facebook/create-react-app/issues/253
+			// Ex: ['node_modules', '/Users/username/my-app/node_modules', '/Users/username/my-app/src' ]
+			// This will help to do `import Button from 'components/button'` regardless where is the files
+			// as the components folder will be resolved by webpack within the src folder.
+			modules: ['node_modules', paths.appNodeModules].concat(modules.additionalModulePaths || []),
 			// Create aliases to import or require certain modules more easily, for example:
 			// `@design': './../src/styles/main.scss` and the we can import like this:
 			// `import '@design';` which will import the main.scss from above using the right path
