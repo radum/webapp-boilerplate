@@ -45,7 +45,7 @@
     "compression": "1.7.4",
     "cookie-parser": "1.4.4",
     "dotenv": "8.0.0",
-    "errorhandler": "1.5.0",
+    "errorhandler": "1.5.1",
     "express": "4.16.4",
     "express-rate-limit": "3.5.0",
     "express-session": "1.16.1",
