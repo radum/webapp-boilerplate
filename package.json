@@ -138,7 +138,7 @@
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-dashboard": "3.0.6",
     "webpack-dev-middleware": "3.7.0",
-    "webpack-hot-middleware": "2.24.4",
+    "webpack-hot-middleware": "2.25.0",
     "webpack-monitor": "1.0.14",
     "workbox-webpack-plugin": "4.3.1",
     "write-file-webpack-plugin": "4.5.0"
