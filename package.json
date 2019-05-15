@@ -137,7 +137,7 @@
     "webpack": "4.31.0",
     "webpack-bundle-analyzer": "3.3.2",
     "webpack-dashboard": "3.0.6",
-    "webpack-dev-middleware": "3.6.2",
+    "webpack-dev-middleware": "3.7.0",
     "webpack-hot-middleware": "2.24.4",
     "webpack-monitor": "1.0.14",
     "workbox-webpack-plugin": "4.3.1",
