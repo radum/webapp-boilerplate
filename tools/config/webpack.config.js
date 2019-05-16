@@ -1,4 +1,4 @@
-/* eslint prefer-destructuring: 0 */
+/* eslint prefer-destructuring: 0, complexity: 1 */
 
 const path = require('path');
 const webpack = require('webpack');
@@ -20,9 +20,9 @@ const modules = require('./modules');
 module.exports = function (config) {
 	const cwd = process.cwd();
 
-	// Webpack configuration (main.js => main.build.js)
+	// Base Webpack configuration (main.js => {version}.build.js)
 	// http://webpack.github.io/docs/configuration.html
-	return {
+	const baseConfig = {
 		// The base directory, an absolute path, for resolving entry points and loaders from configuration
 		context: path.resolve(process.cwd()),
 
@@ -233,20 +233,21 @@ module.exports = function (config) {
 
 			// Generate a manifest file which contains a mapping of all asset filenames
 			// to their corresponding output file so that tools can pick it up.
-			new AssetsPlugin({
-				filename: 'asset-manifest-script.json',
-				includeManifest: true,
-				manifestFirst: true,
-				path: path.resolve(cwd, config.paths.buildPath),
-				prettyPrint: true
-			}),
+			// Moved down to splited config (modern, legacy).
+			// new AssetsPlugin({
+			// 	filename: 'asset-manifest-script.json',
+			// 	includeManifest: true,
+			// 	manifestFirst: true,
+			// 	path: path.resolve(cwd, config.paths.buildPath),
+			// 	prettyPrint: true
+			// }),
 
 			// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
 			// The GenerateSW plugin will create a service worker file for you and add it to the webpack asset pipeline.
 			new GenerateSW({
 				globDirectory: path.resolve(cwd, config.paths.staticAssetsOutput),
 				globPatterns: ['**/*.{html,js,css}'],
-				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js'),
+				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js')
 			}),
 
 			// Prints the gzipped sizes of your webpack assets and the changes since the last build.
@@ -303,4 +304,50 @@ module.exports = function (config) {
 			hints: !config.isProd && config.isDebug ? false : 'warning'
 		}
 	};
+
+	// Modern config that ouputs assets for evergreen browsers.
+	// These bundles are light and babel doesn't need to transpile much.
+	// All transpilations steps are based on the browserlist config.
+	const modernConfig = Object.assign({}, baseConfig, {
+		output: Object.assign({}, baseConfig.output, {
+			filename: config.isDebug ? '[name].build.mjs' : '[name].build.[chunkhash:8].mjs',
+			chunkFilename: config.isDebug ? '[name].build.mjs' : '[name].build.[chunkhash:8].mjs'
+		}),
+		plugins: [
+			...baseConfig.plugins,
+			new AssetsPlugin({
+				filename: 'asset-manifest-script-modern.json',
+				includeManifest: true,
+				manifestFirst: true,
+				path: path.resolve(cwd, config.paths.buildPath),
+				prettyPrint: true
+			})
+		],
+		BROWSERSLIST_ENV: 'modern'
+	});
+
+	// Legacy config that ouputs assets for old browsers (ie. IE11).
+	// These bundles are heavier and babel will transpile most ES6 code.
+	const legacyConfig = Object.assign({}, baseConfig, {
+		output: Object.assign({}, baseConfig.output, {
+			filename: config.isDebug ? '[name].build.legacy.js' : '[name].build.legacy.[chunkhash:8].js',
+			chunkFilename: config.isDebug ? '[name].build.legacy.js' : '[name].build.legacy.[chunkhash:8].js'
+		}),
+		plugins: [
+			...baseConfig.plugins,
+			new AssetsPlugin({
+				filename: 'asset-manifest-script-legacy.json',
+				includeManifest: true,
+				manifestFirst: true,
+				path: path.resolve(cwd, config.paths.buildPath),
+				prettyPrint: true
+			})
+		],
+		BROWSERSLIST_ENV: 'legacy'
+	});
+
+	return {
+		modernConfig,
+		legacyConfig
+	}
 }

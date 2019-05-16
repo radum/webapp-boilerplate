@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const chalk = require('chalk');
 const prettifyTime = require('../lib/prettify-time');
 const reporter = require('../lib/reporter');
-const { webpackConfig } = require('../config');
+const { webpackConfigModern, webpackConfigLegacy } = require('../config');
 
 /**
  * Compiler logger function that transforms the output into a readable stream of text
@@ -52,27 +52,43 @@ function compileJS(options = {}) {
 
 	logger.emit('start', 'bundle js with webpack');
 
-	return new Promise((resolve, reject) => {
-		logger.emit('info', 'running webpack');
+	const webpackInstance = (config) =>
+		new Promise((resolve, reject) => {
+			logger.emit('info', `running webpack for ${config.BROWSERSLIST_ENV} config`);
 
-		instance = webpack(webpackConfig, (error, stats) => {
-			compilerLogger(error, stats, logger);
+			process.env.BROWSERSLIST_ENV = config.BROWSERSLIST_ENV;
+			const BROWSERSLIST_ENV = process.env.BROWSERSLIST_ENV;
+			delete config.BROWSERSLIST_ENV;
 
-			if (options.eventBus && error === null && !stats.hasErrors()) {
-				options.eventBus.emit('bs:reload');
-			}
+			instance = webpack(config, (error, stats) => {
+				compilerLogger(error, stats, logger);
 
-			if (error === null && !stats.hasErrors()) {
-				logger.emit('done', 'webpack compilation completed');
-			} else if (error !== null || stats.hasErrors()) {
-				logger.emit('error', 'error while running webpack');
+				if (options.eventBus && error === null && !stats.hasErrors()) {
+					options.eventBus.emit('bs:reload');
+				}
 
-				reject(new Error('webpack error'));
-			}
+				if (error === null && !stats.hasErrors()) {
+					logger.emit('done', `webpack ${BROWSERSLIST_ENV} compilation completed`);
+				} else if (error !== null || stats.hasErrors()) {
+					logger.emit('error', `error while running webpack for ${BROWSERSLIST_ENV}`);
 
-			resolve(instance);
+					reject(new Error(`webpack ${BROWSERSLIST_ENV} error`));
+				}
+
+				resolve(instance);
+			});
 		});
-	});
+
+	const pEachSeries = async (iterable, iterator) => {
+		for (const value of iterable) {
+			// eslint-disable-next-line no-await-in-loop
+			await iterator(await value);
+		}
+
+		return iterable;
+	};
+
+	return pEachSeries([webpackConfigModern, webpackConfigLegacy], webpackInstance);
 }
 
 module.exports = compileJS;

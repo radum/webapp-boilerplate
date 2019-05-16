@@ -12,7 +12,9 @@ const config = {
 			staticAssets: common.isProd ? path.resolve(__dirname, '../../../static') : path.resolve(__dirname, '../../../../build/static'),
 			htmlTemplates: common.isProd ? path.resolve(__dirname, '../../../html') : path.resolve(__dirname, '../../../html'),
 			assetsWebpackJSONFile: common.isProd ?
-				path.resolve(__dirname, '../../../asset-manifest-script.json') : path.resolve(__dirname, '../../../../build/asset-manifest-script.json'),
+				path.resolve(__dirname, '../../../asset-manifest-script-modern.json') : path.resolve(__dirname, '../../../../build/asset-manifest-script-modern.json'),
+			assetsLegacyWebpackJSONFile: common.isProd ?
+				path.resolve(__dirname, '../../../asset-manifest-script-legacy.json') : path.resolve(__dirname, '../../../../build/asset-manifest-script-legacy.json'),
 			assetsStylesJSONFile: common.isProd ?
 				path.resolve(__dirname, '../../../asset-manifest-style.json') : path.resolve(__dirname, '../../../../build/asset-manifest-style.json')
 		}

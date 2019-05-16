@@ -19,8 +19,10 @@ module.exports = function(api) {
 	];
 
 	// https://babeljs.io/docs/en/config-files#apicache
-
-	api.cache(() => process.env.NODE_ENV);
+	// We can even use `process.env.NODE_ENV` but because we are creating modern and legacy
+	// bundles via webpack, we need to invalidate the cache when `BROWSERSLIST_ENV` changes
+	// programatically from within the main `js-compiler` task.
+	api.cache(() => process.env.BROWSERSLIST_ENV);
 
 	return {
 		presets,

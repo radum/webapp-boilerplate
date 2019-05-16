@@ -10,6 +10,7 @@ const isDebug = !cli.flags.release;
 const isVerbose = cli.flags.verbose;
 const isAnalyze = cli.flags.analyze;
 
+// TODO:Maybe document here what every one of these does?
 const config = {
 	isProd,
 	isDebug,
@@ -17,6 +18,7 @@ const config = {
 	isAnalyze,
 	SENTRY_DSN_URL: process.env.SENTRY_DSN_URL,
 
+	// TODO: Streamline all these values as we have to many.
 	paths: {
 		srcPath: 'src',
 		buildPath: 'build',
@@ -45,4 +47,5 @@ const config = {
 };
 
 exports.config = config;
-exports.webpackConfig = webpackConfig(config);
+exports.webpackConfigModern = webpackConfig(config).modernConfig;
+exports.webpackConfigLegacy = webpackConfig(config).legacyConfig;
