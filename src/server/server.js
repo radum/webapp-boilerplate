@@ -2,8 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const http2 = require('spdy'); // Using `spdy` until this lands https://github.com/expressjs/express/pull/3390
+const logProcessErrors = require('log-process-errors');
 const chalk = require('chalk');
 const loadEnv = require('./util/load-env');
+
+// Show some ❤️ to Node.js process errors.
+// https://github.com/ehmicky/log-process-errors
+logProcessErrors();
 
 // Load .env files based on the rules defined in the docs
 loadEnv(process.env.NODE_ENV);
