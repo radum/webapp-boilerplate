@@ -136,7 +136,7 @@
     "terser-webpack-plugin": "1.2.4",
     "webpack": "4.31.0",
     "webpack-bundle-analyzer": "3.3.2",
-    "webpack-dashboard": "3.0.6",
+    "webpack-dashboard": "3.0.7",
     "webpack-dev-middleware": "3.7.0",
     "webpack-hot-middleware": "2.25.0",
     "webpack-monitor": "1.0.14",
