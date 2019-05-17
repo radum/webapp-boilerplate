@@ -28,8 +28,14 @@ const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-m
 // Express App with view engine via Marko
 // -----------------------------------------------------------------------------
 
-require('marko/compiler').defaultOptions.writeToDisk = config.isProd;
-require('marko/node-require'); // Allow Node.js to require and load `.marko` files
+// Allow Node.js to require and load `.marko` files
+require('marko/node-require').install({
+	extensions: ['.marko', '.html'],
+	compilerOptions: {
+		writeToDisk: config.isProd,
+		preserveWhitespace: config.isProd
+	}
+});
 const markoExpress = require('marko/express');
 
 const app = express();
