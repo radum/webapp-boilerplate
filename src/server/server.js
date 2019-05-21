@@ -25,7 +25,7 @@ http.createServer(app).listen(app.get('http-port'), () => {
 	console.log('%s Server is running at http://localhost:%d in %s mode', chalk.green('✓'), app.get('http-port'), app.get('env'));
 });
 
-if (process.env.HTTPS_ENABLED) {
+if (process.env.HTTPS_ENABLED === 'true') {
 	http2.createServer({
 		cert: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_CERT_FILE_NAME}`)),
 		key: fs.readFileSync(path.resolve(__dirname, `../ssl/${process.env.SSL_KEY_FILE_NAME}`))
