@@ -11,9 +11,11 @@
 <link rel="dns-prefetch" href=`//${data.domainName}` />
 </if>
 
+<if(data.isProd === true)>
 <for|file| of=data.assets.scripts>
 <link rel="preload" as="script" href=`${file}` />
 </for>
+</if>
 
 <!-- Disable tap highlight on IE -->
 <meta name="msapplication-tap-highlight" content="no">
