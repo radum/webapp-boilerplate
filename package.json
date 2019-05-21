@@ -59,7 +59,7 @@
     "mime": "2.4.3",
     "morgan": "1.9.1",
     "pretty-error": "2.2.0-rc.1",
-    "raven-js": "3.27.0",
+    "raven-js": "3.27.1",
     "response-time": "2.3.2",
     "rev-hash": "3.0.0",
     "server-timing": "2.1.0",
