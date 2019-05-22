@@ -55,7 +55,7 @@
     "lodash": "4.17.11",
     "log-process-errors": "5.0.0",
     "lusca": "1.6.1",
-    "marko": "4.17.1",
+    "marko": "4.17.2",
     "mime": "2.4.3",
     "morgan": "1.9.1",
     "pretty-error": "2.2.0-rc.1",
