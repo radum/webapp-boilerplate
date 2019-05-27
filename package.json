@@ -105,7 +105,7 @@
     "iltorb": "2.4.3",
     "imagemin": "6.1.0",
     "imagemin-mozjpeg": "8.0.0",
-    "imagemin-optipng": "6.0.0",
+    "imagemin-optipng": "7.0.0",
     "imagemin-webp": "5.0.0",
     "indent-string": "4.0.0",
     "make-dir": "3.0.0",
