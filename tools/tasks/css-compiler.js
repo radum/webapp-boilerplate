@@ -3,9 +3,7 @@ const path = require('path');
 const sass = require('sass');
 const Fiber = require('fibers');
 const postcss = require('postcss');
-const autoprefixer = require('autoprefixer');
-const postcssCustomProperties = require('postcss-custom-properties');
-const postcssColorMod = require('postcss-color-mod-function');
+const postcssPresetEnv = require('postcss-preset-env');
 const postcssReporter = require('postcss-reporter');
 const indentString = require('indent-string');
 const humanizeMs = require('ms');
@@ -91,9 +89,10 @@ async function compileSass(options) {
 function postCSSTransform(cssInput, options) {
 	const logger = reporter('css-compiler', { subTaskName: 'postcss', color: options.taskColor });
 	const plugins = [
-		postcssCustomProperties,
-		postcssColorMod,
-		autoprefixer,
+		postcssPresetEnv({
+			autoprefixer: { flexbox: 'no-2009' },
+			stage: 3
+		}),
 		postcssReporter
 	];
 	const settings = {
