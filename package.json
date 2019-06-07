@@ -110,7 +110,7 @@
     "indent-string": "4.0.0",
     "make-dir": "3.0.0",
     "meow": "5.0.0",
-    "ms": "2.1.1",
+    "ms": "2.1.2",
     "os": "0.1.1",
     "p-map": "2.1.0",
     "pnp-webpack-plugin": "1.5.0",
