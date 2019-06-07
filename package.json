@@ -79,7 +79,7 @@
     "ava": "2.0.0",
     "babel-loader": "8.0.6",
     "babel-plugin-console": "0.2.1",
-    "browser-sync": "2.26.5",
+    "browser-sync": "2.26.7",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "chokidar": "3.0.1",
     "clean-css": "4.2.1",
