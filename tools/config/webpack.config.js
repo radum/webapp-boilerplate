@@ -58,6 +58,9 @@ module.exports = function (config) {
 			// filename: config.isDebug ? '[name].build.js' : '[name].build.[hash].js',
 			filename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
 
+			// TODO: remove this when upgrading to webpack 5
+			futureEmitAssets: true,
+
 			// Name of non-entry chunk files
 			// https://webpack.js.org/configuration/output/#output-chunkfilename
 			chunkFilename: config.isDebug ? '[name].build.js' : '[name].build.[chunkhash:8].js',
@@ -245,6 +248,17 @@ module.exports = function (config) {
 			// https://developers.google.com/web/tools/workbox/modules/workbox-webpack-plugin
 			// The GenerateSW plugin will create a service worker file for you and add it to the webpack asset pipeline.
 			new GenerateSW({
+				clientsClaim: true,
+				exclude: [/\.map$/, /asset-manifest\.json$/],
+				importWorkboxFrom: 'cdn',
+				navigateFallback: '/index.html',
+				navigateFallbackBlacklist: [
+					// Exclude URLs starting with /_, as they're likely an API call
+					new RegExp('^/_'),
+					// Exclude URLs containing a dot, as they're likely a resource in
+					// public/ and not a SPA route
+					new RegExp('/[^/]+\\.[^/]+$'),
+				],
 				globDirectory: path.resolve(cwd, config.paths.staticAssetsOutput),
 				globPatterns: ['**/*.{html,js,css}'],
 				swDest: path.join(path.resolve(cwd, config.paths.staticAssetsOutput), 'sw.js')
