@@ -18,9 +18,9 @@ module.exports = function(api) {
 	];
 
 	const plugins = [
+		['@babel/plugin-transform-runtime', { corejs: 3, useESModules: true }],
 		'@babel/plugin-syntax-dynamic-import',
 		'@babel/plugin-proposal-class-properties',
-		'@babel/plugin-transform-runtime',
 		'@babel/plugin-proposal-optional-chaining',
 		'console'
 	];
