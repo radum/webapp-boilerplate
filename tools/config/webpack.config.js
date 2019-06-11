@@ -113,22 +113,23 @@ module.exports = function (config) {
 			strictExportPresence: true,
 
 			rules: [
-				// // Webpack can now load mjs files, but we don't want it to
-				// {
-				// 	type: 'javascript/auto',
-				// 	test: /\.m?jsx?$/,
-				// 	include: /node_modules/,
-				// 	use: []
-				// },
 				// Babel loader options
 				{
 					test: /\.js(\?[^?]*)?$/,
 					include: path.resolve(cwd, config.paths.scriptsPath),
 					loader: 'babel-loader',
-					exclude: /(node_modules)/,
+					// There is no need these days to exclude  node_modules from babel.
+					// https://jasonformat.com/enabling-modern-js-on-npm/
+					// exclude: /(node_modules)/,
+					// More info in the docs.
 					// https://github.com/babel/babel-loader#options
 					options: {
-						cacheDirectory: config.isDebug,
+						// This is a feature of `babel-loader` for webpack (not Babel itself).
+                		// It enables caching results in ./node_modules/.cache/babel-loader/
+                		// directory for faster rebuilds.
+						cacheDirectory: true,
+						cacheCompression: config.isProd,
+                		compact: config.isProd
 					},
 				},
 
