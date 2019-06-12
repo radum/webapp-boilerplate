@@ -48,7 +48,7 @@
     "errorhandler": "1.5.1",
     "express": "4.17.1",
     "express-rate-limit": "5.0.0",
-    "express-session": "1.16.1",
+    "express-session": "1.16.2",
     "helmet": "3.18.0",
     "joi": "14.3.1",
     "lit-html": "1.1.0",
