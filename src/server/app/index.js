@@ -1,3 +1,4 @@
+'use strict';
 // const fs = require('fs');
 const timestamp = require('time-stamp');
 const chalk = require('chalk');
@@ -20,7 +21,7 @@ const serverTiming = require('server-timing');
 const rateLimit = require('express-rate-limit');
 const mime = require('mime');
 
-const logger = require('../util/logger');
+const logger = require('../util/logger').default;
 const config = require('../config');
 const findEncoding = require('../util/encoding-selection').findEncoding;
 const noopServiceWorkerMiddleware = require('../middleware/noop-service-worker-middleware');

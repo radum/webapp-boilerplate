@@ -1,4 +1,4 @@
-/* global document, __SENTRY_DSN_URL__, __DEV__ */
+/* global __SENTRY_DSN_URL__, __DEV__ */
 
 // Global imports
 
@@ -18,7 +18,7 @@
 // https://github.com/github/fetch
 // import 'whatwg-fetch';
 import Raven from 'raven-js';
-import App from './app';
+import App from './App';
 
 // Make sure you set the `SENTRY_DSN_URL` env var via .env files
 // if you need this to work in the code, as the entire IF will be skiped on compile

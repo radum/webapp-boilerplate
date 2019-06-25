@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "@radum/eslint-config",
+    "@radum/eslint-config/node"
+  ],
+  "rules": {
+    "no-console": 0
+  }
+}

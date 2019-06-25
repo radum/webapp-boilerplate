@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+'use strict';
 const cluster = require('cluster');
 
 if (cluster.isMaster) {

@@ -1,3 +1,4 @@
+'use strict';
 const config = require('../config');
 const pageDataAssets = require('../data/page-data-assets');
 const pageData = require('../data/page-data');

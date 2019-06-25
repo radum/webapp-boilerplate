@@ -1,3 +1,4 @@
+'use strict';
 // https://github.com/tkoenig89/express-static-gzip/blob/master/util/encoding-selection.js
 
 /**
