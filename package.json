@@ -94,7 +94,7 @@
     "execa": "1.0.0",
     "fibers": "4.0.1",
     "figures": "3.0.0",
-    "globby": "9.2.0",
+    "globby": "10.0.1",
     "html-webpack-plugin": "4.0.0-beta.5",
     "iltorb": "2.4.3",
     "imagemin": "7.0.0",
