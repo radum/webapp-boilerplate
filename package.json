@@ -106,7 +106,7 @@
     "meow": "5.0.0",
     "ms": "2.1.2",
     "os": "0.1.1",
-    "p-map": "2.1.0",
+    "p-map": "3.0.0",
     "pnp-webpack-plugin": "1.5.0",
     "postcss": "7.0.17",
     "postcss-preset-env": "6.7.0",
