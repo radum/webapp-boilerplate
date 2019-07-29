@@ -63,7 +63,7 @@
     "response-time": "2.3.2",
     "rev-hash": "3.0.0",
     "server-timing": "2.1.0",
-    "spdy": "4.0.0",
+    "spdy": "4.0.1",
     "time-stamp": "2.2.0",
     "winston": "3.2.1"
   },
