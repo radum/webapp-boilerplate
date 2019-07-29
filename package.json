@@ -133,6 +133,6 @@
     "webpack-hot-middleware": "2.25.0",
     "webpack-monitor": "1.0.14",
     "workbox-webpack-plugin": "4.3.1",
-    "write-file-webpack-plugin": "4.5.0"
+    "write-file-webpack-plugin": "4.5.1"
   }
 }
