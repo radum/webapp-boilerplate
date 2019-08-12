@@ -51,7 +51,7 @@
     "express-session": "1.16.2",
     "helmet": "3.20.0",
     "joi": "14.3.1",
-    "lit-html": "1.1.1",
+    "lit-html": "1.1.2",
     "lodash": "4.17.15",
     "log-process-errors": "5.0.2",
     "lusca": "1.6.1",
