@@ -91,7 +91,7 @@
     "emittery": "0.4.1",
     "eslint": "6.1.0",
     "eslint-formatter-pretty": "2.1.1",
-    "execa": "2.0.3",
+    "execa": "2.0.4",
     "fibers": "4.0.1",
     "figures": "3.0.0",
     "globby": "10.0.1",
