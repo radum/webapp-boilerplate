@@ -39,7 +39,7 @@
     "test": "ava --verbose"
   },
   "dependencies": {
-    "@babel/runtime": "7.5.5",
+    "@babel/runtime": "7.6.0",
     "body-parser": "1.19.0",
     "chalk": "2.4.2",
     "compression": "1.7.4",
@@ -68,12 +68,12 @@
     "winston": "3.2.1"
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
+    "@babel/core": "7.6.0",
     "@babel/plugin-proposal-class-properties": "7.5.5",
-    "@babel/plugin-proposal-optional-chaining": "7.2.0",
+    "@babel/plugin-proposal-optional-chaining": "7.6.0",
     "@babel/plugin-syntax-dynamic-import": "7.2.0",
-    "@babel/plugin-transform-runtime": "7.5.5",
-    "@babel/preset-env": "7.5.5",
+    "@babel/plugin-transform-runtime": "7.6.0",
+    "@babel/preset-env": "7.6.0",
     "@radum/eslint-config": "1.0.0",
     "@radum/stylelint-config": "0.3.0",
     "assets-webpack-plugin": "3.9.10",
